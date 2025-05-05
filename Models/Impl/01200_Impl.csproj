@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>netstandard2.0</TargetFramework>
+	<OutputType>Library</OutputType>
+	<LangVersion>8.0</LangVersion>
+	<ImplicitUsings>disable</ImplicitUsings>
+	<Nullable>enable</Nullable>
+	<AssemblyName>Models.Impl</AssemblyName>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contracts\01100_Contracts.csproj" />
+  </ItemGroup>
+
+	<!--
+  <Import Project="..\..\Impl.GenerateDependencies.targets" />
+	-->
+
+</Project>

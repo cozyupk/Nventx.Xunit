@@ -1,0 +1,35 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Target Name="GenerateShadowDependencies"
+          AfterTargets="Build"
+          Inputs="$(OutputPath)$(TargetName).dll"
+          Outputs="$(OutputPath)dependencies\marker.txt">
+
+    <!-- 出力先 -->
+    <PropertyGroup>
+      <DependenciesDir>$(OutputPath)dependencies\</DependenciesDir>
+    </PropertyGroup>
+
+    <!-- コピー対象ファイル -->
+    <ItemGroup>
+      <ShadowOutputFiles Include="$(OutputPath)*.dll" />
+      <ShadowOutputFiles Include="$(OutputPath)*.json" />
+      <ShadowOutputFiles Include="$(OutputPath)*.pdb" />
+    </ItemGroup>
+
+    <!-- コピー -->
+    <Copy
+      SourceFiles="@(ShadowOutputFiles)"
+      DestinationFolder="$(DependenciesDir)"
+      SkipUnchangedFiles="true" />
+
+    <!-- マーカー作成（Outputs 用） -->
+    <WriteLinesToFile
+      File="$(DependenciesDir)marker.txt"
+      Lines="Generated at $(MSBuildThisFileFullPath) on $(MSBuildThisFile)"
+      Overwrite="true" />
+
+    <Message Text="📦 ShadowDI: Copied @(ShadowOutputFiles->'%(Filename)%(Extension)') to $(DependenciesDir)" Importance="High" />
+  </Target>
+
+</Project>
