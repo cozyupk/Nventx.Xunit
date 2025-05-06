@@ -1,0 +1,52 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Target Name="GenerateShadowDependencies"
+          AfterTargets="Build">
+
+    <!-- 出力先 -->
+    <PropertyGroup>
+      <DependenciesDir>$(SolutionDir)_artifacts\dependencies\$(MSBuildProjectName)\</DependenciesDir>
+    </PropertyGroup>
+
+    <!-- コピー対象ファイル -->
+    <ItemGroup>
+      <ShadowOutputFiles Include="$(OutputPath)*.dll" />
+      <ShadowOutputFiles Include="$(OutputPath)*.json" />
+      <ShadowOutputFiles Include="$(OutputPath)*.pdb" />
+    </ItemGroup>
+
+    <!-- コピー -->
+    <Copy
+      SourceFiles="@(ShadowOutputFiles)"
+      DestinationFolder="$(DependenciesDir)"
+      SkipUnchangedFiles="true" />
+	  
+    <Message Text="📦 ShadowDI: Copied @(ShadowOutputFiles->'%(Filename)%(Extension)') to $(DependenciesDir)" Importance="High" />
+  </Target>
+
+	<Target Name="Test"
+			BeforeTargets="Clean"
+			Inputs="$(TargetPath)"
+			Outputs="$(MSBuildProjectDirectory)\..\rebuild.marker">
+		<Message Importance="high" Text="Hello clean!"></Message>
+		<CallTarget Targets="CleanCustomDependencies" />
+	</Target>
+	
+  <Target Name="CleanCustomDependencies">
+	  
+	  <!-- Clean 時も念のため再定義（Build 時とは別スコープになることがある） -->
+	  <PropertyGroup Condition="$([System.String]::IsNullOrEmpty('$(SolutionDir)'))">
+		  <_SolutionDir>$(MSBuildProjectDirectory)\..\..\</_SolutionDir>
+		  <DependenciesDir>$(SolutionDir)_artifacts\dependencies\$(MSBuildProjectName)\</DependenciesDir>
+	  </PropertyGroup>
+	  <PropertyGroup Condition="!$([System.String]::IsNullOrEmpty('$(SolutionDir)'))">
+		  <_SolutionDir>$(SolutionDir)</_SolutionDir>
+		  <DependenciesDir>$(SolutionDir)_artifacts\dependencies\$(MSBuildProjectName)\</DependenciesDir>
+	  </PropertyGroup>
+	  
+	<Message Importance="high" Text="Deleting dependencies directory: $(DependenciesDir)" />
+	<Message Importance="high" Text="rebuilding: $(IsRebuilding)" />
+	<RemoveDir Directories="$(DependenciesDir)" Condition="Exists('$(DependenciesDir)') and $(DependenciesDir.Contains('_artifacts'))" />
+  </Target>
+
+</Project>

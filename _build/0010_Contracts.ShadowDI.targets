@@ -8,9 +8,6 @@
 		<ShadowImplProject>
 			$(MSBuildProjectDirectory)\..\Impl\$(SectionId).csproj
 		</ShadowImplProject>
-
-		<!-- ShadowDeps 出力パス -->
-		<ShadowDepsFile>$(IntermediateOutputPath)shadowdeps.txt</ShadowDepsFile>
 	</PropertyGroup>
 
 	<!-- Impl を先にビルド -->
@@ -21,13 +18,24 @@
 				 Properties="Configuration=$(Configuration);Platform=$(Platform)" />
 	</Target>
 
+	<Target Name="MarkRebuild" BeforeTargets="Rebuild">
+		<WriteLinesToFile
+			File="$(MSBuildProjectDirectory)\..\..\rebuild.marker"
+			Lines="Rebuilt at $(MSBuildThisFileFullPath)"
+			Overwrite="true" />
+	</Target>
+
+	<Target Name="MarkRebuild" AfterTargets="Rebuild">
+		<Delete Files="$(MSBuildProjectDirectory)\..\..\rebuild.marker" />
+	</Target>
+	
 	<!-- 依存DLLを OutputPath にコピー -->
 	<Target Name="CopyShadowDependencies"
 			AfterTargets="Build"
 			DependsOnTargets="BuildShadowImpl">
 
 		<ItemGroup>
-			<ShadowDependencyPaths Include="$(MSBuildProjectDirectory)\..\Impl\bin\$(Configuration)\$(TargetFramework)" />
+			<ShadowDependencyPaths Include="$(MSBuildProjectDirectory)\..\Impl\bin\$(Configuration)\$(TargetFramework)\dependencies" />
 		</ItemGroup>
 
 		<!-- 2. そこから全ファイルを再帰取得 -->

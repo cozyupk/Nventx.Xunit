@@ -27,12 +27,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntryPoint", "ComponentRoot
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00000_Tools", "00000_Tools", "{E314A221-FBCC-465C-AC64-F7FAAFE0204F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Impl", "Tools\Impl\Impl.csproj", "{DE3C385A-B1A3-4F17-9449-9123CC93A27E}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ソリューション項目", "ソリューション項目", "{2022CB0F-8BAF-F49E-0C48-8EF4C96EC109}"
 	ProjectSection(SolutionItems) = preProject
-		Contracts.ShadowDI.targets = Contracts.ShadowDI.targets
-		Impl.GenerateDependencies.targets = Impl.GenerateDependencies.targets
+		Directory.build.props = Directory.build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_build", "_build", "{B3B18102-1000-4CB3-B4CF-CCD83A36C992}"
+	ProjectSection(SolutionItems) = preProject
+		_build\0100_Directory.01Models.build.props = _build\0100_Directory.01Models.build.props
+		_build\0020_Impl.GenerateDependencies.targets = _build\0020_Impl.GenerateDependencies.targets
+		_build\0010_Contracts.ShadowDI.targets = _build\0010_Contracts.ShadowDI.targets
 	EndProjectSection
 EndProject
 Global
@@ -69,10 +73,6 @@ Global
 		{9D822A3E-9F3F-409F-AAFB-E78E35A86C10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D822A3E-9F3F-409F-AAFB-E78E35A86C10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D822A3E-9F3F-409F-AAFB-E78E35A86C10}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE3C385A-B1A3-4F17-9449-9123CC93A27E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE3C385A-B1A3-4F17-9449-9123CC93A27E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE3C385A-B1A3-4F17-9449-9123CC93A27E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE3C385A-B1A3-4F17-9449-9123CC93A27E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,7 +85,6 @@ Global
 		{CEF6BD5F-4E57-478B-AF4A-75428C7D5C54} = {F76F8CC6-AF9B-4638-9B60-573296EFA2DF}
 		{1E7195B3-F042-478D-8B6F-74B546E7FBC3} = {F76F8CC6-AF9B-4638-9B60-573296EFA2DF}
 		{9D822A3E-9F3F-409F-AAFB-E78E35A86C10} = {EB4D1B7F-1BCB-45DD-B1C8-C86ADDB715A3}
-		{DE3C385A-B1A3-4F17-9449-9123CC93A27E} = {E314A221-FBCC-465C-AC64-F7FAAFE0204F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F01E5B92-8BC7-4A77-A34E-79C72F78E4AE}
