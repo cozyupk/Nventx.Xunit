@@ -1,5 +1,7 @@
 ﻿using Cozyupk.HelloShadowDI.Models.Contracts;
 using Cozyupk.HelloShadowDI.Models.Impl;
+using Cozyupk.HelloShadowDI.Presentation.Contracts;
+using Cozyupk.HelloShadowDI.Presentation.Impl;
 using Unity;
 
 namespace Cozyupk.HelloShadowDI.Models.ComponentRoots.EntryPointWithoutShadowDI
@@ -11,22 +13,15 @@ namespace Cozyupk.HelloShadowDI.Models.ComponentRoots.EntryPointWithoutShadowDI
             // Unity コンテナの作成
             IUnityContainer container = new UnityContainer();
 
-            // IMessageModel に MessageModel をバインド
+            // 必要な実装を手動でバインド
             container.RegisterType<IMessageModel, MessageModel>();
+            container.RegisterType<IMessageWriterDispatcher, MessageWriterDispatcher>();
 
-            // DI によって IMessageModel のインスタンス取得
-            var model = container.Resolve<IMessageModel>();
+            // DI によって IMessageWriteDispatcher のインスタンス取得
+            var dispatcher = container.Resolve<IMessageWriterDispatcher>();
 
             // メッセージ表示
-            var writers = new Action<string>[]
-            {
-                s => Console.WriteLine(s),
-                s => System.Diagnostics.Debug.WriteLine(s)
-            };
-            foreach (var method in writers)
-            {
-                method($"Message: {model.Message}");
-            }
+            dispatcher.DispatchMessage();
         }
     }
 }

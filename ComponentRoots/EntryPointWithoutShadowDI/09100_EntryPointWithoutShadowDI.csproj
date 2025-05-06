@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Models\Impl\02200_Impl.csproj" />
+    <ProjectReference Include="..\..\Presentation\Impl\03200_Impl.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,4 +5,8 @@
 	<AssemblyName>Presentation.Contracts</AssemblyName>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Models\Contracts\02100_Contracts.csproj" />
+  </ItemGroup>
+
 </Project>
