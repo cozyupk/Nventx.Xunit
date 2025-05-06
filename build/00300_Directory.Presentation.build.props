@@ -1,9 +1,8 @@
-<Project>
-
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
+<Project>  
+ <!-- Define the property group for project settings -->  
+ <PropertyGroup>  
+   <TargetFramework>net8.0</TargetFramework> <!-- Target .NET 8.0 framework -->  
+   <ImplicitUsings>enable</ImplicitUsings> <!-- Enable implicit using directives -->  
+   <Nullable>enable</Nullable> <!-- Enable nullable reference types -->  
+ </PropertyGroup>  
 </Project>

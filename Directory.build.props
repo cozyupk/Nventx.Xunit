@@ -1,22 +1,22 @@
-<Project>
+<Project>  
+ <!-- Define a property to extract the first two characters of the project name -->  
+ <PropertyGroup>  
+   <ProjectPrefix Condition="'$(MSBuildProjectName)' != '' and '$(MSBuildProjectName.Length)' &gt;= '2'">$(MSBuildProjectName.Substring(0,2))</ProjectPrefix>  
+ </PropertyGroup>  
 
-	<PropertyGroup>
-		<ProjectPrefix Condition="'$(MSBuildProjectName)' != '' and '$(MSBuildProjectName.Length)' &gt;= '2'">$(MSBuildProjectName.Substring(0,2))</ProjectPrefix>
-	</PropertyGroup>
+ <!-- Import specific build property files based on the ProjectPrefix value -->  
+ <Import Project="build\00100_Directory.ComponentMeta.build.props"  
+         Condition=" '$(ProjectPrefix)' == '01' " />  
 
-	<Import Project="build\00100_Directory.ComponentMeta.build.props"
-		Condition=" '$(ProjectPrefix)' == '01' " />
+ <Import Project="build\00200_Directory.Models.build.props"  
+         Condition=" '$(ProjectPrefix)' == '02' " />  
 
-	<Import Project="build\00200_Directory.Models.build.props"
-		Condition=" '$(ProjectPrefix)' == '02' " />
+ <Import Project="build\00300_Directory.Presentation.build.props"  
+         Condition=" '$(ProjectPrefix)' == '03' " />  
 
-	<Import Project="build\00300_Directory.Presentation.build.props"
-		Condition=" '$(ProjectPrefix)' == '03' " />
+ <Import Project="build\00900_Directory.ComponentRoots.build.props"  
+         Condition=" '$(ProjectPrefix)' == '04' " />  
 
-	<Import Project="build\00900_Directory.ComponentRoots.build.props"
-		Condition=" '$(ProjectPrefix)' == '04' " />
-
-	<Import Project="build\00900_Directory.ComponentRoots.build.props"
-		Condition=" '$(ProjectPrefix)' == '09' " />
-
+ <Import Project="build\00900_Directory.ComponentRoots.build.props"  
+         Condition=" '$(ProjectPrefix)' == '09' " />  
 </Project>

@@ -1,44 +1,44 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <Target Name="GenerateShadowDependencies"
-          AfterTargets="Build">
+ <!-- Target to generate shadow dependencies -->
+ <Target Name="GenerateShadowDependencies" AfterTargets="Build">
 
-    <!-- 出力先 -->
-    <PropertyGroup>
-      <DependenciesDir>$(SolutionDir)_artifacts\$(Configuration)\deps\$(MSBuildProjectName)\</DependenciesDir>
-    </PropertyGroup>
+   <!-- Output directory -->
+   <PropertyGroup>
+     <DependenciesDir>$(SolutionDir)_artifacts\$(Configuration)\deps\$(MSBuildProjectName)\</DependenciesDir>
+   </PropertyGroup>
 
-    <!-- コピー対象ファイル -->
-    <ItemGroup>
-      <ShadowOutputFiles Include="$(OutputPath)*.dll" />
-      <ShadowOutputFiles Include="$(OutputPath)*.json" />
-      <ShadowOutputFiles Include="$(OutputPath)*.pdb" />
-    </ItemGroup>
+   <!-- Files to copy -->
+   <ItemGroup>
+     <ShadowOutputFiles Include="$(OutputPath)*.dll" />
+     <ShadowOutputFiles Include="$(OutputPath)*.json" />
+     <ShadowOutputFiles Include="$(OutputPath)*.pdb" />
+   </ItemGroup>
 
-    <!-- コピー -->
-    <Copy
-      SourceFiles="@(ShadowOutputFiles)"
-      DestinationFolder="$(DependenciesDir)"
-      SkipUnchangedFiles="true" />
-	  
-    <Message Text="📦 ShadowDI: Copied @(ShadowOutputFiles->'%(Filename)%(Extension)') to $(DependenciesDir)" Importance="High" />
-  </Target>
+   <!-- Copy operation -->
+   <Copy
+     SourceFiles="@(ShadowOutputFiles)"
+     DestinationFolder="$(DependenciesDir)"
+     SkipUnchangedFiles="true" />
+  
+   <Message Text="📦 ShadowDI: Copied @(ShadowOutputFiles->'%(Filename)%(Extension)') to $(DependenciesDir)" Importance="High" />
+ </Target>
 
-	
-  <Target Name="CleanCustomDependencies" BeforeTargets="Clean">
-	  
-	  <!-- Clean 時も念のため再定義（Build 時とは別スコープになることがある） -->
-	  <PropertyGroup Condition="$([System.String]::IsNullOrEmpty('$(SolutionDir)'))">
-		  <_SolutionDir>$(MSBuildProjectDirectory)\..\..\</_SolutionDir>
-		  <DependenciesDir>$(SolutionDir)_artifacts\$(Configuration)\deps\$(MSBuildProjectName)\</DependenciesDir>
-	  </PropertyGroup>
-	  <PropertyGroup Condition="!$([System.String]::IsNullOrEmpty('$(SolutionDir)'))">
-		  <_SolutionDir>$(SolutionDir)</_SolutionDir>
-		  <DependenciesDir>$(SolutionDir)_artifacts\$(Configuration)\deps\$(MSBuildProjectName)\</DependenciesDir>
-	  </PropertyGroup>
-	  
-	<Message Importance="high" Text="Deleting dependencies directory: $(DependenciesDir)" />
-	<RemoveDir Directories="$(DependenciesDir)" Condition="Exists('$(DependenciesDir)') and $(DependenciesDir.Contains('_artifacts'))" />
-  </Target>
+ <!-- Target to clean custom dependencies -->
+ <Target Name="CleanCustomDependencies" BeforeTargets="Clean">
+  
+   <!-- Redefine properties during Clean (scope may differ from Build) -->
+   <PropertyGroup Condition="$([System.String]::IsNullOrEmpty('$(SolutionDir)'))">
+     <_SolutionDir>$(MSBuildProjectDirectory)\..\..\</_SolutionDir>
+     <DependenciesDir>$(SolutionDir)_artifacts\$(Configuration)\deps\$(MSBuildProjectName)\</DependenciesDir>
+   </PropertyGroup>
+   <PropertyGroup Condition="!$([System.String]::IsNullOrEmpty('$(SolutionDir)'))">
+     <_SolutionDir>$(SolutionDir)</_SolutionDir>
+     <DependenciesDir>$(SolutionDir)_artifacts\$(Configuration)\deps\$(MSBuildProjectName)\</DependenciesDir>
+   </PropertyGroup>
+  
+   <Message Importance="High" Text="Deleting dependencies directory: $(DependenciesDir)" />
+   <RemoveDir Directories="$(DependenciesDir)" Condition="Exists('$(DependenciesDir)') and $(DependenciesDir.Contains('_artifacts'))" />
+ </Target>
 
 </Project>

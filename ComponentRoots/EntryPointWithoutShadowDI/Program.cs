@@ -8,19 +8,22 @@ namespace Cozyupk.HelloShadowDI.Models.ComponentRoots.EntryPointWithoutShadowDI
 {
     public class Program
     {
+        /// <summary>
+        /// Entry point of the application demonstrating manual dependency injection using Unity container.
+        /// </summary>
         static void Main(string[] _)
         {
-            // Unity コンテナの作成
+            // Create Unity container
             IUnityContainer container = new UnityContainer();
 
-            // 必要な実装を手動でバインド
+            // Manually bind required implementations
             container.RegisterType<IMessageModel, MessageModel>();
             container.RegisterType<IMessageWriterDispatcher, MessageWriterDispatcher>();
 
-            // DI によって IMessageWriteDispatcher のインスタンス取得
+            // Resolve IMessageWriterDispatcher instance via DI
             var dispatcher = container.Resolve<IMessageWriterDispatcher>();
 
-            // メッセージ表示
+            // Display message
             dispatcher.DispatchMessage();
         }
     }

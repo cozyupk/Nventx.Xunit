@@ -1,39 +1,42 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<Target Name="CopyShadowDependencies" DependsOnTargets="BuildShadowProjects" BeforeTargets="BeforeBuild">
-		<!-- コピー元のファイル群（ワイルドカードOK！） -->
-		<ItemGroup>
-			<ShadowArtifacts Include="$(SolutionDir)_artifacts\$(Configuration)\deps\**\*" />
-		</ItemGroup>
+  <!-- Target to copy shadow dependencies -->
+  <Target Name="CopyShadowDependencies" DependsOnTargets="BuildShadowProjects" BeforeTargets="BeforeBuild">
+    <!-- Source files to copy (wildcards allowed) -->
+    <ItemGroup>
+      <ShadowArtifacts Include="$(SolutionDir)_artifacts\$(Configuration)\deps\**\*" />
+    </ItemGroup>
 
-		<!-- コピー先（プロジェクトの出力フォルダ or 任意フォルダ） -->
-		<Copy SourceFiles="@(ShadowArtifacts)" DestinationFolder="$(OutputPath)deps\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <!-- Destination folder (project output folder or custom folder) -->
+    <Copy SourceFiles="@(ShadowArtifacts)" DestinationFolder="$(OutputPath)deps\%(RecursiveDir)" SkipUnchangedFiles="true" />
 
-		<Message Importance="high" Text="Shadow: copied @(ShadowArtifacts-&gt;Count()) files to dependencies folder." />
-	</Target>
-	
-	<Target Name="BuildShadowProjects" DependsOnTargets="ResolveShadowReferences">
-		<Message Importance="high" Text="Shadow: building shadow projects..." />
-		<MSBuild Projects="@(ProjectShadowReference->'%(ShadowPath)')" Targets="Build" BuildInParallel="true" ContinueOnError="false">
-		</MSBuild>
-	</Target>
+    <Message Importance="high" Text="Shadow: copied @(ShadowArtifacts-&gt;Count()) files to dependencies folder." />
+  </Target>
 
-	<Target Name="ResolveShadowReferences">
-		<ItemGroup>
-			<ProjectShadowReference Include="@(ProjectReference)">
-				<ShadowPath>$([System.String]::Copy('%(FullPath)')
-					        .Replace('\Contracts\', '\Impl\')
-					        .Replace('100_Contracts', '200_Impl'))</ShadowPath>
-			</ProjectShadowReference>
-		</ItemGroup>
+  <!-- Target to build shadow projects -->
+  <Target Name="BuildShadowProjects" DependsOnTargets="ResolveShadowReferences">
+    <Message Importance="high" Text="Shadow: building shadow projects..." />
+    <MSBuild Projects="@(ProjectShadowReference->'%(ShadowPath)')" Targets="Build" BuildInParallel="true" ContinueOnError="false" />
+  </Target>
 
-		<!-- 出力確認 -->
-		<Message Importance="high" Text="Shadow: %(ProjectShadowReference.ShadowPath)" />
-	</Target>
+  <!-- Target to resolve shadow references -->
+  <Target Name="ResolveShadowReferences">
+    <ItemGroup>
+      <ProjectShadowReference Include="@(ProjectReference)">
+        <ShadowPath>$([System.String]::Copy('%(FullPath)')
+                      .Replace('\Contracts\', '\Impl\')
+                      .Replace('100_Contracts', '200_Impl'))</ShadowPath>
+      </ProjectShadowReference>
+    </ItemGroup>
 
-	<Target Name="CleanShadowDependencies" AfterTargets="Clean">
-		<RemoveDir Directories="$(OutputPath)deps" />
-		<Message Importance="high" Text="Shadow: removed $(OutputPath)deps directory." />
-	</Target>
-	
+    <!-- Output verification -->
+    <Message Importance="high" Text="Shadow: %(ProjectShadowReference.ShadowPath)" />
+  </Target>
+
+  <!-- Target to clean shadow dependencies -->
+  <Target Name="CleanShadowDependencies" AfterTargets="Clean">
+    <RemoveDir Directories="$(OutputPath)deps" />
+    <Message Importance="high" Text="Shadow: removed $(OutputPath)deps directory." />
+  </Target>
+
 </Project>

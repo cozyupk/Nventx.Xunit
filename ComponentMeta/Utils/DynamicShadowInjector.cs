@@ -8,17 +8,38 @@ using Unity.Lifetime;
 
 namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils
 {
+    /// <summary>
+    /// A utility class for dynamically injecting dependencies into a Unity container
+    /// by scanning assemblies for types marked with the ShadowInjectableAttribute.
+    /// </summary>
     public class DynamicShadowInjector
     {
+        /// <summary>
+        /// Gets the default injection scope to be used when no specific scope is defined.
+        /// </summary>
         public InjectionScope DefaultScope { get; }
+
+        /// <summary>
+        /// Gets the root path of the assemblies to be scanned for dependency injection.
+        /// </summary>
         public string RootAssemblyPath { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicShadowInjector"/> class.
+        /// </summary>
+        /// <param name="rootAssemblyPath">The root directory path containing the assemblies to scan.</param>
+        /// <param name="defaultScope">The default injection scope to use if not specified in the attribute.</param>
         public DynamicShadowInjector(string rootAssemblyPath, InjectionScope defaultScope = InjectionScope.Transient)
         {
             DefaultScope = defaultScope;
             RootAssemblyPath = rootAssemblyPath;
         }
 
+        /// <summary>
+        /// Scans the specified assemblies for types marked with ShadowInjectableAttribute
+        /// and registers them into the provided Unity container.
+        /// </summary>
+        /// <param name="container">The Unity container to register the dependencies into.</param>
         public void Inject(IUnityContainer container)
         {
             var assemblies = Directory.GetFiles(RootAssemblyPath, "*.dll", SearchOption.AllDirectories)
@@ -40,7 +61,7 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils
             {
                 Type[] types;
 
-                if (assembly == null) continue; 
+                if (assembly == null) continue;
 
                 try
                 {
@@ -66,8 +87,8 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils
                             break;
 
                         case InjectionScope.Scoped:
-                            // NOTE: Unity の Scoped は HierarchicalLifetimeManager に依存。
-                            // 利用者が Container.CreateChildContainer() を使う必要あり。
+                            // NOTE: Unity's Scoped depends on HierarchicalLifetimeManager.
+                            // Users need to use Container.CreateChildContainer().
                             container.RegisterType(serviceType, type, new HierarchicalLifetimeManager());
                             break;
 
@@ -80,7 +101,7 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils
                             continue;
                     }
 
-                    Console.WriteLine($"[ShadowDI] Registered: {serviceType.Name} → {type.FullName} ({scope})");
+                    System.Diagnostics.Debug.WriteLine($"[ShadowDI] Registered: {serviceType.Name} → {type.FullName} ({scope})");
                 }
             }
         }

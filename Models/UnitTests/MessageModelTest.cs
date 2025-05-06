@@ -6,6 +6,9 @@ namespace UnitTests
 {
     public class MessageModelTests
     {
+        /// <summary>
+        /// Verifies that the MessageModel class implements the expected interface IMessageModel.
+        /// </summary>
         [Fact]
         public void Model_ShouldImplementExpectedInterfaces()
         {
@@ -16,6 +19,9 @@ namespace UnitTests
             Assert.True(model is IMessageModel);
         }
 
+        /// <summary>
+        /// Ensures that the Message property of the MessageModel class returns the expected text "Hello world.".
+        /// </summary>
         [Fact]
         public void Message_ShouldReturnExpectedText()
         {

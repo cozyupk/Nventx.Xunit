@@ -6,19 +6,24 @@ namespace Cozyupk.HelloShadowDI.Models.ComponentRoots.EntryPointWithShadowDI
 {
     public class Program
     {
+        /// <summary>
+        /// Entry point of the application.
+        /// Initializes the Unity container, performs dependency injection using Shadow DI,
+        /// resolves the IMessageWriterDispatcher instance, and dispatches a message.
+        /// </summary>
         static void Main(string[] _)
         {
-            // Unity コンテナの作成
+            // Create Unity container
             IUnityContainer container = new UnityContainer();
 
-            // Shadow DI でバインド
+            // Bind using Shadow DI
             var injector = new DynamicShadowInjector(AppContext.BaseDirectory);
             injector.Inject(container);
 
-            // DI によって IMessageWriteDispatcher のインスタンス取得
+            // Retrieve an instance of IMessageWriteDispatcher via DI
             var dispatcher = container.Resolve<IMessageWriterDispatcher>();
 
-            // メッセージ表示
+            // Display the message
             dispatcher.DispatchMessage();
         }
     }
