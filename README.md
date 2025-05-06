@@ -20,7 +20,7 @@ If you’re curious, feel free to explore or contribute, but don’t expect stab
 ## Getting Started
 
 This README will be updated soon with setup instructions and examples.  
-In the meantime, you can take a look at the [`EntryPointWithShadowDI`](./src/...) project for a rough idea of how things work.
+In the meantime, you can take a look at the [`EntryPointWithShadowDI`](./ComponentRoots/EntryPointWithShadowDI) project for a rough idea of how things work.
 
 ## License
 
