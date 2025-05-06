@@ -1,12 +1,11 @@
-﻿namespace Impl
-{
-    public class MessageModel /* : IMessageModel */
-    {
-        string Message => "Hello from the shadow world!!";
-    }
+﻿using Cozyupk.HelloShadowDI.ComponentMeta.Attributes;
+using Cozyupk.HelloShadowDI.Models.Contracts;
 
-    public static class AliveCheck
+namespace Cozyupk.HelloShadowDI.Models.Impl
+{
+    [ShadowInjectable(typeof(IMessageModel))]
+    public class MessageModel : IMessageModel
     {
-        public static string IAmAlive => "Yes";
+        public string Message => "Hello world.";
     }
 }

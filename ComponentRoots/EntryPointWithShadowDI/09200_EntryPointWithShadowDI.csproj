@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<RootNameSpace>Cozyupk.HelloShadowDI.Models.ComponentRoots.EntryPointWithShadowDI</RootNameSpace>
+	<AssemblyName>Models.ComponentRoots.EntryPointWithShadowDI</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<ProjectReference Include="..\..\ComponentMeta\Utils\01200_Utils.csproj" />
+	<ProjectReference Include="..\..\Models\Contracts\02100_Contracts.csproj" />
+	<ProjectReference Include="..\..\Presentation\Contracts\03100_Contracts.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\..\build\00020_EntryPoint.ShadowBuild.targets" />
+	
+</Project>
+

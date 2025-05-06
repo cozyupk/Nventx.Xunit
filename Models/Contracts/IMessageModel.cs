@@ -1,4 +1,4 @@
-﻿namespace Contracts
+﻿namespace Cozyupk.HelloShadowDI.Models.Contracts
 {
     public interface IMessageModel
     {

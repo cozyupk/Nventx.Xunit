@@ -3,41 +3,46 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01000_Models", "01000_Models", "{DDB4EF12-CC4E-5E88-E6FC-71A802F4DE97}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02000_Models", "02000_Models", "{DDB4EF12-CC4E-5E88-E6FC-71A802F4DE97}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02000_Presentation", "02000_Presentation", "{DE3AA6B0-23EA-475E-96D7-D9CE3A45C18D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03000_Presentation", "03000_Presentation", "{DE3AA6B0-23EA-475E-96D7-D9CE3A45C18D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "09000_ComponentRoots", "09000_ComponentRoots", "{EB4D1B7F-1BCB-45DD-B1C8-C86ADDB715A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01100_Contracts", "Models\Contracts\01100_Contracts.csproj", "{249E2B24-A803-4C27-86D1-AFEDF45A3CAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02100_Contracts", "Models\Contracts\02100_Contracts.csproj", "{249E2B24-A803-4C27-86D1-AFEDF45A3CAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01200_Impl", "Models\Impl\01200_Impl.csproj", "{62CCE5E3-7A5F-4D25-830F-6C2A79061A1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02200_Impl", "Models\Impl\02200_Impl.csproj", "{62CCE5E3-7A5F-4D25-830F-6C2A79061A1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02100_Contracts", "Presentation\Contracts\02100_Contracts.csproj", "{C513A2A4-771E-4688-9C29-4F51702E4334}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "03100_Contracts", "Presentation\Contracts\03100_Contracts.csproj", "{C513A2A4-771E-4688-9C29-4F51702E4334}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02200_Impl", "Presentation\Impl\02200_Impl.csproj", "{F7BFAA42-07BB-40AB-96CA-633F55839506}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "03200_Impl", "Presentation\Impl\03200_Impl.csproj", "{F7BFAA42-07BB-40AB-96CA-633F55839506}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "08000_JITInjection", "08000_JITInjection", "{F76F8CC6-AF9B-4638-9B60-573296EFA2DF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "08200_Impl", "JITInjection\Impl\08200_Impl.csproj", "{CEF6BD5F-4E57-478B-AF4A-75428C7D5C54}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "08100_Contracts", "JITInjection\Contracts\08100_Contracts.csproj", "{1E7195B3-F042-478D-8B6F-74B546E7FBC3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntryPoint", "ComponentRoots\EntryPoint\EntryPoint.csproj", "{9D822A3E-9F3F-409F-AAFB-E78E35A86C10}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00000_Tools", "00000_Tools", "{E314A221-FBCC-465C-AC64-F7FAAFE0204F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01000_ComponentMeta", "01000_ComponentMeta", "{E314A221-FBCC-465C-AC64-F7FAAFE0204F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ソリューション項目", "ソリューション項目", "{2022CB0F-8BAF-F49E-0C48-8EF4C96EC109}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.build.props = Directory.build.props
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_build", "_build", "{B3B18102-1000-4CB3-B4CF-CCD83A36C992}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00000_build", "00000_build", "{B3B18102-1000-4CB3-B4CF-CCD83A36C992}"
 	ProjectSection(SolutionItems) = preProject
-		_build\0100_Directory.01Models.build.props = _build\0100_Directory.01Models.build.props
-		_build\0020_Impl.GenerateDependencies.targets = _build\0020_Impl.GenerateDependencies.targets
-		_build\0010_Contracts.ShadowDI.targets = _build\0010_Contracts.ShadowDI.targets
+		build\00010_Impl.GenerateDependencies.targets = build\00010_Impl.GenerateDependencies.targets
+		build\00020_EntryPoint.ShadowBuild.targets = build\00020_EntryPoint.ShadowBuild.targets
+		build\00100_Directory.ComponentMeta.build.props = build\00100_Directory.ComponentMeta.build.props
+		build\00200_Directory.Models.build.props = build\00200_Directory.Models.build.props
+		build\00300_Directory.Presentation.build.props = build\00300_Directory.Presentation.build.props
+		build\00900_Directory.ComponentRoots.build.props = build\00900_Directory.ComponentRoots.build.props
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02700_UnitTests", "Models\UnitTests\02700_UnitTests.csproj", "{9E372966-3D8D-4F33-A74A-9F7822D60E9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "09100_EntryPointWithoutShadowDI", "ComponentRoots\EntryPointWithoutShadowDI\09100_EntryPointWithoutShadowDI.csproj", "{9DCA7C4B-3162-4080-B38F-4484DA441F53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "09200_EntryPointWithShadowDI", "ComponentRoots\EntryPointWithShadowDI\09200_EntryPointWithShadowDI.csproj", "{6DA3665B-4BCB-4C94-8050-5C0008E27E8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01100_Attributes", "ComponentMeta\Attributes\01100_Attributes.csproj", "{E7FF802E-3BBD-4F0A-AE71-62D69219FF5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01200_Utils", "ComponentMeta\Utils\01200_Utils.csproj", "{6B4768D6-0861-4B62-8320-BE52B9C70CD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,18 +66,26 @@ Global
 		{F7BFAA42-07BB-40AB-96CA-633F55839506}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7BFAA42-07BB-40AB-96CA-633F55839506}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7BFAA42-07BB-40AB-96CA-633F55839506}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CEF6BD5F-4E57-478B-AF4A-75428C7D5C54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CEF6BD5F-4E57-478B-AF4A-75428C7D5C54}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CEF6BD5F-4E57-478B-AF4A-75428C7D5C54}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CEF6BD5F-4E57-478B-AF4A-75428C7D5C54}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1E7195B3-F042-478D-8B6F-74B546E7FBC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1E7195B3-F042-478D-8B6F-74B546E7FBC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1E7195B3-F042-478D-8B6F-74B546E7FBC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1E7195B3-F042-478D-8B6F-74B546E7FBC3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9D822A3E-9F3F-409F-AAFB-E78E35A86C10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D822A3E-9F3F-409F-AAFB-E78E35A86C10}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D822A3E-9F3F-409F-AAFB-E78E35A86C10}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D822A3E-9F3F-409F-AAFB-E78E35A86C10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E372966-3D8D-4F33-A74A-9F7822D60E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E372966-3D8D-4F33-A74A-9F7822D60E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E372966-3D8D-4F33-A74A-9F7822D60E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E372966-3D8D-4F33-A74A-9F7822D60E9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DCA7C4B-3162-4080-B38F-4484DA441F53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DCA7C4B-3162-4080-B38F-4484DA441F53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DCA7C4B-3162-4080-B38F-4484DA441F53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DCA7C4B-3162-4080-B38F-4484DA441F53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DA3665B-4BCB-4C94-8050-5C0008E27E8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DA3665B-4BCB-4C94-8050-5C0008E27E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DA3665B-4BCB-4C94-8050-5C0008E27E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DA3665B-4BCB-4C94-8050-5C0008E27E8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7FF802E-3BBD-4F0A-AE71-62D69219FF5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7FF802E-3BBD-4F0A-AE71-62D69219FF5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7FF802E-3BBD-4F0A-AE71-62D69219FF5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7FF802E-3BBD-4F0A-AE71-62D69219FF5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B4768D6-0861-4B62-8320-BE52B9C70CD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B4768D6-0861-4B62-8320-BE52B9C70CD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B4768D6-0861-4B62-8320-BE52B9C70CD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B4768D6-0861-4B62-8320-BE52B9C70CD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,9 +95,11 @@ Global
 		{62CCE5E3-7A5F-4D25-830F-6C2A79061A1F} = {DDB4EF12-CC4E-5E88-E6FC-71A802F4DE97}
 		{C513A2A4-771E-4688-9C29-4F51702E4334} = {DE3AA6B0-23EA-475E-96D7-D9CE3A45C18D}
 		{F7BFAA42-07BB-40AB-96CA-633F55839506} = {DE3AA6B0-23EA-475E-96D7-D9CE3A45C18D}
-		{CEF6BD5F-4E57-478B-AF4A-75428C7D5C54} = {F76F8CC6-AF9B-4638-9B60-573296EFA2DF}
-		{1E7195B3-F042-478D-8B6F-74B546E7FBC3} = {F76F8CC6-AF9B-4638-9B60-573296EFA2DF}
-		{9D822A3E-9F3F-409F-AAFB-E78E35A86C10} = {EB4D1B7F-1BCB-45DD-B1C8-C86ADDB715A3}
+		{9E372966-3D8D-4F33-A74A-9F7822D60E9B} = {DDB4EF12-CC4E-5E88-E6FC-71A802F4DE97}
+		{9DCA7C4B-3162-4080-B38F-4484DA441F53} = {EB4D1B7F-1BCB-45DD-B1C8-C86ADDB715A3}
+		{6DA3665B-4BCB-4C94-8050-5C0008E27E8F} = {EB4D1B7F-1BCB-45DD-B1C8-C86ADDB715A3}
+		{E7FF802E-3BBD-4F0A-AE71-62D69219FF5B} = {E314A221-FBCC-465C-AC64-F7FAAFE0204F}
+		{6B4768D6-0861-4B62-8320-BE52B9C70CD3} = {E314A221-FBCC-465C-AC64-F7FAAFE0204F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F01E5B92-8BC7-4A77-A34E-79C72F78E4AE}

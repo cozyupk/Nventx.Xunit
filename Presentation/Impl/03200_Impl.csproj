@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<RootNameSpace>Cozyupk.HelloShadowDI.Presentation.Impl</RootNameSpace>
+	<AssemblyName>Presentation.Impl</AssemblyName>
+  </PropertyGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\Contracts\03100_Contracts.csproj" />
+  </ItemGroup>
+	
+  <Import Project="..\..\build\00010_Impl.GenerateDependencies.targets" />
+	
+</Project>

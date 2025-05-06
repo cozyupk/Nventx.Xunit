@@ -5,7 +5,7 @@
 
     <!-- 出力先 -->
     <PropertyGroup>
-      <DependenciesDir>$(SolutionDir)_artifacts\dependencies\$(MSBuildProjectName)\</DependenciesDir>
+      <DependenciesDir>$(SolutionDir)_artifacts\$(Configuration)\deps\$(MSBuildProjectName)\</DependenciesDir>
     </PropertyGroup>
 
     <!-- コピー対象ファイル -->
@@ -24,28 +24,20 @@
     <Message Text="📦 ShadowDI: Copied @(ShadowOutputFiles->'%(Filename)%(Extension)') to $(DependenciesDir)" Importance="High" />
   </Target>
 
-	<Target Name="Test"
-			BeforeTargets="Clean"
-			Inputs="$(TargetPath)"
-			Outputs="$(MSBuildProjectDirectory)\..\rebuild.marker">
-		<Message Importance="high" Text="Hello clean!"></Message>
-		<CallTarget Targets="CleanCustomDependencies" />
-	</Target>
 	
-  <Target Name="CleanCustomDependencies">
+  <Target Name="CleanCustomDependencies" BeforeTargets="Clean">
 	  
 	  <!-- Clean 時も念のため再定義（Build 時とは別スコープになることがある） -->
 	  <PropertyGroup Condition="$([System.String]::IsNullOrEmpty('$(SolutionDir)'))">
 		  <_SolutionDir>$(MSBuildProjectDirectory)\..\..\</_SolutionDir>
-		  <DependenciesDir>$(SolutionDir)_artifacts\dependencies\$(MSBuildProjectName)\</DependenciesDir>
+		  <DependenciesDir>$(SolutionDir)_artifacts\$(Configuration)\deps\$(MSBuildProjectName)\</DependenciesDir>
 	  </PropertyGroup>
 	  <PropertyGroup Condition="!$([System.String]::IsNullOrEmpty('$(SolutionDir)'))">
 		  <_SolutionDir>$(SolutionDir)</_SolutionDir>
-		  <DependenciesDir>$(SolutionDir)_artifacts\dependencies\$(MSBuildProjectName)\</DependenciesDir>
+		  <DependenciesDir>$(SolutionDir)_artifacts\$(Configuration)\deps\$(MSBuildProjectName)\</DependenciesDir>
 	  </PropertyGroup>
 	  
 	<Message Importance="high" Text="Deleting dependencies directory: $(DependenciesDir)" />
-	<Message Importance="high" Text="rebuilding: $(IsRebuilding)" />
 	<RemoveDir Directories="$(DependenciesDir)" Condition="Exists('$(DependenciesDir)') and $(DependenciesDir.Contains('_artifacts'))" />
   </Target>
 

@@ -1,26 +1,22 @@
 <Project>
 
+	<PropertyGroup>
+		<ProjectPrefix Condition="'$(MSBuildProjectName)' != '' and '$(MSBuildProjectName.Length)' &gt;= '2'">$(MSBuildProjectName.Substring(0,2))</ProjectPrefix>
+	</PropertyGroup>
 
-	<Target Name="BeforeRebuild">
-		<PropertyGroup>
-			<IsRebuilding>true</IsRebuilding>
-		</PropertyGroup>
-		<Message Importance="high" Text="rebuild detected." />
-	</Target>
-	
-  <Import Project="_build\0100_Directory.01Models.build.props"
-          Condition=" '$(MSBuildProjectName)' != ''
-                     and '$(MSBuildProjectName.Length)' &gt;= '2' 
-                     and '$(MSBuildProjectName.Substring(0,2))' == '01' " />
+	<Import Project="build\00100_Directory.ComponentMeta.build.props"
+		Condition=" '$(ProjectPrefix)' == '01' " />
 
-  <Import Project="_build\0200_Directory.02Presentation.build.props"
-          Condition=" '$(MSBuildProjectName)' != ''
-                     and '$(MSBuildProjectName.Length)' &gt;= '2' 
-                     and '$(MSBuildProjectName.Substring(0,2))' == '02' " />
+	<Import Project="build\00200_Directory.Models.build.props"
+		Condition=" '$(ProjectPrefix)' == '02' " />
 
-  <Import Project="_build\0900_Directory.09ComponentRoots.build.props"
-          Condition=" '$(MSBuildProjectName)' != ''
-                      and '$(MSBuildProjectName.Length)' &gt;= '2' 
-                      and '$(MSBuildProjectName.Substring(0,2))' == '09' " />
-	
+	<Import Project="build\00300_Directory.Presentation.build.props"
+		Condition=" '$(ProjectPrefix)' == '03' " />
+
+	<Import Project="build\00900_Directory.ComponentRoots.build.props"
+		Condition=" '$(ProjectPrefix)' == '04' " />
+
+	<Import Project="build\00900_Directory.ComponentRoots.build.props"
+		Condition=" '$(ProjectPrefix)' == '09' " />
+
 </Project>

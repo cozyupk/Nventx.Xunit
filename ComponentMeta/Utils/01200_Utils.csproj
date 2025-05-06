@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<RootNameSpace>Cozyupk.HelloShadowDI.ComponentMeta.Utils</RootNameSpace>
+	<AssemblyName>ComponentMeta.Utils</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Unity.Container" Version="5.11.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Attributes\01100_Attributes.csproj" />
+  </ItemGroup>
+
+</Project>
