@@ -66,6 +66,23 @@ since consumers cannot accidentally access or misuse them.
 
 This structure may also contribute positively to code metrics in large-scale projects.
 
+## Environment
+
+- Verified with: Visual Studio 2022 (17.9.6)
+- .NET SDK 8.0.204
+
+## Dependencies
+
+This project uses the following NuGet packages:
+
+- [Unity.Container](https://www.nuget.org/packages/Unity.Container/) (MIT License)
+- [xunit](https://www.nuget.org/packages/xunit/) (Apache License 2.0) — Used for unit tests
+
+## Getting Started
+Open `HelloShadowDI.sln` in Visual Studio.  
+Run both `09100_EntryPointWithoutShadowDI` and `09200_EntryPointWithShadowDI` in Debug mode.  
+If you see "Hello world!" in the debug output window for each, the setup was successful.
+
 ## TODO / Roadmap
 
 - [ ] Attribute on interfaces: e.g., "this interface must have a ShadowInjectable implementation"
