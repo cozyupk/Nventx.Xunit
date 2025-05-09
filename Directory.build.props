@@ -1,4 +1,12 @@
-<Project>  
+<Project>
+
+ <!-- Default Settings for all projects -->
+  <ItemGroup>
+	<AssemblyAttribute Include="Cozyupk.HelloShadowDI.ComponentMeta.Attributes.DebuggableApplicationParametersAttribute">
+	  <IsDebugOutputTarget>true</IsDebugOutputTarget>
+    </AssemblyAttribute>
+  </ItemGroup>
+	
  <!-- Define a property to extract the first two characters of the project name -->  
  <PropertyGroup>  
    <ProjectPrefix Condition="'$(MSBuildProjectName)' != '' and '$(MSBuildProjectName.Length)' &gt;= '2'">$(MSBuildProjectName.Substring(0,2))</ProjectPrefix>  
@@ -15,8 +23,6 @@
          Condition=" '$(ProjectPrefix)' == '03' " />  
 
  <Import Project="build\00900_Directory.ComponentRoots.build.props"  
-         Condition=" '$(ProjectPrefix)' == '04' " />  
-
- <Import Project="build\00900_Directory.ComponentRoots.build.props"  
          Condition=" '$(ProjectPrefix)' == '09' " />  
+
 </Project>

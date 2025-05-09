@@ -7,6 +7,7 @@
 	
   <ItemGroup>
     <ProjectReference Include="..\..\ComponentMeta\Attributes\01100_Attributes.csproj" />
+    <ProjectReference Include="..\..\Models\Contracts\02100_Contracts.csproj" />
     <ProjectReference Include="..\Contracts\03100_Contracts.csproj" />
   </ItemGroup>
 	

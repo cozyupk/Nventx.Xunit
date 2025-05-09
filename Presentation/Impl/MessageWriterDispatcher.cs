@@ -9,10 +9,15 @@ namespace Cozyupk.HelloShadowDI.Presentation.Impl
     /// using a collection of writers. Writers can output messages to various
     /// destinations such as the console or debug output.
     /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the MessageWriterDispatcher class
+    /// with the specified message model.
+    /// </remarks>
+    /// <param name="messageModel">The message model containing the message to dispatch.</param>
     [ShadowInjectable(typeof(IMessageWriterDispatcher))]
-    public class MessageWriterDispatcher : IMessageWriterDispatcher
+    public class MessageWriterDispatcher(IMessageModel messageModel) : IMessageWriterDispatcher
     {
-        private readonly IMessageModel _messageModel;
+        private readonly IMessageModel _messageModel = messageModel;
 
         /// <summary>
         /// A collection of actions that define how messages are written.
@@ -22,16 +27,6 @@ namespace Cozyupk.HelloShadowDI.Presentation.Impl
             Console.WriteLine,
             s => System.Diagnostics.Debug.WriteLine(s)
         ];
-
-        /// <summary>
-        /// Initializes a new instance of the MessageWriterDispatcher class
-        /// with the specified message model.
-        /// </summary>
-        /// <param name="messageModel">The message model containing the message to dispatch.</param>
-        public MessageWriterDispatcher(IMessageModel messageModel)
-        {
-            _messageModel = messageModel;
-        }
 
         /// <summary>
         /// Dispatches the message from the message model to all configured writers.

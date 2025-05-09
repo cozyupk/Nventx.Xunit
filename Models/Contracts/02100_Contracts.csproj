@@ -5,5 +5,9 @@
 	<AssemblyName>Models.Contracts</AssemblyName>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\ComponentMeta\Attributes\01100_Attributes.csproj" />
+  </ItemGroup>
+
 </Project>
 
