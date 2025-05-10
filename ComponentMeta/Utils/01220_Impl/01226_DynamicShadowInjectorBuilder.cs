@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Cozyupk.HelloShadowDI.ComponentMeta.Attributes;
 using Cozyupk.HelloShadowDI.ComponentMeta.Utils.Contracts;
 
@@ -12,7 +13,7 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Impl
         /// <summary>
         /// A thread-safe collection of custom diagnostic observers to be added to the injector.
         /// </summary>
-        private ConcurrentBag<IDiagnosticObserver> DiagnosticObservers { get; set; } = new ConcurrentBag<IDiagnosticObserver>();
+        private ConcurrentBag<IShadowDiagnosticObserver> DiagnosticObservers { get; set; } = new ConcurrentBag<IShadowDiagnosticObserver>();
 
         /// <summary>
         /// A lock object to ensure thread-safe operations during the build process.
@@ -45,7 +46,7 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Impl
         /// </summary>
         /// <param name="observer">The diagnostic observer to add.</param>
         /// <returns>The current instance of <see cref="DynamicShadowInjectorBuilder"/> for method chaining.</returns>
-        public DynamicShadowInjectorBuilder AddDiagnosticObserver(IDiagnosticObserver observer)
+        public DynamicShadowInjectorBuilder AddDiagnosticObserver(IShadowDiagnosticObserver observer)
         {
             lock (LockToBuild)
             {
@@ -65,16 +66,23 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Impl
         {
             lock (LockToBuild)
             {
-                // Create a new instance of DynamicShadowInjector with the specified parameters.
-                var injector = new DynamicShadowInjector(rootAssemblyPath, defaultScope);
+                // Create a list to hold the diagnostic observers.
+                var diagnosticObservers = new List<IShadowDiagnosticObserver>();
 
                 // Add the default diagnostic observer if enabled.
                 if (UseDefaultObserver)
-                    injector.AddDiagnosticObserver(new DefaultDiagnosticObserver());
+                    diagnosticObservers.Add(new DefaultDiagnosticObserver());
 
                 // Add all custom diagnostic observers.
                 foreach (var obs in DiagnosticObservers)
-                    injector.AddDiagnosticObserver(obs);
+                    diagnosticObservers.Add(obs);
+
+                // Create DiagnosticNotifierProvider instance to handle diagnostic notifications.
+                var diagnosticNotifierProvider
+                    = new DiagnosticNotifierProvider(diagnosticObservers);
+
+                // Create a new instance of DynamicShadowInjector with the specified parameters.
+                var injector = new DynamicShadowInjector(rootAssemblyPath, diagnosticNotifierProvider, defaultScope);
 
                 // Notify that the build process is completed.
                 injector.OnBuildCompleted();

@@ -5,7 +5,7 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Contracts
     /// <summary>
     /// Represents the severity level of a diagnostic message.
     /// </summary>
-    public enum DiagnosticLevel
+    public enum ShadowDiagnosticLevel
     {
         /// <summary>
         /// Extremely detailed logs for tracking internal structural flow.
@@ -53,7 +53,7 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Contracts
     /// Represents a diagnostic message containing details about an event, 
     /// including its content, severity level, and the time it occurred.
     /// </summary>
-    public interface IDiagnosticMessage
+    public interface IShadowDiagnosticMessage
     {
         /// <summary>
         /// Gets the content of the diagnostic message.
@@ -63,7 +63,7 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Contracts
         /// <summary>
         /// Gets the severity level of the diagnostic message.
         /// </summary>
-        DiagnosticLevel Level { get; }
+        ShadowDiagnosticLevel Level { get; }
 
         /// <summary>
         /// Gets the timestamp when the diagnostic message was created.

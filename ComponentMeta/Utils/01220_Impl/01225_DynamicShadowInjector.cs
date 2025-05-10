@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,19 +17,26 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Impl
     public class DynamicShadowInjector
     {
         /// <summary>
-        /// Gets the default injection scope to be used when no specific scope is defined.
-        /// </summary>
-        public InjectionScope DefaultScope { get; }
-
-        /// <summary>
         /// Gets the root path of the assemblies to be scanned for dependency injection.
         /// </summary>
         public string RootAssemblyPath { get; }
 
         /// <summary>
-        /// A collection of diagnostic observers that can process diagnostic messages.
+        /// Provides a diagnostic notifier for emitting diagnostic messages.
         /// </summary>
-        private ConcurrentBag<IDiagnosticObserver> DiagnosticObservers { get; } = new ConcurrentBag<IDiagnosticObserver>();
+        IShadowDiagnosticNotifierProvider DiagnosticNotifierProvider { get; }
+
+        /// <summary>
+        /// Provides a diagnostic notifier for emitting diagnostic messages.
+        /// This is used to notify observers about diagnostic events or messages
+        /// during the dependency injection process.
+        /// </summary>
+        IShadowDiagnosticNotifier DiagnosticNotifier { get; }
+
+        /// <summary>
+        /// Gets the default injection scope to be used when no specific scope is defined.
+        /// </summary>
+        public InjectionScope DefaultScope { get; }
 
         /// <summary>
         /// Analyzes assembly dependencies and generates a dependency graph.
@@ -52,18 +57,25 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Impl
         private static ConcurrentDictionary<string, Assembly?> AssemblyCache { get; } = new ConcurrentDictionary<string, Assembly?>();
 
         /// <summary>
-        /// <summary>
         /// Initializes a new instance of the <see cref="DynamicShadowInjector"/> class.
         /// The constructor is marked as <c>protected internal</c> to restrict instantiation
         /// to the same assembly or derived classes, enforcing controlled construction via the corresponding builder.
         /// </summary>
         /// <param name="rootAssemblyPath">The root directory path containing the assemblies to scan.</param>
+        /// <param name="diagnosticNotifierProvider">DiagnosticNotifier to be used for notifying diagnostics messages.</param>
         /// <param name="defaultScope">The default injection scope to use if not specified in the attribute.</param>
-        protected internal DynamicShadowInjector(string rootAssemblyPath, InjectionScope defaultScope = InjectionScope.Transient)
-        {
-            // Set the default scope and root assembly path
-            DefaultScope = defaultScope;
+        protected internal DynamicShadowInjector(
+            string rootAssemblyPath,
+            IShadowDiagnosticNotifierProvider diagnosticNotifierProvider,
+            InjectionScope defaultScope = InjectionScope.Transient
+        ) {
+            // Set the properties for the instance.
             RootAssemblyPath = rootAssemblyPath;
+            DiagnosticNotifierProvider = diagnosticNotifierProvider;
+            DefaultScope = defaultScope;
+
+            // Create a new instance of the DiagnosticNotifier using the provided diagnostic notifier provider.
+            DiagnosticNotifier = diagnosticNotifierProvider.CreateDiagnosticNotifier("ShadowDI");
         }
 
         /// <summary>
@@ -72,116 +84,19 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Impl
         /// avoiding unnecessary string construction when no observers are registered.
         /// </summary>
         /// <param name="messageFactory">A delegate that appends message content to a list of strings.</param>
-        /// <param name="level">The severity level of the diagnostic message. Defaults to <see cref="DiagnosticLevel.Info"/>.</param>
+        /// <param name="level">The severity level of the diagnostic message. Defaults to <see cref="ShadowDiagnosticLevel.Info"/>.</param>
         protected internal virtual void OnBuildCompleted()
         {
             // This method can be overridden in derived classes to perform additional actions after the build is completed.
 
             // Notify observers about the successful construction of the DynamicShadowInjector.
-            NotifyDiagnosticMessage($"[ShadowDI] DynamicShadowInjector successfully built.", DiagnosticLevel.Info);
+            DiagnosticNotifier.Notify($"DynamicShadowInjector successfully built.", ShadowDiagnosticLevel.Info);
 
             // Notify observers with a dependency graph if any observers are present.
-            NotifyIfObserved(
+            DiagnosticNotifier.NotifyIfObserved(
                 () => DependencyAnalyzer.GetDependencyGraph(),
-                DiagnosticLevel.Trace
+                ShadowDiagnosticLevel.Trace
             );
-        }
-
-        /// <summary>
-        /// Adds a diagnostic observer to the list of observers that will receive diagnostic messages.
-        /// </summary>
-        /// <param name="observer">The diagnostic observer to add.</param>
-        public void AddDiagnosticObserver(IDiagnosticObserver observer)
-        {
-            DiagnosticObservers.Add(observer);
-        }
-
-        /// <summary>
-        /// Sends a diagnostic message to all registered diagnostic observers.
-        /// </summary>
-        /// <param name="message">The diagnostic message to send.</param>
-        /// <param name="level">The severity level of the diagnostic message. Defaults to Info.</param>
-        protected void NotifyDiagnosticMessage(string message, DiagnosticLevel level = DiagnosticLevel.Info)
-        {
-            // Create a new diagnostic message with the provided content and severity level.
-            var diagnostic = new DiagnosticMessage(message, level);
-
-            // Initialize a list to collect exceptions that occur during observer notification.
-            List<Exception> failures = new List<Exception>();
-
-            // Iterate through all registered diagnostic observers.
-            foreach (var observer in DiagnosticObservers)
-            {
-                try
-                {
-                    // Notify the observer with the diagnostic message.
-                    observer.OnDiagnostic(diagnostic);
-                }
-                catch (Exception ex)
-                {
-                    // If an exception occurs, add it to the failures list and log the error.
-                    failures.Add(ex);
-                    Debug.WriteLine($"[ShadowDI] Observer failed: {ex.GetType().Name} - {ex.Message}");
-                }
-            }
-
-            // If any observers failed, throw an aggregate exception containing all failures.
-            if (failures.Count > 0)
-            {
-                throw new AggregateException("[ShadowDI] One or more diagnostic observers failed.", failures);
-            }
-        }
-
-        /// <summary>
-        /// Conditionally sends a diagnostic message to all registered observers, 
-        /// only if at least one observer is present. The message is generated 
-        /// by invoking a factory function that appends lines to a string list.
-        /// </summary>
-        /// <param name="messageFactory">A delegate that populates the message content using a list of strings.</param>
-        /// <param name="level">The severity level of the diagnostic message. Defaults to <see cref="DiagnosticLevel.Info"/>.</param>
-        protected void NotifyIfObserved(Func<List<string>> messageFactory, DiagnosticLevel level = DiagnosticLevel.Info)
-        {
-            // Check if there are no diagnostic observers registered; if none, exit early.
-            if (DiagnosticObservers.Count == 0)
-                return;
-
-            // Initialize a list to collect exceptions that occur during observer notification.
-            List<Exception> failures = new List<Exception>();
-
-            // Generate diagnostic messages by invoking the provided message factory delegate.
-            var lines = messageFactory();
-            var messages = new List<DiagnosticMessage>(lines.Count);
-            foreach (var line in lines)
-            {
-                // Create a diagnostic message for each line and add it to the list.
-                messages.Add(new DiagnosticMessage(line, level));
-            }
-
-            // Iterate through all registered diagnostic observers.
-            foreach (var observer in DiagnosticObservers)
-            {
-                // For each observer, send all generated diagnostic messages.
-                foreach (var message in messages)
-                {
-                    try
-                    {
-                        // Notify the observer with the diagnostic message.
-                        observer.OnDiagnostic(message);
-                    }
-                    catch (Exception ex)
-                    {
-                        // If an exception occurs, add it to the failures list and log the error.
-                        failures.Add(ex);
-                        Debug.WriteLine($"[ShadowDI] Observer failed: {ex.GetType().Name} - {ex.Message}");
-                    }
-                }
-            }
-
-            // If any observers failed, throw an aggregate exception containing all failures.
-            if (failures.Count > 0)
-            {
-                throw new AggregateException("[ShadowDI] One or more diagnostic observers failed.", failures);
-            }
         }
 
         /// <summary>
@@ -206,9 +121,9 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Impl
                 catch (Exception ex)
                 {
                     // Notify diagnostic observers about the failure to load the assembly.
-                    NotifyDiagnosticMessage(
+                    DiagnosticNotifier.Notify(
                         $"[ShadowDI] Failed to load assembly: {p} - {ex.Message}",
-                        DiagnosticLevel.Warning
+                        ShadowDiagnosticLevel.Warning
                     );
                     // Return null to indicate the failure.
                     return null;
@@ -267,6 +182,9 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Impl
         /// <param name="container">The Unity container to register the dependencies into.</param>
         public void Inject(IUnityContainer container)
         {
+            // Inject DiagnosticNotifierProvider into the container.
+            container.RegisterInstance<IShadowDiagnosticNotifierProvider>(DiagnosticNotifierProvider);
+
             // Retrieve all .dll files from the specified root assembly path, including subdirectories.
             var assemblies = Directory.GetFiles(RootAssemblyPath, "*.dll", SearchOption.AllDirectories)
                                      .Select(path =>
@@ -327,12 +245,12 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Impl
 
                         default:
                             // Log a warning if the scope is unsupported.
-                            NotifyDiagnosticMessage($"[ShadowDI] Unsupported scope: {scope} in {type.FullName}", DiagnosticLevel.Warning);
+                            DiagnosticNotifier.Notify($"Unsupported scope: {scope} in {type.FullName}", ShadowDiagnosticLevel.Warning);
                             continue;
                     }
 
                     // Notify observers about the successful registration.
-                    NotifyDiagnosticMessage($"[ShadowDI] Registered: {serviceType.Name} → {type.FullName} ({scope})", DiagnosticLevel.Info);
+                    DiagnosticNotifier.Notify($"Registered: {serviceType.Name} → {type.FullName} ({scope})", ShadowDiagnosticLevel.Info);
                     isRegistered = true;
                 }
 
@@ -343,9 +261,9 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Impl
                 }
 
                 // Notify observers with a dependency graph if any observers are present.
-                NotifyIfObserved(
+                DiagnosticNotifier.NotifyIfObserved(
                     () => DependencyAnalyzer.GetDependencyGraph(assembly.FullName),
-                    DiagnosticLevel.Trace
+                    ShadowDiagnosticLevel.Trace
                 );
             }
         }

@@ -164,7 +164,7 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Impl
             // Retrieve assembly information for display
             var infoText = GetAssemblyInfoText(asmName);
 
-            result.Add($"{prefix}{branch} {infoText}");
+            result.Add(isRoot ? $"{infoText}" : $"{prefix}{branch} {infoText}");
 
             if (!graph.TryGetValue(asmName, out var refs))
             {

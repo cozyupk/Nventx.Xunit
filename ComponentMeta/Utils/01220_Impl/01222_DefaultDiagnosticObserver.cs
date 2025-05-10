@@ -6,13 +6,13 @@ using Cozyupk.HelloShadowDI.ComponentMeta.Utils.Contracts;
 /// This implementation formats messages with a timestamp and severity level prefix.
 /// It is only active in Debug builds; no output will be generated in Release builds.
 /// </summary>
-public class DefaultDiagnosticObserver : IDiagnosticObserver
+public class DefaultDiagnosticObserver : IShadowDiagnosticObserver
 {
     /// <summary>
     /// Handles a diagnostic message by formatting it with a timestamp and severity level,
     /// and outputs it to the debug output. This is only active in Debug builds.
     /// </summary>
-    public void OnDiagnostic(IDiagnosticMessage message)
+    public void OnDiagnostic(IShadowDiagnosticMessage message)
     {
         // Outputs the diagnostic message to the debug output.
         // This is only active in Debug builds; no output will be generated in Release builds.
@@ -26,17 +26,17 @@ public class DefaultDiagnosticObserver : IDiagnosticObserver
     /// </summary>
     /// <param name="level">The severity level of the diagnostic message.</param>
     /// <returns>A string prefix representing the severity level.</returns>
-    private static string GetPrefix(DiagnosticLevel level)
+    private static string GetPrefix(ShadowDiagnosticLevel level)
     {
         return level switch
         {
-            DiagnosticLevel.Trace => "[TRACE]  ",
-            DiagnosticLevel.Debug => "[DEBUG]  ",
-            DiagnosticLevel.Info => "[INFO]   ",
-            DiagnosticLevel.Notice => "[NOTICE] ",
-            DiagnosticLevel.Warning => "[WARN]   ",
-            DiagnosticLevel.Error => "[ERROR]  ",
-            DiagnosticLevel.Critical => "[FATAL]  ",
+            ShadowDiagnosticLevel.Trace => "[TRACE]  ",
+            ShadowDiagnosticLevel.Debug => "[DEBUG]  ",
+            ShadowDiagnosticLevel.Info => "[INFO]   ",
+            ShadowDiagnosticLevel.Notice => "[NOTICE] ",
+            ShadowDiagnosticLevel.Warning => "[WARN]   ",
+            ShadowDiagnosticLevel.Error => "[ERROR]  ",
+            ShadowDiagnosticLevel.Critical => "[FATAL]  ",
             _ => "[DIAG]   "
         };
     }
