@@ -34,7 +34,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00000_build", "00000_build"
 		build\00200_Directory.Models.build.props = build\00200_Directory.Models.build.props
 		build\00300_Directory.Presentation.build.props = build\00300_Directory.Presentation.build.props
 		build\00900_Directory.ComponentRoots.build.props = build\00900_Directory.ComponentRoots.build.props
-		TextFile1.txt = TextFile1.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02700_UnitTests", "Models\UnitTests\02700_UnitTests.csproj", "{9E372966-3D8D-4F33-A74A-9F7822D60E9B}"
