@@ -26,7 +26,7 @@ This library provides a lightweight way to simulate header files (C/C++) or SPI 
 The main idea is: the entry point of the application **should only know the interfaces (contracts)**,  
 and **not reference or know about the implementations at all** — not even via project references.
 
-![Architecture Overview](./Documents/README/Images/099c6a8b-27f0-40a2-b353-00b2d2519b79.png)
+![Architecture Overview](./src/Documents/README/Images/099c6a8b-27f0-40a2-b353-00b2d2519b79.png)
 
 - [Left: Traditional DI Container usage (with project reference)](https://github.com/cozyupk/HelloShadowDI/blob/af987b2125c71dc4be08083cf2c1529c1fc31a47/ComponentRoots/EntryPointWithoutShadowDI/Program.cs)
 - [Right: Shadow DI usage (no direct container registration or project references)](https://github.com/cozyupk/HelloShadowDI/blob/af987b2125c71dc4be08083cf2c1529c1fc31a47/ComponentRoots/EntryPointWithShadowDI/Program.cs)
@@ -45,21 +45,21 @@ And MSBuild `.targets` files help collect and register these automatically:
 
 The project folder names (e.g., `02200_`) represent the Clean Architecture layer ordering — just a personal hobby :)
 
-![cleanway](./Documents/README/Images/cleanway.png)
+![cleanway](./src/Documents/README/Images/cleanway.png)
 
 ## Output Comparison
 
 ### Without Shadow DI
 The entry point directly references implementation projects:
 
-![Without ShadowDI](./Documents/README/Images/12fb1b25-9574-415b-8378-e6cc23b559ea.png)
+![Without ShadowDI](./src/Documents/README/Images/12fb1b25-9574-415b-8378-e6cc23b559ea.png)
 
 This means: the entry project can **access all public members** of implementation modules, so the implementer must be very cautious about exposing things.
 
 ### With Shadow DI
 The entry point **does not reference the implementation projects** at all:
 
-![With ShadowDI](./Documents/README/Images/5759e2c8-92a4-427c-9a3a-2f8b3067a013.png)
+![With ShadowDI](./src/Documents/README/Images/5759e2c8-92a4-427c-9a3a-2f8b3067a013.png)
 
 This allows implementers to feel safe making certain members `public` — in other words, to create **Open extension points** (in the spirit of the Open-Closed Principle),  
 since consumers cannot accidentally access or misuse them.
