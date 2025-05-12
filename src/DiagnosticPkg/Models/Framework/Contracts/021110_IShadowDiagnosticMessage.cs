@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Contracts
+namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts
 {
     /// <summary>
     /// Represents the severity level of a diagnostic message.
@@ -50,15 +50,22 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Contracts
     }
 
     /// <summary>
-    /// Represents a diagnostic message containing details about an event, 
-    /// including its content, severity level, and the time it occurred.
+    /// Provides details about a diagnostic event, including its content, severity level, 
+    /// category, sender, and the time it occurred.
     /// </summary>
     public interface IShadowDiagnosticMessage
     {
         /// <summary>
-        /// Gets the content of the diagnostic message.
+        /// Gets the sender of the diagnostic message.
+        /// This can be any object that is the source of the message.
         /// </summary>
-        string Message { get; }
+        object? Sender { get; }
+
+        /// <summary>
+        /// Gets the category of the diagnostic message.
+        /// Categories are used to group or classify messages for easier filtering or analysis.
+        /// </summary>
+        string Category { get; }
 
         /// <summary>
         /// Gets the severity level of the diagnostic message.
@@ -66,9 +73,13 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Contracts
         ShadowDiagnosticLevel Level { get; }
 
         /// <summary>
+        /// Gets the content of the diagnostic message.
+        /// </summary>
+        string Message { get; }
+
+        /// <summary>
         /// Gets the timestamp when the diagnostic message was created.
         /// </summary>
         DateTime Timestamp { get; }
     }
-
 }

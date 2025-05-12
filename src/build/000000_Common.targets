@@ -1,0 +1,28 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+
+	<Target BeforeTargets="Build" Name="SetProjectPrefix">
+		<ItemGroup>
+			<PropsNotFoundFiltered Include="@(PropsNotFound)"
+                          Condition="'%(Identity)' != ''" />
+		</ItemGroup>
+		<PropertyGroup>
+			<PropsImportedCount>@(PropsImported->Count())</PropsImportedCount>
+			<PropsNotFoundCount>@(PropsNotFoundFiltered->Count())</PropsNotFoundCount>
+		</PropertyGroup>
+		<Message
+		    Text="⚠️ TargetFramework was NOT explicitly set. A default 'net8.0' was applied for diagnostic purposes (see props import diagnostics)."
+			Importance="high" Condition="'$(NeedToWarnNoTFM)' == 'true'" />
+		<Message Text="--- Summary ---" Importance="high" />
+		<Message Text="PkgNo/LayerNo/ComponentGroupNo: $(PkgNumber)/$(LayerNumber)/$(ComponentGroupNumber)" Importance="high" />
+		<Message Text="IsUnitTest: $(IsUnitTest)" Importance="high" />
+		<Message Text="TargetFramework: $(TargetFramework)" Importance="high" />
+		<Message Text="RootNameSpace: $(RootNameSpace)" Importance="high" />
+		<Message Text="AssemblyName: $(AssemblyName)" Importance="high" />
+	    <Message Text="--- PropsImported: $(PropsImportedCount) files(s) ---" Importance="High" />
+		<Message Text="%(PropsImported.Identity)" Importance="High" />
+	    <Message Text="--- PropsNotFound (FYI): $(PropsNotFoundCount) files(s) ---" Importance="High" />
+		<Message Text="%(PropsNotFound.Identity)" Importance="High" />
+	</Target>
+
+</Project>

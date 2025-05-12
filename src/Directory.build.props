@@ -1,28 +1,95 @@
 <Project>
 
- <!-- Default Settings for all projects -->
-  <ItemGroup>
-	<AssemblyAttribute Include="Cozyupk.HelloShadowDI.ComponentMeta.Attributes.DebuggableApplicationParametersAttribute">
-	  <IsDebugOutputTarget>true</IsDebugOutputTarget>
-    </AssemblyAttribute>
-  </ItemGroup>
+	<!-- Determine project classification based on its name -->
+	<PropertyGroup>
+		<!-- Extracts the first three characters of the project name -->
+		<PkgNumber Condition="'$(MSBuildProjectName)' != '' and $([System.String]::Copy('$(MSBuildProjectName)').Length) &gt;= 3"><!--
+			-->$([System.String]::Copy('$(MSBuildProjectName)').Substring(0,3))<!--
+		--></PkgNumber>
+		<!-- Extracts two characters starting from the 5th position -->
+		<LayerNumber Condition="'$(MSBuildProjectName)' != '' and $([System.String]::Copy('$(MSBuildProjectName)').Length) &gt;= 6"><!--
+			-->$([System.String]::Copy('$(MSBuildProjectName)').Substring(4,2))<!--
+		--></LayerNumber>
+		<!-- Extracts the 7th character -->
+		<ComponentGroupNumber Condition="'$(MSBuildProjectName)' != '' and $([System.String]::Copy('$(MSBuildProjectName)').Length) &gt;= 7"><!--
+			-->$([System.String]::Copy('$(MSBuildProjectName)').Substring(6,1))<!--
+		--></ComponentGroupNumber>
+		<!-- Determines whether the project is a unit test project -->
+		<IsUnitTest Condition="$([System.String]::Copy('$(MSBuildProjectName)').EndsWith('UnitTests'))">true</IsUnitTest>
+		<IsUnitTest Condition="$([System.String]::Copy('$(MSBuildProjectName)').EndsWith('UnitTests')) == false">false</IsUnitTest>
+	</PropertyGroup>
+
+	<!-- Import suitable props file(s) -->
+	<!-- 1. Layer-specific configuration -->
+	<PropertyGroup>
+		<LayerPropsPath>$(SolutionDir)build\$(LayerNumber)0000_Layer.props</LayerPropsPath>
+		<LayerPropsExists Condition="Exists('$(LayerPropsPath)')">true</LayerPropsExists>
+		<LayerPropsExists Condition=" '$(LayerPropsExists)' == '' ">false</LayerPropsExists>
+	</PropertyGroup>
+	<Import Project="$(LayerPropsPath)"
+			Condition="'$(LayerNumber)' != '' and '$(LayerPropsExists)' == 'true'" />
+	<ItemGroup>
+		<PropsNotFound Include="$(LayerPropsPath)"
+					   Condition="'$(LayerNumber)' != '' and '$(LayerPropsExists)' == 'false'" />
+	</ItemGroup>
+	<!-- 2. Component group configuration -->
+	<!--
+		<ComponentGroupPropsPath>$(SolutionDir)build\$(LayerNumber)$(ComponentGroupNumber)_ComponentGroup.props</ComponentGroupPropsPath>
+	-->
+	<PropertyGroup>
+		<ComponentGroupPropsPath>$(SolutionDir)build\$(LayerNumber)$(ComponentGroupNumber)000_ComponentGroup.props</ComponentGroupPropsPath>
+		<ComponentGroupPropsExists Condition="Exists('$(ComponentGroupPropsPath)')">true</ComponentGroupPropsExists>
+		<ComponentGroupPropsExists Condition=" '$(ComponentGroupPropsExists)' == '' ">false</ComponentGroupPropsExists>
+	</PropertyGroup>
+	<Import Project="$(ComponentGroupPropsPath)"
+			Condition="'$(LayerNumber)' != '' and '$(ComponentGroupNumber)' != '' and '$(ComponentGroupPropsExists)' == 'true'" />
+	<ItemGroup>
+		<PropsNotFound Include="$(ComponentGroupPropsPath)"
+					   Condition="'$(LayerNumber)' != '' and '$(ComponentGroupNumber)' != '' and '$(ComponentGroupPropsExists)' == 'false'" />
+	</ItemGroup>
+	<!-- 3. Unit test-specific configuration -->
+	<PropertyGroup>
+		<UnitTestPropsPath>$(SolutionDir)build\000001_UnitTests.props</UnitTestPropsPath>
+		<UnitTestPropsExists Condition="Exists('$(UnitTestPropsPath)')">true</UnitTestPropsExists>
+		<UnitTestPropsExists Condition=" '$(UnitTestPropsExists)' == '' ">false</UnitTestPropsExists>
+	</PropertyGroup>
+	<Import Project="$(UnitTestPropsPath)"
+			Condition="'$(IsUnitTest)' == 'true' and '$(UnitTestPropsExists)' == 'true'" />
+	<ItemGroup>
+		<PropsNotFound Include="$(UnitTestPropsPath)"
+					   Condition="'$(IsUnitTest)' == 'true' and '$(UnitTestPropsExists)' == 'false'" />
+	</ItemGroup>
+	<!-- 4. Pkg and Layer-specific configuration -->
+	<PropertyGroup>
+		<PkgLayerPropsPath>$(SolutionDir)build\$(PkgNumber)_$(LayerNumber)0000_Layer.props</PkgLayerPropsPath>
+		<PkgLayerPropsExists Condition="Exists('$(PkgLayerPropsPath)')">true</PkgLayerPropsExists>
+		<PkgLayerPropsExists Condition=" '$(PkgLayerPropsExists)' == '' ">false</PkgLayerPropsExists>
+	</PropertyGroup>
+	<Import Project="$(PkgLayerPropsPath)"
+			Condition="'$(LayerNumber)' != '' and '$(PkgNumber)' != '' and '$(PkgLayerPropsExists)' == 'true'" />
+	<ItemGroup>
+		<PropsNotFound Include="$(PkgLayerPropsPath)"
+					   Condition="'$(LayerNumber)' != '' and '$(PkgNumber)' != '' and '$(PkgLayerPropsExists)' == 'false'" />
+	</ItemGroup>
+	<!-- 5. Pkg and Component group configuration -->
+	<PropertyGroup>
+		<PkgComponentGroupPropsPath>$(SolutionDir)build\$(PkgNumber)_$(LayerNumber)$(ComponentGroupNumber)000_ComponentGroup.props</PkgComponentGroupPropsPath>
+		<PkgComponentGroupPropsExists Condition="Exists('$(PkgComponentGroupPropsPath)')">true</PkgComponentGroupPropsExists>
+		<PkgComponentGroupPropsExists Condition=" '$(PkgComponentGroupPropsExists)' == '' ">false</PkgComponentGroupPropsExists>
+	</PropertyGroup>
+	<Import Project="$(PkgComponentGroupPropsPath)"
+			Condition="'$(LayerNumber)' != '' and '$(ComponentGroupNumber)' != '' and '$(PkgNumber)' != '' and '$(PkgComponentGroupPropsExists)' == 'true'" />
+	<ItemGroup>
+		<PropsNotFound Include="$(PkgComponentGroupPropsPath)"
+					   Condition="'$(LayerNumber)' != '' and '$(ComponentGroupNumber)' != '' and '$(PkgNumber)' != '' and '$(PkgComponentGroupPropsExists)' == 'false'" />
+	</ItemGroup>
+
+	<!-- Provide a default TFM for misconfigured projects (used only for diagnostics of prop file importing) -->
+	<PropertyGroup Condition="'$(TargetFramework)' == ''">
+		<TargetFramework Condition="'$(TargetFramework)' == ''">net8.0</TargetFramework>
+		<NeedToWarnNoTFM>true</NeedToWarnNoTFM>
+	</PropertyGroup>
+
+	<Import Project="build\000000_Common.targets" />
 	
- <!-- Define a property to extract the first two characters of the project name -->  
- <PropertyGroup>  
-   <ProjectPrefix Condition="'$(MSBuildProjectName)' != '' and '$(MSBuildProjectName.Length)' &gt;= '2'">$(MSBuildProjectName.Substring(0,2))</ProjectPrefix>  
- </PropertyGroup>  
-
- <!-- Import specific build property files based on the ProjectPrefix value -->  
- <Import Project="build\00100_Directory.ComponentMeta.build.props"  
-         Condition=" '$(ProjectPrefix)' == '01' " />  
-
- <Import Project="build\00200_Directory.Models.build.props"  
-         Condition=" '$(ProjectPrefix)' == '02' " />  
-
- <Import Project="build\00300_Directory.Presentation.build.props"  
-         Condition=" '$(ProjectPrefix)' == '03' " />  
-
- <Import Project="build\00900_Directory.ComponentRoots.build.props"  
-         Condition=" '$(ProjectPrefix)' == '09' " />  
-
 </Project>

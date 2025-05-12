@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<RootNameSpace>Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framer</RootNameSpace>
+		<AssemblyName>ShadowPkg.ComponentMeta.Attributes</AssemblyName>
+	</PropertyGroup>
+
+</Project>

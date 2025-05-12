@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<RootNameSpace>Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Utils</RootNameSpace>
+		<AssemblyName>ShadowPkg.ComponentMeta.Utils</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Unity.Container" Version="5.11.11" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Attributes\050_01100_Attributes.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="01210_Contracts\" />
+	</ItemGroup>
+
+</Project>

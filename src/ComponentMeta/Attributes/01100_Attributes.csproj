@@ -1,8 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-	<RootNameSpace>Cozyupk.HelloShadowDI.ComponentMeta.Attributes</RootNameSpace>
-	<AssemblyName>ComponentMeta.Attributes</AssemblyName>
-  </PropertyGroup>
-
-</Project>

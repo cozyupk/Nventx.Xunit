@@ -3,12 +3,12 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Cozyupk.HelloShadowDI.ComponentMeta.Attributes;
-using Cozyupk.HelloShadowDI.ComponentMeta.Utils.Contracts;
+using Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Attributes;
+using Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Utils.Contracts;
 using Unity;
 using Unity.Lifetime;
 
-namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Impl
+namespace Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Utils.Impl
 {
     /// <summary>
     /// A utility class for dynamically injecting dependencies into a Unity container

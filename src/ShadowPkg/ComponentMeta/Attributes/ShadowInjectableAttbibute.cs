@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cozyupk.HelloShadowDI.ComponentMeta.Attributes
+namespace Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Attributes
 {
     /// <summary>
     /// Specifies the injection metadata for a class to be used with dependency injection.
@@ -51,6 +51,13 @@ namespace Cozyupk.HelloShadowDI.ComponentMeta.Attributes
         /// <param name="scope">The scope of the injection. Defaults to <see cref="InjectionScope.Unspecified"/>.</param>
         public ShadowInjectableAttribute(Type serviceType, InjectionScope scope = InjectionScope.Unspecified)
         {
+            // check for null serviceType
+            if (serviceType == null)
+            {
+                throw new ArgumentNullException(nameof(serviceType), "Service type cannot be null.");
+            }
+
+            // Set the properties
             ServiceType = serviceType;
             Scope = scope;
         }

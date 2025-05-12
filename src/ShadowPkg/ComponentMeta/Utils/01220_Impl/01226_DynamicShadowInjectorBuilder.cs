@@ -1,9 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Cozyupk.HelloShadowDI.ComponentMeta.Attributes;
-using Cozyupk.HelloShadowDI.ComponentMeta.Utils.Contracts;
+using Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Attributes;
+using Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Utils.Contracts;
 
-namespace Cozyupk.HelloShadowDI.ComponentMeta.Utils.Impl
+namespace Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Utils.Impl
 {
     /// <summary>
     /// A builder class for configuring and creating instances of DynamicShadowInjector.

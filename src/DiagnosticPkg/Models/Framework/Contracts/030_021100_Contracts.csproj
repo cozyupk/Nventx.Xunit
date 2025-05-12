@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts</RootNameSpace>
+		<AssemblyName>DiagnosticPkg.Models.Framework.Contracts</AssemblyName>
+	</PropertyGroup>
+
+</Project>
