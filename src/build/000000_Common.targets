@@ -1,28 +1,41 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+	<!--
+		Target: VerifyPropsLoaded
+		- Runs before the build preparation.
+		- Verifies that required .props files are loaded and summarizes key build properties.
+		- Warns if TargetFramework is not explicitly set.
+	-->
 	<Target Name="VerifyPropsLoaded" BeforeTargets="PrepareForBuild">
+		<!-- Filter out empty entries from PropsNotFound -->
 		<ItemGroup>
 			<PropsNotFoundFiltered Include="@(PropsNotFound)"
                           Condition="'%(Identity)' != ''" />
 		</ItemGroup>
+		<!-- Count imported and not found .props files -->
 		<PropertyGroup>
 			<PropsImportedCount>@(PropsImported->Count())</PropsImportedCount>
 			<PropsNotFoundCount>@(PropsNotFoundFiltered->Count())</PropsNotFoundCount>
 		</PropertyGroup>
+		<!-- Warn if TargetFramework is missing -->
 		<Message
-		    Text="⚠️ TargetFramework was NOT explicitly set. A default 'net8.0' was applied for diagnostic purposes (see props import diagnostics)."
+			Text="⚠️ TargetFramework was NOT explicitly set. A default 'net8.0' was applied for diagnostic purposes (see props import diagnostics)."
 			Importance="high" Condition="'$(NeedToWarnNoTFM)' == 'true'" />
+		<!-- Output build summary and key properties -->
 		<Message Text="--- Summary ---" Importance="high" />
 		<Message Text="PkgNo/LayerNo/ComponentGroupNo: $(PkgNumber)/$(LayerNumber)/$(ComponentGroupNumber)" Importance="high" />
 		<Message Text="IsUnitTest: $(IsUnitTest)" Importance="high" />
 		<Message Text="TargetFramework: $(TargetFramework)" Importance="high" />
 		<Message Text="RootNameSpace: $(RootNameSpace)" Importance="high" />
 		<Message Text="AssemblyName: $(AssemblyName)" Importance="high" />
-	    <Message Text="--- PropsImported: $(PropsImportedCount) files(s) ---" Importance="High" />
+     <!-- List imported .props files -->
+     <Message Text="--- PropsImported: $(PropsImportedCount) files(s) ---" Importance="High" />
 		<Message Text="%(PropsImported.Identity)" Importance="High" />
-	    <Message Text="--- PropsNotFound (FYI): $(PropsNotFoundCount) files(s) ---" Importance="High" Condition="'$(Configuration)' != 'Release'" />
+     <!-- List not found .props files (except in Release) -->
+     <Message Text="--- PropsNotFound (FYI): $(PropsNotFoundCount) files(s) ---" Importance="High" Condition="'$(Configuration)' != 'Release'" />
 		<Message Text="%(PropsNotFound.Identity)" Importance="High" Condition="'$(Configuration)' != 'Release'" />
-	    <Message Text="--- Going to start building ---" Importance="High" />
+     <!-- Indicate build start -->
+     <Message Text="--- Going to start building ---" Importance="High" />
 	</Target>
 
 </Project>
