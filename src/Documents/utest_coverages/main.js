@@ -219,12 +219,12 @@ var assemblies = [
   {
     "name": "DiagnosticPkg.Details.Framework.Impl",
     "classes": [
-      { "name": "Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl.DefaultShadowDiagnosticObserver", "rp": "DiagnosticPkg.Details.Framework.Impl_DefaultShadowDiagnosticObserver.html", "cl": 17, "ucl": 9, "cal": 26, "tl": 61, "cb": 12, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl.DefaultShadowDiagnosticObserver", "rp": "DiagnosticPkg.Details.Framework.Impl_DefaultShadowDiagnosticObserver.html", "cl": 26, "ucl": 0, "cal": 26, "tl": 61, "cb": 20, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
   {
     "name": "DiagnosticPkg.Models.Framework.Impl",
     "classes": [
-      { "name": "Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl.ShadowDiagnosticNotifierProvider", "rp": "DiagnosticPkg.Models.Framework.Impl_ShadowDiagnosticNotifierProvider.html", "cl": 26, "ucl": 40, "cal": 66, "tl": 193, "cb": 9, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl.ShadowDiagnosticNotifierProvider", "rp": "DiagnosticPkg.Models.Framework.Impl_ShadowDiagnosticNotifierProvider.html", "cl": 66, "ucl": 0, "cal": 66, "tl": 193, "cb": 26, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
@@ -233,17 +233,9 @@ var metrics = [{ "name": "Crap Score", "abbreviation": "crp", "explanationUrl": 
 var historicCoverageExecutionTimes = [];
 
 var riskHotspotMetrics = [
-      { "name": "Crap Score", "explanationUrl": "https://googletesting.blogspot.de/2011/02/this-code-is-crap.html" },
-      { "name": "Cyclomatic complexity", "explanationUrl": "https://en.wikipedia.org/wiki/Cyclomatic_complexity" },
 ];
 
 var riskHotspots = [
-  {
-    "assembly": "DiagnosticPkg.Models.Framework.Impl", "class": "Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl.ShadowDiagnosticNotifierProvider", "reportPath": "DiagnosticPkg.Models.Framework.Impl_ShadowDiagnosticNotifierProvider.html", "methodName": "Notify(System.Object,Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts.ShadowDiagnosticLevel,System.Collections.Generic.IEnumerable`1<System.String>)", "methodShortName": "Notify(...)", "fileIndex": 0, "line": 81,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
 ];
 
 var branchCoverageAvailable = true;

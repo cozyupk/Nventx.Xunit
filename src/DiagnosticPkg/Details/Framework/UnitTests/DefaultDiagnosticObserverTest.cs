@@ -5,6 +5,7 @@ using System.Text;
 using Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.Impl;
 using Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl;
 using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts;
+using Moq;
 using Xunit;
 
 namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.UnitTests
@@ -23,6 +24,16 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.UnitTests
         private IShadowDiagnosticMessageFactory Factory { get; } = new ShadowDiagnosticMessageFactory();
 #pragma warning restore CA1859
 #pragma warning restore IDE0079
+
+        /// <summary>
+        /// Verifies that OnDiagnostic throws an ArgumentNullException when the message argument is null.
+        /// </summary>
+        [Fact]
+        public void OnDiagnostic_ShouldThrowArgumentNullException_WhenMessageIsNull()
+        {
+            var observer = new DefaultShadowDiagnosticObserver();
+            Assert.Throws<ArgumentNullException>(() => observer.OnDiagnostic(null!));
+        }
 
         /// <summary>
         /// Captures the output written to Trace during the execution of the provided action.
@@ -54,6 +65,42 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.UnitTests
             /// Returns a custom string for the sender.
             /// </summary>
             public override string ToString() => "Custom Details";
+        }
+
+        /// <summary>
+        /// Verify that the output contains the correct prefix (e.g., [TRACE], [DEBUG], etc.)
+        /// according to the specified diagnostic level.
+        /// </summary>
+        [Theory]
+        [InlineData(ShadowDiagnosticLevel.Trace, "[TRACE]")]
+        [InlineData(ShadowDiagnosticLevel.Debug, "[DEBUG]")]
+        [InlineData(ShadowDiagnosticLevel.Info, "[INFO]")]
+        [InlineData(ShadowDiagnosticLevel.Notice, "[NOTICE]")]
+        [InlineData(ShadowDiagnosticLevel.Warning, "[WARN]")]
+        [InlineData(ShadowDiagnosticLevel.Error, "[ERROR]")]
+        [InlineData(ShadowDiagnosticLevel.Critical, "[FATAL]")]
+        [InlineData((ShadowDiagnosticLevel)999, "[DIAG]")]
+        public void OnDiagnostic_ShouldIncludeCorrectPrefix_BasedOnLevel(ShadowDiagnosticLevel level, string expectedPrefix)
+        {
+#if DEBUG
+            var observer = new DefaultShadowDiagnosticObserver();
+
+            var fakeMessage = new Mock<IShadowDiagnosticMessage>();
+            fakeMessage.Setup(m => m.Level).Returns(level);
+            fakeMessage.Setup(m => m.Timestamp).Returns(DateTimeOffset.Now);
+            fakeMessage.Setup(m => m.Category).Returns("TestCategory");
+            fakeMessage.Setup(m => m.Message).Returns("TestMessage");
+            fakeMessage.Setup(m => m.Sender).Returns(new object());
+
+            string output = CaptureTraceOutput(() =>
+            {
+                observer.OnDiagnostic(fakeMessage.Object);
+            });
+
+            Assert.Contains(expectedPrefix, output);
+#else
+            Assert.True(true); // no output in release mode
+#endif
         }
 
         /// <summary>
