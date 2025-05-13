@@ -1,5 +1,9 @@
 <Project>
 
+	<Target Name="VerifyPropsLoaded" BeforeTargets="Build">
+		<Message Importance="high" Text="✅ Directory.Build.props has been loaded for $(MSBuildProjectName)" />
+	</Target>
+	
 	<!-- Determine project classification based on its name -->
 	<PropertyGroup>
 		<!-- Extracts the first three characters of the project name -->
@@ -47,19 +51,7 @@
 		<PropsNotFound Include="$(ComponentGroupPropsPath)"
 					   Condition="'$(LayerNumber)' != '' and '$(ComponentGroupNumber)' != '' and '$(ComponentGroupPropsExists)' == 'false'" />
 	</ItemGroup>
-	<!-- 3. Unit test-specific configuration -->
-	<PropertyGroup>
-		<UnitTestPropsPath>$(SolutionDir)build\000001_UnitTests.props</UnitTestPropsPath>
-		<UnitTestPropsExists Condition="Exists('$(UnitTestPropsPath)')">true</UnitTestPropsExists>
-		<UnitTestPropsExists Condition=" '$(UnitTestPropsExists)' == '' ">false</UnitTestPropsExists>
-	</PropertyGroup>
-	<Import Project="$(UnitTestPropsPath)"
-			Condition="'$(IsUnitTest)' == 'true' and '$(UnitTestPropsExists)' == 'true'" />
-	<ItemGroup>
-		<PropsNotFound Include="$(UnitTestPropsPath)"
-					   Condition="'$(IsUnitTest)' == 'true' and '$(UnitTestPropsExists)' == 'false'" />
-	</ItemGroup>
-	<!-- 4. Pkg and Layer-specific configuration -->
+	<!-- 3. Pkg and Layer-specific configuration -->
 	<PropertyGroup>
 		<PkgLayerPropsPath>$(SolutionDir)build\$(PkgNumber)_$(LayerNumber)0000_Layer.props</PkgLayerPropsPath>
 		<PkgLayerPropsExists Condition="Exists('$(PkgLayerPropsPath)')">true</PkgLayerPropsExists>
@@ -71,7 +63,7 @@
 		<PropsNotFound Include="$(PkgLayerPropsPath)"
 					   Condition="'$(LayerNumber)' != '' and '$(PkgNumber)' != '' and '$(PkgLayerPropsExists)' == 'false'" />
 	</ItemGroup>
-	<!-- 5. Pkg and Component group configuration -->
+	<!-- 4. Pkg and Component group configuration -->
 	<PropertyGroup>
 		<PkgComponentGroupPropsPath>$(SolutionDir)build\$(PkgNumber)_$(LayerNumber)$(ComponentGroupNumber)000_ComponentGroup.props</PkgComponentGroupPropsPath>
 		<PkgComponentGroupPropsExists Condition="Exists('$(PkgComponentGroupPropsPath)')">true</PkgComponentGroupPropsExists>
@@ -83,13 +75,26 @@
 		<PropsNotFound Include="$(PkgComponentGroupPropsPath)"
 					   Condition="'$(LayerNumber)' != '' and '$(ComponentGroupNumber)' != '' and '$(PkgNumber)' != '' and '$(PkgComponentGroupPropsExists)' == 'false'" />
 	</ItemGroup>
-
+	<!-- 5. Unit test specific configuration -->
+	<PropertyGroup>
+		<UnitTestPropsPath>$(SolutionDir)build\000001_UnitTests.props</UnitTestPropsPath>
+		<UnitTestPropsExists Condition="Exists('$(UnitTestPropsPath)')">true</UnitTestPropsExists>
+		<UnitTestPropsExists Condition=" '$(UnitTestPropsExists)' == '' ">false</UnitTestPropsExists>
+	</PropertyGroup>
+	<Import Project="$(UnitTestPropsPath)"
+			Condition="'$(IsUnitTest)' == 'true' and '$(UnitTestPropsExists)' == 'true'" />
+	<ItemGroup>
+		<PropsNotFound Include="$(UnitTestPropsPath)"
+					   Condition="'$(IsUnitTest)' == 'true' and '$(UnitTestPropsExists)' == 'false'" />
+	</ItemGroup>
+	
 	<!-- Provide a default TFM for misconfigured projects (used only for diagnostics of prop file importing) -->
 	<PropertyGroup Condition="'$(TargetFramework)' == ''">
 		<TargetFramework Condition="'$(TargetFramework)' == ''">net8.0</TargetFramework>
 		<NeedToWarnNoTFM>true</NeedToWarnNoTFM>
 	</PropertyGroup>
 
+	<!-- Import common targets -->
 	<Import Project="build\000000_Common.targets" />
 	
 </Project>

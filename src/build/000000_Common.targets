@@ -1,7 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-
-	<Target BeforeTargets="Build" Name="SetProjectPrefix">
+	<Target Name="VerifyPropsLoaded" BeforeTargets="PrepareForBuild">
 		<ItemGroup>
 			<PropsNotFoundFiltered Include="@(PropsNotFound)"
                           Condition="'%(Identity)' != ''" />
@@ -21,8 +20,9 @@
 		<Message Text="AssemblyName: $(AssemblyName)" Importance="high" />
 	    <Message Text="--- PropsImported: $(PropsImportedCount) files(s) ---" Importance="High" />
 		<Message Text="%(PropsImported.Identity)" Importance="High" />
-	    <Message Text="--- PropsNotFound (FYI): $(PropsNotFoundCount) files(s) ---" Importance="High" />
-		<Message Text="%(PropsNotFound.Identity)" Importance="High" />
+	    <Message Text="--- PropsNotFound (FYI): $(PropsNotFoundCount) files(s) ---" Importance="High" Condition="'$(Configuration)' != 'Release'" />
+		<Message Text="%(PropsNotFound.Identity)" Importance="High" Condition="'$(Configuration)' != 'Release'" />
+	    <Message Text="--- Going to start building ---" Importance="High" />
 	</Target>
 
 </Project>

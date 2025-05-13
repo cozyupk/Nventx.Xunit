@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl</RootNameSpace>
+		<AssemblyName>DiagnosticPkg.Details.Framework.Impl</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Models\Framework\CompositionContracts\030_021200_CompositionContracts.csproj" />
+	</ItemGroup>
+
+</Project>

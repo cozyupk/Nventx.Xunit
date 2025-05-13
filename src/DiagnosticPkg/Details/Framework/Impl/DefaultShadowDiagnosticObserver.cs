@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.CompositionContracts;
 using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts;
 
 namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl
@@ -9,7 +10,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl
     /// This implementation formats messages with a timestamp and severity level prefix.
     /// It is only active in Debug builds; no output will be generated in Release builds.
     /// </summary>
-    public class DefaultDiagnosticObserver : IShadowDiagnosticObserver
+    public class DefaultShadowDiagnosticObserver : IDefaultShadowDiagnosticObserver
     {
         /// <summary>
         /// Handles a diagnostic message by formatting it with a timestamp and severity level,
@@ -23,12 +24,17 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl
                 throw new ArgumentNullException(nameof(message), "Message cannot be null.");
             }
 
+#if DEBUG
             // Outputs the diagnostic message to the debug output.
             // This is only active in Debug builds; no output will be generated in Release builds.
             var prefix = GetPrefix(message.Level);
             var senderName = message.Sender?.GetType().Name ?? "Unknown";
+            var senderDetails = message.Sender?.ToString();
+            if (senderDetails != null && senderDetails != senderName)
+                senderName = $"{senderName} ({senderDetails})";
             var formatted = $"{prefix} [{message.Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{message.Category}] ({senderName}) {message.Message}";
-            Debug.WriteLine(formatted);
+            Trace.WriteLine(formatted);
+#endif
         }
 
         /// <summary>

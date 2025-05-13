@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.UnitTests</RootNameSpace>
+		<AssemblyName>DiagnosticPkg.Adapters.Framework.UnitTests</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Impl\030_031100_Impl.csproj" />
+	</ItemGroup>
+
+</Project>

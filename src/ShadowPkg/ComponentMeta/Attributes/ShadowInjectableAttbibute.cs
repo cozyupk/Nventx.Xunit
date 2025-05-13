@@ -51,14 +51,9 @@ namespace Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Attributes
         /// <param name="scope">The scope of the injection. Defaults to <see cref="InjectionScope.Unspecified"/>.</param>
         public ShadowInjectableAttribute(Type serviceType, InjectionScope scope = InjectionScope.Unspecified)
         {
-            // check for null serviceType
-            if (serviceType == null)
-            {
-                throw new ArgumentNullException(nameof(serviceType), "Service type cannot be null.");
-            }
 
             // Set the properties
-            ServiceType = serviceType;
+            ServiceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType), "Service type cannot be null.");
             Scope = scope;
         }
     }

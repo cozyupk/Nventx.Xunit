@@ -3,11 +3,10 @@
 	<PropertyGroup>
 		<RootNameSpace>Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests</RootNameSpace>
 		<AssemblyName>DiagnosticPkg.Models.Framework.UnitTests</AssemblyName>
-
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Impl\030_021200_Impl.csproj" />
+	  <ProjectReference Include="..\Impl\030_021300_Impl.csproj" />
 	</ItemGroup>
 	
 </Project>

@@ -11,6 +11,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\DiagnosticPkg\Models\Framework\Contracts\030_021100_Contracts.csproj" />
 		<ProjectReference Include="..\Attributes\050_01100_Attributes.csproj" />
 	</ItemGroup>
 

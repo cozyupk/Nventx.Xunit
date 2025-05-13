@@ -80,6 +80,6 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts
         /// <summary>
         /// Gets the timestamp when the diagnostic message was created.
         /// </summary>
-        DateTime Timestamp { get; }
+        DateTimeOffset Timestamp { get; }
     }
 }
