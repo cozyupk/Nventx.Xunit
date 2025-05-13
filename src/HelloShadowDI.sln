@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "000_build", "000_build", "{
 		build\000001_UnitTests.props = build\000001_UnitTests.props
 		build\000100_Impl.GenerateDependencies.targets = build\000100_Impl.GenerateDependencies.targets
 		build\000200_EntryPoint.ShadowBuild.targets = build\000200_EntryPoint.ShadowBuild.targets
+		build\010000_Layer.props = build\010000_Layer.props
 		build\020000_Layer.props = build\020000_Layer.props
 		build\030_030000_Layer.props = build\030_030000_Layer.props
 		build\030_060000_Layer.props = build\030_060000_Layer.props
