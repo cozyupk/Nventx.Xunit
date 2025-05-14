@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>Cozyupk.HelloShadowDI.DiagnosticPkg.ComponentRoots.Playgrounds.DiagnosingBob</RootNameSpace>
+		<AssemblyName>DiagnosticPkg.ComponentRoots.Playgrounds.DiagnosingBob</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Adapters\Framework\Impl\030_031100_Impl.csproj" />
+	  <ProjectReference Include="..\..\Common\Impl\030_091100_Impl.csproj" />
+	</ItemGroup>
+	
+</Project>
