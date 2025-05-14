@@ -18,7 +18,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "000_build", "000_build", "{
 		build\020000_Layer.props = build\020000_Layer.props
 		build\030_030000_Layer.props = build\030_030000_Layer.props
 		build\030_060000_Layer.props = build\030_060000_Layer.props
-		build\030_091000_ComponentGroup.props = build\030_091000_ComponentGroup.props
+		build\030_090000_Layer.props = build\030_090000_Layer.props
+		build\091000_ComponentGroup.props = build\091000_ComponentGroup.props
+		build\092000_ComponentGroup.props = build\092000_ComponentGroup.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "900_Documents", "900_Documents", "{602E330D-D8A4-4953-9F8A-5FC0DDF6E11B}"
@@ -87,9 +89,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "030_031900_UnitTests", "Dia
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "030_090000_ComponentRoots", "030_090000_ComponentRoots", "{BA660046-AFF8-4D85-8AA7-CD1FAD245D5D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "030_091000_E2ETests", "030_091000_E2ETests", "{3B490E62-A1A0-425A-9741-3F0D5DE1B31E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "030_092000_E2ETests", "030_092000_E2ETests", "{3B490E62-A1A0-425A-9741-3F0D5DE1B31E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "030_091000_DiagnosticPkgTests", "DiagnosticPkg\ComponentRoots\E2ETests\DiagnosticPkgTests\030_091000_DiagnosticPkgTests.csproj", "{4DA26A50-5418-4E29-B4E5-2685D38D711B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "030_092100_DiagnosticPkgTests", "DiagnosticPkg\ComponentRoots\E2ETests\DiagnosticPkgTests\030_092100_DiagnosticPkgTests.csproj", "{4DA26A50-5418-4E29-B4E5-2685D38D711B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "030_091000_Common", "030_091000_Common", "{EF172FE5-29C9-4DA5-A69A-F29DB8B69159}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "030_091100_Impl", "DiagnosticPkg\ComponentRoots\ContainerBuilder\PkgContainerBuilder\030_091100_Impl.csproj", "{599DF337-6E0B-41B5-87E3-78900C342A7E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "030_093000_Playgrounds", "030_093000_Playgrounds", "{8618EE51-DACB-4BC3-9DB0-28B1E072C4F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -145,6 +153,10 @@ Global
 		{4DA26A50-5418-4E29-B4E5-2685D38D711B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DA26A50-5418-4E29-B4E5-2685D38D711B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DA26A50-5418-4E29-B4E5-2685D38D711B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{599DF337-6E0B-41B5-87E3-78900C342A7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{599DF337-6E0B-41B5-87E3-78900C342A7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{599DF337-6E0B-41B5-87E3-78900C342A7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{599DF337-6E0B-41B5-87E3-78900C342A7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -179,6 +191,9 @@ Global
 		{BA660046-AFF8-4D85-8AA7-CD1FAD245D5D} = {E8CD56F2-B2FC-49E3-8D41-88EDCD1A2412}
 		{3B490E62-A1A0-425A-9741-3F0D5DE1B31E} = {BA660046-AFF8-4D85-8AA7-CD1FAD245D5D}
 		{4DA26A50-5418-4E29-B4E5-2685D38D711B} = {3B490E62-A1A0-425A-9741-3F0D5DE1B31E}
+		{EF172FE5-29C9-4DA5-A69A-F29DB8B69159} = {BA660046-AFF8-4D85-8AA7-CD1FAD245D5D}
+		{599DF337-6E0B-41B5-87E3-78900C342A7E} = {EF172FE5-29C9-4DA5-A69A-F29DB8B69159}
+		{8618EE51-DACB-4BC3-9DB0-28B1E072C4F9} = {BA660046-AFF8-4D85-8AA7-CD1FAD245D5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F01E5B92-8BC7-4A77-A34E-79C72F78E4AE}

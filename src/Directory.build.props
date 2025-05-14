@@ -36,7 +36,19 @@
 		<PropsNotFound Include="$(LayerPropsPath)"
 					   Condition="'$(LayerNumber)' != '' and '$(LayerPropsExists)' == 'false'" />
 	</ItemGroup>
-	<!-- 2. Component group configuration -->
+	<!-- 2. Pkg and Layer-specific configuration -->
+	<PropertyGroup>
+		<PkgLayerPropsPath>$(SolutionDir)build\$(PkgNumber)_$(LayerNumber)0000_Layer.props</PkgLayerPropsPath>
+		<PkgLayerPropsExists Condition="Exists('$(PkgLayerPropsPath)')">true</PkgLayerPropsExists>
+		<PkgLayerPropsExists Condition=" '$(PkgLayerPropsExists)' == '' ">false</PkgLayerPropsExists>
+	</PropertyGroup>
+	<Import Project="$(PkgLayerPropsPath)"
+			Condition="'$(LayerNumber)' != '' and '$(PkgNumber)' != '' and '$(PkgLayerPropsExists)' == 'true'" />
+	<ItemGroup>
+		<PropsNotFound Include="$(PkgLayerPropsPath)"
+					   Condition="'$(LayerNumber)' != '' and '$(PkgNumber)' != '' and '$(PkgLayerPropsExists)' == 'false'" />
+	</ItemGroup>
+	<!-- 3. Component group configuration -->
 	<!--
 		<ComponentGroupPropsPath>$(SolutionDir)build\$(LayerNumber)$(ComponentGroupNumber)_ComponentGroup.props</ComponentGroupPropsPath>
 	-->
@@ -50,18 +62,6 @@
 	<ItemGroup>
 		<PropsNotFound Include="$(ComponentGroupPropsPath)"
 					   Condition="'$(LayerNumber)' != '' and '$(ComponentGroupNumber)' != '' and '$(ComponentGroupPropsExists)' == 'false'" />
-	</ItemGroup>
-	<!-- 3. Pkg and Layer-specific configuration -->
-	<PropertyGroup>
-		<PkgLayerPropsPath>$(SolutionDir)build\$(PkgNumber)_$(LayerNumber)0000_Layer.props</PkgLayerPropsPath>
-		<PkgLayerPropsExists Condition="Exists('$(PkgLayerPropsPath)')">true</PkgLayerPropsExists>
-		<PkgLayerPropsExists Condition=" '$(PkgLayerPropsExists)' == '' ">false</PkgLayerPropsExists>
-	</PropertyGroup>
-	<Import Project="$(PkgLayerPropsPath)"
-			Condition="'$(LayerNumber)' != '' and '$(PkgNumber)' != '' and '$(PkgLayerPropsExists)' == 'true'" />
-	<ItemGroup>
-		<PropsNotFound Include="$(PkgLayerPropsPath)"
-					   Condition="'$(LayerNumber)' != '' and '$(PkgNumber)' != '' and '$(PkgLayerPropsExists)' == 'false'" />
 	</ItemGroup>
 	<!-- 4. Pkg and Component group configuration -->
 	<PropertyGroup>

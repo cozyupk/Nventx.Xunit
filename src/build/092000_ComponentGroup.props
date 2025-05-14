@@ -1,0 +1,9 @@
+<Project>
+	
+	<Import Project="000001_UnitTests.props" />
+
+	<ItemGroup>
+		<PropsImported Include="$(MSBuildThisFileFullPath)" />
+	</ItemGroup>
+	
+</Project>

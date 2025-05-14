@@ -224,7 +224,7 @@ var assemblies = [
   {
     "name": "DiagnosticPkg.Models.Framework.Impl",
     "classes": [
-      { "name": "Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl.ShadowDiagnosticNotifierProvider", "rp": "DiagnosticPkg.Models.Framework.Impl_ShadowDiagnosticNotifierProvider.html", "cl": 66, "ucl": 0, "cal": 66, "tl": 193, "cb": 26, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl.ShadowDiagnosticNotifierProvider", "rp": "DiagnosticPkg.Models.Framework.Impl_ShadowDiagnosticNotifierProvider.html", "cl": 70, "ucl": 0, "cal": 70, "tl": 199, "cb": 26, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 

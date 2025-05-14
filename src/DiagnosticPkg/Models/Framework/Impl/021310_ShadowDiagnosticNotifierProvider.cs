@@ -37,22 +37,27 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl
             private IEnumerable<IShadowDiagnosticObserver> Observers { get; }
 
             /// <summary>
+            /// Holds the sender object associated with the diagnostic notifier.
+            /// This object represents the source of diagnostic messages and can be null.
+            /// </summary>
+            private object? Sender { get; }
+
+            /// <summary>
             /// Represents the category of the diagnostic messages.
             /// This property is used to group or classify diagnostic messages
             /// for easier filtering or analysis by observers.
             /// </summary>
             private string Category { get; }
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="ShadowDiagnosticNotifier"/> class.
-            /// Validates and sets the message factory, observers, and category for diagnostic notifications.
-            /// </summary>
             /// <param name="messageFactory">The factory used to create diagnostic message instances.</param>
-            /// <param name="observers">The collection of observers to be notified.</param>
-            /// <param name="category">The category of diagnostic messages.</param>
+            /// <param name="observers">The collection of observers to be notified of diagnostic messages.</param>
+            /// <param name="sender">The source object that is sending the diagnostic messages. Can be null.</param>
+            /// <param name="category">The category of the diagnostic messages. Cannot be null or empty.</param>
             public ShadowDiagnosticNotifier(
                 IShadowDiagnosticMessageFactory messageFactory,
-                IEnumerable<IShadowDiagnosticObserver> observers, string category
+                IEnumerable<IShadowDiagnosticObserver> observers,
+                object? sender,
+                string category
             )
             {
                 // Validate the category to ensure it is not null or empty.
@@ -64,6 +69,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl
                 // Set properties with provided values or defaults.
                 MessageFactory = messageFactory ?? throw new ArgumentNullException(nameof(messageFactory), "Message factory cannot be null.");
                 Observers = observers ?? throw new ArgumentNullException(nameof(observers), "Observers cannot be null.");
+                Sender = sender;
                 Category = category;
             }
 
@@ -120,9 +126,9 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl
             /// </summary>
             /// <param name="message">The diagnostic message to send.</param>
             /// <param name="level">The severity level of the message.</param>
-            public void Notify(object? sender, string message, ShadowDiagnosticLevel level = ShadowDiagnosticLevel.Info)
+            public void Notify(string message, ShadowDiagnosticLevel level = ShadowDiagnosticLevel.Info)
             {
-                Notify(sender, level, new List<string>() { message });
+                Notify(Sender, level, new List<string>() { message });
             }
 
             /// <summary>
@@ -133,12 +139,12 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl
             /// If <c>null</c> is returned from the factory, it is treated as an empty array.
             /// </param>
             /// <param name="level">The severity level of the messages.</param>
-            public void NotifyIfObserved(object? sender, Func<List<string>> messageFactory, ShadowDiagnosticLevel level = ShadowDiagnosticLevel.Info)
+            public void NotifyIfObserved(Func<List<string>> messageFactory, ShadowDiagnosticLevel level = ShadowDiagnosticLevel.Info)
             {
                 if (Observers.Any())
                 {
                     var messages = messageFactory() ?? Enumerable.Empty<string>();
-                    Notify(sender, level, messages);
+                    Notify(Sender, level, messages);
                 }
             }
         }
@@ -182,12 +188,12 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl
         /// </summary>
         /// <param name="category">The category of diagnostic messages to be used by the notifier.</param>
         /// <returns>An instance of <see cref="IShadowDiagnosticNotifier"/> configured with the specified category.</returns>
-        public IShadowDiagnosticNotifier CreateDiagnosticNotifier(string category)
+        public IShadowDiagnosticNotifier CreateDiagnosticNotifier(object? sender, string category)
         {
             if (Observers == null)
                 throw new InvalidOperationException("Observers must be set before creating a notifier.");
 
-            return new ShadowDiagnosticNotifier(MessageFactory, Observers, category);
+            return new ShadowDiagnosticNotifier(MessageFactory, Observers, sender, category);
         }
     }
 }

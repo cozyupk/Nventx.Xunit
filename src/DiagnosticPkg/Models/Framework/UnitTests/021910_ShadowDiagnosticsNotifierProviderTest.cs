@@ -94,7 +94,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             provider.SetObservers(observers);
 
             // Act: Create notifier
-            var notifier = provider.CreateDiagnosticNotifier("Category");
+            var notifier = provider.CreateDiagnosticNotifier(this, "Category");
 
             // Assert: Notifier is not null
             Assert.NotNull(notifier);
@@ -110,7 +110,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var provider = new ShadowDiagnosticNotifierProvider(factory);
 
             // Assert: Should throw if observers are not set
-            Assert.Throws<InvalidOperationException>(() => provider.CreateDiagnosticNotifier("Category"));
+            Assert.Throws<InvalidOperationException>(() => provider.CreateDiagnosticNotifier(this, "Category"));
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var observers = new List<IShadowDiagnosticObserver>();
             // Assert: Should throw ArgumentException for null or empty category
             Assert.Throws<ArgumentException>(() =>
-                new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(factory, observers, category!));
+                new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(factory, observers, this, category!));
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var observers = new List<IShadowDiagnosticObserver>();
             // Assert: Should throw ArgumentNullException for null factory
             Assert.Throws<ArgumentNullException>(() =>
-                new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(null!, observers, "TestCategory"));
+                new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(null!, observers, this, "TestCategory"));
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var factory = new Mock<IShadowDiagnosticMessageFactory>().Object;
             // Assert: Should throw ArgumentNullException for null observers
             Assert.Throws<ArgumentNullException>(() =>
-                new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(factory, null!, "TestCategory"));
+                new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(factory, null!, this, "TestCategory"));
         }
 
         /// <summary>
@@ -181,11 +181,12 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var notifier = new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(
                 factory.Object,
                 [observer.Object],
+                this,
                 "TestCategory"
             );
 
             // Act: Notify
-            notifier.Notify(sender: null, "Hello", ShadowDiagnosticLevel.Info);
+            notifier.Notify("Hello", ShadowDiagnosticLevel.Info);
 
             // Assert: Observer should be called with the correct message
             observer.Verify(o => o.OnDiagnostic(message.Object), Times.Once);
@@ -212,12 +213,13 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var notifier = new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(
                 factory.Object,
                 [observer.Object],
+                this,
                 "TestCategory"
             );
 
             // Assert: Should throw AggregateException
             var ex = Assert.Throws<AggregateException>(() =>
-                notifier.Notify(sender: null, "Hello", ShadowDiagnosticLevel.Info));
+                notifier.Notify("Hello", ShadowDiagnosticLevel.Info));
 
             Assert.Single(ex.InnerExceptions);
             Assert.IsType<InvalidOperationException>(ex.InnerExceptions.First());
@@ -234,13 +236,14 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var notifier = new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(
                 factory.Object,
                 [], // empty
+                this,
                 "TestCategory"
             );
 
             bool factoryInvoked = false;
 
             // Act: NotifyIfObserved with no observers
-            notifier.NotifyIfObserved(sender: null, () =>
+            notifier.NotifyIfObserved(() =>
             {
                 factoryInvoked = true;
                 return ["Msg"];
@@ -267,11 +270,12 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var notifier = new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(
                 factory.Object,
                 [observer.Object],
+                this,
                 "TestCategory"
             );
 
             // Act: NotifyIfObserved
-            notifier.NotifyIfObserved(sender: null, () => ["Msg"]);
+            notifier.NotifyIfObserved(() => ["Msg"]);
 
             // Assert: Observer should be called
             observer.Verify(o => o.OnDiagnostic(message.Object), Times.Once);
@@ -289,11 +293,12 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var notifier = new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(
                 factory.Object,
                 [observer.Object],
+                this,
                 "TestCategory"
             );
 
             // Act: NotifyIfObserved with null result
-            notifier.NotifyIfObserved(sender: null, () => null!);
+            notifier.NotifyIfObserved(() => null!);
 
             // Assert: Observer should not be called
             observer.Verify(o => o.OnDiagnostic(It.IsAny<IShadowDiagnosticMessage>()), Times.Never);

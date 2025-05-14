@@ -8,8 +8,9 @@
         /// <summary>
         /// Creates a diagnostic notifier with the specified prefix.
         /// </summary>
-        /// <param name="prefix">The prefix to be used by the diagnostic notifier.</param>
+        /// <param name="sender">The object requesting the notifier, or null if not applicable.</param>
+        /// <param name="category">The diagnostic category or prefix for the notifier.</param>
         /// <returns>An instance of <see cref="IShadowDiagnosticNotifier"/>.</returns>
-        IShadowDiagnosticNotifier CreateDiagnosticNotifier(string prefix);
+        IShadowDiagnosticNotifier CreateDiagnosticNotifier(object? sender, string category);
     }
 }
