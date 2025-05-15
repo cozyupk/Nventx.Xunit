@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Details\Framework\Impl\030_061100_Impl.csproj" />
+	  <ProjectReference Include="..\..\..\Details\Framework\Impl\030_061200_Impl.csproj" />
 	  <ProjectReference Include="..\..\..\Models\Framework\Impl\030_021300_Impl.csproj" />
 	</ItemGroup>
 

@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Models\Framework\CompositionContracts\030_021200_CompositionContracts.csproj" />
+	  <ProjectReference Include="..\CompositionContracts\030_061100_CompositionContracts.csproj" />
 	</ItemGroup>
 
 </Project>

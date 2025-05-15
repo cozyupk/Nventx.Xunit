@@ -219,7 +219,8 @@ var assemblies = [
   {
     "name": "DiagnosticPkg.Details.Framework.Impl",
     "classes": [
-      { "name": "Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl.DefaultShadowDiagnosticObserver", "rp": "DiagnosticPkg.Details.Framework.Impl_DefaultShadowDiagnosticObserver.html", "cl": 26, "ucl": 0, "cal": 26, "tl": 61, "cb": 20, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl.DefaultShadowDiagnosticFormatter", "rp": "DiagnosticPkg.Details.Framework.Impl_DefaultShadowDiagnosticFormatter.html", "cl": 29, "ucl": 0, "cal": 29, "tl": 69, "cb": 26, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl.DefaultShadowDiagnosticObserver", "rp": "DiagnosticPkg.Details.Framework.Impl_DefaultShadowDiagnosticObserver.html", "cl": 12, "ucl": 0, "cal": 12, "tl": 49, "cb": 4, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
   {
     "name": "DiagnosticPkg.Models.Framework.Impl",
@@ -233,9 +234,17 @@ var metrics = [{ "name": "Crap Score", "abbreviation": "crp", "explanationUrl": 
 var historicCoverageExecutionTimes = [];
 
 var riskHotspotMetrics = [
+      { "name": "Crap Score", "explanationUrl": "https://googletesting.blogspot.de/2011/02/this-code-is-crap.html" },
+      { "name": "Cyclomatic complexity", "explanationUrl": "https://en.wikipedia.org/wiki/Cyclomatic_complexity" },
 ];
 
 var riskHotspots = [
+  {
+    "assembly": "DiagnosticPkg.Details.Framework.Impl", "class": "Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl.DefaultShadowDiagnosticFormatter", "reportPath": "DiagnosticPkg.Details.Framework.Impl_DefaultShadowDiagnosticFormatter.html", "methodName": "Format(Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts.IShadowDiagnosticMessage)", "methodShortName": "Format(...)", "fileIndex": 0, "line": 18,
+    "metrics": [
+      { "value": 18, "exceeded": false },
+      { "value": 18, "exceeded": true },
+    ]},
 ];
 
 var branchCoverageAvailable = true;
