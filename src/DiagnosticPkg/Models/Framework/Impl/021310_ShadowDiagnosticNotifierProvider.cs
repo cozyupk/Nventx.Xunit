@@ -36,11 +36,11 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl
             /// </summary>
             private IEnumerable<IShadowDiagnosticObserver> Observers { get; }
 
+
             /// <summary>
-            /// Holds the sender object associated with the diagnostic notifier.
-            /// This object represents the source of diagnostic messages and can be null.
+            /// Holds metadata about the sender of diagnostic messages.
             /// </summary>
-            private object? Sender { get; }
+            private IShadowDiagnosableMeta SenderMeta { get; }
 
             /// <summary>
             /// Represents the category of the diagnostic messages.
@@ -49,14 +49,19 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl
             /// </summary>
             private string Category { get; }
 
-            /// <param name="messageFactory">The factory used to create diagnostic message instances.</param>
-            /// <param name="observers">The collection of observers to be notified of diagnostic messages.</param>
-            /// <param name="sender">The source object that is sending the diagnostic messages. Can be null.</param>
-            /// <param name="category">The category of the diagnostic messages. Cannot be null or empty.</param>
+            /// <summary>
+            /// ShadowDiagnosticNotifier の新しいインスタンスを初期化します。
+            /// </summary>
+            /// <param name="messageFactory">診断メッセージを生成するファクトリ。</param>
+            /// <param name="observers">診断通知を受け取るオブザーバのコレクション。</param>
+            /// <param name="senderMeta">診断メッセージの送信元メタデータ。</param>
+            /// <param name="category">診断メッセージのカテゴリ。</param>
+            /// <exception cref="ArgumentException">category が null または空文字列の場合にスローされます。</exception>
+            /// <exception cref="ArgumentNullException">messageFactory または observers が null の場合にスローされます。</exception>
             public ShadowDiagnosticNotifier(
                 IShadowDiagnosticMessageFactory messageFactory,
                 IEnumerable<IShadowDiagnosticObserver> observers,
-                object? sender,
+                IShadowDiagnosableMeta senderMeta,
                 string category
             )
             {
@@ -69,30 +74,27 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl
                 // Set properties with provided values or defaults.
                 MessageFactory = messageFactory ?? throw new ArgumentNullException(nameof(messageFactory), "Message factory cannot be null.");
                 Observers = observers ?? throw new ArgumentNullException(nameof(observers), "Observers cannot be null.");
-                Sender = sender;
+                SenderMeta = senderMeta;
                 Category = category;
             }
 
             /// <summary>
             /// Notifies all observers with the provided messages and severity level.
             /// </summary>
-            /// <param name="sender">The source object that is sending the diagnostic messages.</param>
             /// <param name="level">The severity level of the diagnostic messages.</param>
             /// <param name="messages">The collection of diagnostic messages to send to the observers.</param>
             protected internal void Notify(
-                object? sender,
                 ShadowDiagnosticLevel level,
                 IEnumerable<string> messages
             )
             {
                 var diagnosticMessages = new List<IShadowDiagnosticMessage>();
 
-
                 // Create diagnostic messages with the provided content and severity level.
                 // In the future, we may introduce the Factory pattern for ShadowDiagnosticMessage.
                 foreach (var msg in messages)
                 {
-                    diagnosticMessages.Add(MessageFactory.Create(sender, Category, msg, level));
+                    diagnosticMessages.Add(MessageFactory.Create(SenderMeta, Category, msg, level));
                 }
 
                 // Collect exceptions that occur during observer notification.
@@ -128,7 +130,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl
             /// <param name="level">The severity level of the message.</param>
             public void Notify(string message, ShadowDiagnosticLevel level = ShadowDiagnosticLevel.Info)
             {
-                Notify(Sender, level, new List<string>() { message });
+                Notify(level, new List<string>() { message });
             }
 
             /// <summary>
@@ -144,7 +146,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl
                 if (Observers.Any())
                 {
                     var messages = messageFactory() ?? Enumerable.Empty<string>();
-                    Notify(Sender, level, messages);
+                    Notify(level, messages);
                 }
             }
         }
@@ -186,14 +188,15 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl
         /// <summary>
         /// Creates a diagnostic notifier with the specified category.
         /// </summary>
-        /// <param name="category">The category of diagnostic messages to be used by the notifier.</param>
+        /// <param name="senderMeta">Metadata information of the sender for diagnostic notification.</param>
+        /// <param name="category">The category name for the diagnostic notification.</param>
         /// <returns>An instance of <see cref="IShadowDiagnosticNotifier"/> configured with the specified category.</returns>
-        public IShadowDiagnosticNotifier CreateDiagnosticNotifier(object? sender, string category)
+        public IShadowDiagnosticNotifier CreateDiagnosticNotifier(IShadowDiagnosableMeta senderMeta, string category)
         {
             if (Observers == null)
                 throw new InvalidOperationException("Observers must be set before creating a notifier.");
 
-            return new ShadowDiagnosticNotifier(MessageFactory, Observers, sender, category);
+            return new ShadowDiagnosticNotifier(MessageFactory, Observers, senderMeta, category);
         }
     }
 }

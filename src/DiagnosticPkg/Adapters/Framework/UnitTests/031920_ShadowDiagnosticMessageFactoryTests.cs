@@ -2,6 +2,7 @@
 using Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.Impl;
 using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.UnitTests
@@ -11,11 +12,16 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.UnitTests
     /// </summary>
     public class ShadowDiagnosticMessageFactoryTests
     {
-#pragma warning disable IDE0079 // 不要な抑制を削除します
-#pragma warning disable CA1859 // 可能な場合は具象型を使用してパフォーマンスを向上させる
-        private readonly IShadowDiagnosticMessageFactory _factory = new ShadowDiagnosticMessageFactory();
-#pragma warning restore CA1859 // 可能な場合は具象型を使用してパフォーマンスを向上させる
-#pragma warning restore IDE0079 // 不要な抑制を削除します
+#pragma warning disable IDE0079 // Remove unnecessary suppressions
+#pragma warning disable CA1859 // Use concrete types where possible to improve performance
+        private IShadowDiagnosticMessageFactory Factory { get; } = new ShadowDiagnosticMessageFactory();
+#pragma warning restore CA1859 // Use concrete types where possible to improve performance
+#pragma warning restore IDE0079 // Remove unnecessary suppressions
+
+        /// <summary>
+        /// Provides a reusable sender meta instance for use in test cases.
+        /// </summary>
+        private IShadowDiagnosableMeta SenderMeta { get; } = new Mock<IShadowDiagnosableMeta>().Object;
 
         /// <summary>
         /// Verifies that Create returns a message with all provided parameters correctly set.
@@ -24,17 +30,16 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.UnitTests
         public void Create_WithAllParameters_ShouldReturnCorrectMessage()
         {
             // Arrange
-            var sender = new object();
             var category = "TestCategory";
             var message = "This is a test message";
             var level = ShadowDiagnosticLevel.Warning;
             var timestamp = new DateTimeOffset(2024, 1, 1, 12, 34, 56, TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow));
 
             // Act
-            var result = _factory.Create(sender, category, message, level, timestamp);
+            var result = Factory.Create(SenderMeta, category, message, level, timestamp);
 
             // Assert
-            result.Sender.Should().Be(sender);
+            result.SenderMeta.Should().Be(SenderMeta);
             result.Category.Should().Be(category);
             result.Message.Should().Be(message);
             result.Level.Should().Be(level);
@@ -48,14 +53,13 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.UnitTests
         public void Create_WithoutTimestamp_ShouldSetTimestampToNow()
         {
             // Arrange
-            var sender = new object();
             var category = "TimeCategory";
             var message = "Timestamp should be now-ish";
             var level = ShadowDiagnosticLevel.Info;
 
             // Act
             var before = DateTimeOffset.Now;
-            var result = _factory.Create(sender, category, message, level);
+            var result = Factory.Create(SenderMeta, category, message, level);
             var after = DateTimeOffset.Now;
 
             // Assert
@@ -70,13 +74,12 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.UnitTests
         public void Create_WithoutLevelAndTimestamp_ShouldDefaultToInfo_And_Now()
         {
             // Arrange
-            var sender = new object();
             var category = "DefaultCategory";
             var message = "Default behavior test";
 
             // Act
             var before = DateTimeOffset.Now;
-            var result = _factory.Create(sender, category, message);
+            var result = Factory.Create(SenderMeta, category, message);
             var after = DateTimeOffset.Now;
 
             // Assert
@@ -85,19 +88,20 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.UnitTests
         }
 
         /// <summary>
-        /// Verifies that Create allows a null sender parameter.
+        /// Verifies that Create throws an ArgumentNullException when the senderMeta parameter is null.
         /// </summary>
         [Fact]
-        public void Create_ShouldAllow_NullSender()
+        public void Create_ShouldThrowArgumentNullException_WhenSenderMetaIsNull()
         {
             // Arrange
-            object? sender = null;
+            IShadowDiagnosableMeta? senderMeta = null;
 
             // Act
-            var result = _factory.Create(sender, "Cat", "msg");
+            Action act = () => Factory.Create(senderMeta!, "Cat", "msg");
 
             // Assert
-            result.Sender.Should().BeNull();
+            act.Should().Throw<ArgumentNullException>()
+               .WithParameterName("senderMeta");
         }
 
         /// <summary>
@@ -110,7 +114,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.UnitTests
         public void Create_WithInvalidCategory_ShouldThrow(string? category, Type expectedException)
         {
             // Act
-            Action act = () => _factory.Create(new object(), category!, "msg");
+            Action act = () => Factory.Create(SenderMeta, category!, "msg");
 
             // Assert
             act.Should().Throw<Exception>().Where(e => e.GetType() == expectedException);
@@ -123,7 +127,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.UnitTests
         public void Create_WithNullMessage_ShouldThrow()
         {
             // Act
-            Action act = () => _factory.Create(new object(), "cat", null!);
+            Action act = () => Factory.Create(SenderMeta, "cat", null!);
 
             // Assert
             act.Should().Throw<ArgumentNullException>()

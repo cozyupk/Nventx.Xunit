@@ -9,10 +9,10 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.Impl
     public class ShadowDiagnosticMessage : IShadowDiagnosticMessage
     {
         /// <summary>
-        /// Gets the sender of the diagnostic message.
+        /// Gets the sender meta information of the diagnostic message.
         /// This can be any object that is the source of the message.
         /// </summary>
-        public object? Sender { get; }
+        public IShadowDiagnosableMeta SenderMeta { get; }
 
         /// <summary>
         /// Gets the category of the diagnostic message.
@@ -38,18 +38,22 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.Impl
         /// <summary>
         /// Initializes a new instance of the <see cref="ShadowDiagnosticMessage"/> class.
         /// </summary>
-        /// <param name="sender">The source of the diagnostic message. Can be null if the sender is not specified.</param>
+        /// <param name="senderMeta">The sender meta information of the diagnostic message. Cannot be null.</param>
         /// <param name="category">The category of the diagnostic message. Cannot be null or empty.</param>
-        /// <param name="level">The severity level of the diagnostic message.</param>
         /// <param name="message">The content of the diagnostic message. Cannot be null or empty.</param>
-        /// <param name="timestamp">The timestamp of the diagnostic message. Cannot be null.</param>
+        /// <param name="level">The severity level of the diagnostic message. Must be a valid <see cref="ShadowDiagnosticLevel"/> value.</param>
+        /// <param name="timestamp">The timestamp when the diagnostic message was created. Cannot be null or in the future.</param>
         protected internal ShadowDiagnosticMessage(
-            object? sender,
+            IShadowDiagnosableMeta senderMeta,
             string category,
             string message,
             ShadowDiagnosticLevel level,
             DateTimeOffset timestamp)
         {
+            // Validate the senderMeta to ensure it is not null.
+            if (senderMeta is null)
+                throw new ArgumentNullException(nameof(senderMeta), "Sender meta cannot be null.");
+
             // Validate the message to ensure it is not null or empty.
             if (category is null)
                 throw new ArgumentNullException(nameof(category));
@@ -81,7 +85,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.Impl
             }
 
             // Set properties with provided values or defaults.
-            Sender = sender;
+            SenderMeta = senderMeta;
             Category = category;
             Level = level;
             Message = message;

@@ -17,12 +17,12 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
         /// <summary>
         /// Test implementation of <see cref="IShadowDiagnosticMessage"/> for mocking purposes.
         /// </summary>
-        /// <param name="Sender">The sender of the diagnostic message.</param>
+        /// <param name="SenderMeta">The sender meta information of the diagnostic message.</param>
         /// <param name="Category">The category of the diagnostic message.</param>
         /// <param name="Message">The content of the diagnostic message.</param>
         /// <param name="Level">The severity level of the diagnostic message.</param>
         private readonly record struct TestMessage(
-            object? Sender,
+            IShadowDiagnosableMeta SenderMeta,
             string Category,
             string Message,
             ShadowDiagnosticLevel Level
@@ -35,6 +35,11 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
         }
 
         /// <summary>
+        /// Provides a reusable sender meta instance for use in test cases.
+        /// </summary>
+        private IShadowDiagnosableMeta SenderMeta { get; } = new Mock<IShadowDiagnosableMeta>().Object;
+
+        /// <summary>
         /// Creates a mock implementation of <see cref="IShadowDiagnosticMessageFactory"/> for testing.
         /// </summary>
         /// <returns>A mock factory that returns <see cref="TestMessage"/> instances.</returns>
@@ -42,12 +47,12 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
         {
             var mock = new Mock<IShadowDiagnosticMessageFactory>();
             mock.Setup(f => f.Create(
-                It.IsAny<object?>(),
+                It.IsAny<IShadowDiagnosableMeta>(),
                 It.IsAny<string>(),
                 It.IsAny<string>(),
                 It.IsAny<ShadowDiagnosticLevel>()
-            )).Returns((object? sender, string category, string message, ShadowDiagnosticLevel level) =>
-                new TestMessage(sender, category, message, level)
+            )).Returns((IShadowDiagnosableMeta senderMeta, string category, string message, ShadowDiagnosticLevel level) =>
+                new TestMessage(senderMeta, category, message, level)
             );
             return mock.Object;
         }
@@ -94,7 +99,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             provider.SetObservers(observers);
 
             // Act: Create notifier
-            var notifier = provider.CreateDiagnosticNotifier(this, "Category");
+            var notifier = provider.CreateDiagnosticNotifier(SenderMeta, "Category");
 
             // Assert: Notifier is not null
             Assert.NotNull(notifier);
@@ -110,7 +115,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var provider = new ShadowDiagnosticNotifierProvider(factory);
 
             // Assert: Should throw if observers are not set
-            Assert.Throws<InvalidOperationException>(() => provider.CreateDiagnosticNotifier(this, "Category"));
+            Assert.Throws<InvalidOperationException>(() => provider.CreateDiagnosticNotifier(SenderMeta, "Category"));
         }
 
         /// <summary>
@@ -126,7 +131,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var observers = new List<IShadowDiagnosticObserver>();
             // Assert: Should throw ArgumentException for null or empty category
             Assert.Throws<ArgumentException>(() =>
-                new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(factory, observers, this, category!));
+                new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(factory, observers, SenderMeta, category!));
         }
 
         /// <summary>
@@ -138,7 +143,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var observers = new List<IShadowDiagnosticObserver>();
             // Assert: Should throw ArgumentNullException for null factory
             Assert.Throws<ArgumentNullException>(() =>
-                new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(null!, observers, this, "TestCategory"));
+                new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(null!, observers, SenderMeta, "TestCategory"));
         }
 
         /// <summary>
@@ -150,7 +155,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var factory = new Mock<IShadowDiagnosticMessageFactory>().Object;
             // Assert: Should throw ArgumentNullException for null observers
             Assert.Throws<ArgumentNullException>(() =>
-                new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(factory, null!, this, "TestCategory"));
+                new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(factory, null!, SenderMeta, "TestCategory"));
         }
 
         /// <summary>
@@ -175,13 +180,13 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var message = new Mock<IShadowDiagnosticMessage>();
 
             // Setup factory to return the mock message
-            factory.Setup(f => f.Create(It.IsAny<object?>(), "TestCategory", "Hello", ShadowDiagnosticLevel.Info))
+            factory.Setup(f => f.Create(It.IsAny<IShadowDiagnosableMeta>(), "TestCategory", "Hello", ShadowDiagnosticLevel.Info))
                    .Returns(message.Object);
 
             var notifier = new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(
                 factory.Object,
                 [observer.Object],
-                this,
+                SenderMeta,
                 "TestCategory"
             );
 
@@ -203,7 +208,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var message = new Mock<IShadowDiagnosticMessage>();
 
             // Setup factory to return the mock message
-            factory.Setup(f => f.Create(It.IsAny<object?>(), "TestCategory", "Hello", ShadowDiagnosticLevel.Info))
+            factory.Setup(f => f.Create(It.IsAny<IShadowDiagnosableMeta>(), "TestCategory", "Hello", ShadowDiagnosticLevel.Info))
                    .Returns(message.Object);
 
             // Setup observer to throw
@@ -213,7 +218,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var notifier = new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(
                 factory.Object,
                 [observer.Object],
-                this,
+                SenderMeta,
                 "TestCategory"
             );
 
@@ -236,7 +241,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var notifier = new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(
                 factory.Object,
                 [], // empty
-                this,
+                SenderMeta,
                 "TestCategory"
             );
 
@@ -264,13 +269,13 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var message = new Mock<IShadowDiagnosticMessage>();
 
             // Setup factory to return the mock message
-            factory.Setup(f => f.Create(It.IsAny<object?>(), "TestCategory", "Msg", ShadowDiagnosticLevel.Info))
+            factory.Setup(f => f.Create(It.IsAny<IShadowDiagnosableMeta>(), "TestCategory", "Msg", ShadowDiagnosticLevel.Info))
                    .Returns(message.Object);
 
             var notifier = new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(
                 factory.Object,
                 [observer.Object],
-                this,
+                SenderMeta,
                 "TestCategory"
             );
 
@@ -293,7 +298,7 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
             var notifier = new ShadowDiagnosticNotifierProvider.ShadowDiagnosticNotifier(
                 factory.Object,
                 [observer.Object],
-                this,
+                SenderMeta,
                 "TestCategory"
             );
 

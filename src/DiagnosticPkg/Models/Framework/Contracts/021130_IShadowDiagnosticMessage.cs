@@ -56,10 +56,9 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts
     public interface IShadowDiagnosticMessage
     {
         /// <summary>
-        /// Gets the sender of the diagnostic message.
-        /// This can be any object that is the source of the message.
+        /// Gets the sender metadata for the diagnostic message.
         /// </summary>
-        object? Sender { get; }
+        IShadowDiagnosableMeta SenderMeta { get; }
 
         /// <summary>
         /// Gets the category of the diagnostic message.

@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests</RootNameSpace>
+		<AssemblyName>BaseUtilityPkg.Models.DesignPatterns.UnitTests</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Impl\020_021200_Impl.csproj" />
+	</ItemGroup>
+
+</Project>

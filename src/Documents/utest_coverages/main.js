@@ -211,21 +211,10 @@ for (i = 0, l = charts.length; i < l; i++) {
 
 var assemblies = [
   {
-    "name": "DiagnosticPkg.Adapters.Framework.Impl",
+    "name": "BaseUtilityPkg.Models.DesignPatterns.Impl",
     "classes": [
-      { "name": "Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.Impl.ShadowDiagnosticMessage", "rp": "DiagnosticPkg.Adapters.Framework.Impl_ShadowDiagnosticMessage.html", "cl": 33, "ucl": 0, "cal": 33, "tl": 91, "cb": 12, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.Impl.ShadowDiagnosticMessageFactory", "rp": "DiagnosticPkg.Adapters.Framework.Impl_ShadowDiagnosticMessageFactory.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 58, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-    ]},
-  {
-    "name": "DiagnosticPkg.Details.Framework.Impl",
-    "classes": [
-      { "name": "Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl.DefaultShadowDiagnosticFormatter", "rp": "DiagnosticPkg.Details.Framework.Impl_DefaultShadowDiagnosticFormatter.html", "cl": 29, "ucl": 0, "cal": 29, "tl": 69, "cb": 26, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl.DefaultShadowDiagnosticObserver", "rp": "DiagnosticPkg.Details.Framework.Impl_DefaultShadowDiagnosticObserver.html", "cl": 12, "ucl": 0, "cal": 12, "tl": 49, "cb": 4, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-    ]},
-  {
-    "name": "DiagnosticPkg.Models.Framework.Impl",
-    "classes": [
-      { "name": "Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl.ShadowDiagnosticNotifierProvider", "rp": "DiagnosticPkg.Models.Framework.Impl_ShadowDiagnosticNotifierProvider.html", "cl": 70, "ucl": 0, "cal": 70, "tl": 199, "cb": 26, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.ShallowClonedNotifierFactory.ClonedNotifierFactory<T>", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_ClonedNotifierFactory_1.html", "cl": 21, "ucl": 0, "cal": 21, "tl": 65, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Traits.ShallowCloned<T>", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_ShallowCloned_1.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 36, "cb": 4, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
@@ -234,17 +223,9 @@ var metrics = [{ "name": "Crap Score", "abbreviation": "crp", "explanationUrl": 
 var historicCoverageExecutionTimes = [];
 
 var riskHotspotMetrics = [
-      { "name": "Crap Score", "explanationUrl": "https://googletesting.blogspot.de/2011/02/this-code-is-crap.html" },
-      { "name": "Cyclomatic complexity", "explanationUrl": "https://en.wikipedia.org/wiki/Cyclomatic_complexity" },
 ];
 
 var riskHotspots = [
-  {
-    "assembly": "DiagnosticPkg.Details.Framework.Impl", "class": "Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl.DefaultShadowDiagnosticFormatter", "reportPath": "DiagnosticPkg.Details.Framework.Impl_DefaultShadowDiagnosticFormatter.html", "methodName": "Format(Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts.IShadowDiagnosticMessage)", "methodShortName": "Format(...)", "fileIndex": 0, "line": 18,
-    "metrics": [
-      { "value": 18, "exceeded": false },
-      { "value": 18, "exceeded": true },
-    ]},
 ];
 
 var branchCoverageAvailable = true;

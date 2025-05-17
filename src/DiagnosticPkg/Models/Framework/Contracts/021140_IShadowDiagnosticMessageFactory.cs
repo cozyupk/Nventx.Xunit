@@ -11,14 +11,14 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts
         /// <summary>
         /// Creates a new diagnostic message instance.
         /// </summary>
-        /// <param name="sender">The source of the message (can be null).</param>
-        /// <param name="category">The message category (e.g. component, layer, etc).</param>
-        /// <param name="message">The diagnostic content.</param>
-        /// <param name="level">The severity level.</param>
-        /// <param name="timestamp">The  timestamp.</param>
+        /// <param name="senderMeta">The metadata of the sender generating the diagnostic message.</param>
+        /// <param name="category">The category used to classify the diagnostic message.</param>
+        /// <param name="message">The content of the diagnostic message.</param>
+        /// <param name="level">The severity level of the diagnostic message.</param>
+        /// <param name="timestamp">The timestamp when the diagnostic message was created.</param>
         /// <returns>A diagnostic message instance.</returns>
         IShadowDiagnosticMessage Create(
-            object? sender,
+            IShadowDiagnosableMeta senderMeta,
             string category,
             string message,
             ShadowDiagnosticLevel level,
@@ -28,13 +28,13 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts
         /// <summary>
         /// Creates a new diagnostic message instance.
         /// </summary>
-        /// <param name="sender">The source of the message (can be null).</param>
-        /// <param name="category">The message category (e.g. component, layer, etc).</param>
-        /// <param name="message">The diagnostic content.</param>
-        /// <param name="level">The severity level.</param>
+        /// <param name="senderMeta">The metadata of the sender generating the diagnostic message.</param>
+        /// <param name="category">The category used to classify the diagnostic message.</param>
+        /// <param name="message">The content of the diagnostic message.</param>
+        /// <param name="level">The severity level of the diagnostic message.</param>
         /// <returns>A diagnostic message instance.</returns>
         IShadowDiagnosticMessage Create(
-            object? sender,
+            IShadowDiagnosableMeta senderMeta,
             string category,
             string message,
             ShadowDiagnosticLevel level
@@ -43,12 +43,12 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts
         /// <summary>
         /// Creates a new diagnostic message instance.
         /// </summary>
-        /// <param name="sender">The source of the message (can be null).</param>
-        /// <param name="category">The message category (e.g. component, layer, etc).</param>
-        /// <param name="message">The diagnostic content.</param>
+        /// <param name="senderMeta">The metadata of the sender generating the diagnostic message.</param>
+        /// <param name="category">The category used to classify the diagnostic message.</param>
+        /// <param name="message">The content of the diagnostic message.</param>
         /// <returns>A diagnostic message instance.</returns>
         IShadowDiagnosticMessage Create(
-            object? sender,
+            IShadowDiagnosableMeta senderMeta,
             string category,
             string message
         );

@@ -16,29 +16,11 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl
         /// <returns>A string representation of the diagnostic message.</returns>
         public string Format(IShadowDiagnosticMessage message)
         {
-            // Get the string prefix for the diagnostic level (e.g., [INFO], [ERROR], etc.)
+            // Get the prefix based on the message level
             var prefix = GetPrefix(message.Level);
 
-            // Get the type of the sender object, if available
-            var tSender = message.Sender?.GetType();
-
-            // Get the simple type name of the sender, or "Unknown" if sender is null
-            var senderName = tSender?.Name ?? "Unknown";
-
-            // Get the string representation of the sender object
-            var senderDetails = message.Sender?.ToString();
-
-            // If sender details are meaningful and different from the type name/full name, append them
-            if (senderDetails == senderName)
-                senderDetails = null; // Clear senderDetails if it matches the type name
-            if (senderDetails == tSender?.FullName)
-                senderDetails = null; // Clear senderDetails if it matches the full name
-            if (senderDetails != null)
-                senderName = $"{senderName} ({senderDetails})";
-
-            // Append the sender's hash code in hexadecimal if sender is not null
-            if (message.Sender != null)
-                senderName += $"/{message.Sender.GetHashCode():x}";
+            // Get sender name
+            var senderName = message.SenderMeta.Label;
 
             // Format the final diagnostic message string with timestamp, category, sender, and message
             var formatted = $"{prefix} [{message.Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}] [{message.Category}] ({senderName}) {message.Message}";
