@@ -29,18 +29,16 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.T
     /// <summary>
     /// Testable subclass of ShallowCloned to capture the copied argument.
     /// </summary>
-    public class TestableShallowCloned : ShallowCloned<DummyArgs>
+    /// <remarks>
+    /// Initializes a new instance and invokes the base constructor.
+    /// </remarks>
+    /// <param name="args">The argument to be cloned and.</param>
+    public class TestableShallowCloned(DummyArgs args) : ShallowCloned<DummyArgs>(args)
     {
         /// <summary>
         /// Gets the captured shallow-copied argument.
         /// </summary>
         public DummyArgs? Captured { get; private set; }
-
-        /// <summary>
-        /// Initializes a new instance and invokes the base constructor.
-        /// </summary>
-        /// <param name="args">The argument to be cloned and.</param>
-        public TestableShallowCloned(DummyArgs args) : base(args) { }
 
         /// <summary>
         /// Called when the argument is shallow-copied.

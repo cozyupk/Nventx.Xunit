@@ -1,4 +1,5 @@
 ﻿using System;
+using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.CreationNotifiedFactory;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.Traits;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Traits;
 
@@ -8,7 +9,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Shallo
     /// Factory for creating <see cref="ShallowCloned{TCreationArgs}"/> instances and invoking a handler on creation.
     /// </summary>
     /// <typeparam name="TSource">Type of the creation arguments.</typeparam>
-    public class ClonedNotifierFactory<TSource>
+    public class ClonedNotifierFactory<TSource> : ICreationNotifierFactory<ShallowCloned<TSource>, TSource>
         where TSource : class, IShallowClonable<TSource>
     {
         /// <summary>
@@ -47,13 +48,14 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Shallo
         /// Creates a new <see cref="ShallowCloned{TCreationArgs}"/> and invokes the handler if set.
         /// </summary>
         /// <param name="args">The creation arguments to use.</param>
-        public void Create(TSource args)
+        public void TriggerCreation(TSource args)
         {
             // Validate input arguments
             if (args == null)
                 throw new ArgumentNullException(nameof(args), "Creation arguments cannot be null.");
 
             Action<ShallowCloned<TSource>>? handler;
+
             // Retrieve the handler in a thread-safe manner
             lock (LockObject)
             {
@@ -65,7 +67,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Shallo
                 throw new ArgumentNullException(nameof(_onObjectCreated), "No handler is registered for object creation.");
 
             // Create a shallow-cloned object and invoke the handler
-            var obj = new ShallowCloned<TSource>(args);
+            ShallowCloned<TSource> obj = new(args);
             handler(obj);
         }
     }

@@ -6,7 +6,7 @@
     /// </summary>
     /// <typeparam name="TCreatedObject">The type of the object that will be created.</typeparam>
     /// <typeparam name="TCreationArgs">The type of arguments required to create the object.</typeparam>
-    public interface ICreationNotifier<TCreatedObject, in TCreationArgs>
+    public interface ICreationNotifierFactory<TCreatedObject, in TCreationArgs>
         : ICreationNotified<TCreatedObject>, ICreationTrigger<TCreationArgs>
     {
     }

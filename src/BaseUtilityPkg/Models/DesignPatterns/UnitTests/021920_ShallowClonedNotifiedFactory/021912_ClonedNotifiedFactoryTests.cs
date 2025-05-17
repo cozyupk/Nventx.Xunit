@@ -38,10 +38,11 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.S
         public void OnObjectCreated_CanBeSetOnce()
         {
             // Arrange
-            var factory = new ClonedNotifierFactory<DummyArgs>();
-
-            // Act
-            factory.OnObjectCreated = _ => { };
+            var factory = new ClonedNotifierFactory<DummyArgs>
+            {
+                // Act
+                OnObjectCreated = _ => { }
+            };
 
             // Assert
             // No exception should occur
@@ -54,8 +55,10 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.S
         public void OnObjectCreated_ThrowsIfSetTwice()
         {
             // Arrange
-            var factory = new ClonedNotifierFactory<DummyArgs>();
-            factory.OnObjectCreated = _ => { };
+            var factory = new ClonedNotifierFactory<DummyArgs>
+            {
+                OnObjectCreated = _ => { }
+            };
 
             // Act & Assert
             Assert.Throws<InvalidOperationException>(() =>
@@ -87,7 +90,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.S
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
-                factory.Create(null!));
+                factory.TriggerCreation(null!));
         }
 
         /// <summary>
@@ -112,7 +115,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.S
                 .Returns(clone);
 
             // Act
-            factory.Create(mock.Object);
+            factory.TriggerCreation(mock.Object);
 
             // Assert
             Assert.NotNull(received);
@@ -131,7 +134,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.S
             var args = new DummyArgs { Value = "test" };
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => factory.Create(args));
+            Assert.Throws<ArgumentNullException>(() => factory.TriggerCreation(args));
         }
     }
 }
