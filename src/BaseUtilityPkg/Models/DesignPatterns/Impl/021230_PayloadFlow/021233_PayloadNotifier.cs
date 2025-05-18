@@ -14,6 +14,9 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
         where TSenderMeta : class
         where TPayloadMeta : class
     {
+        /// <summary>
+        /// Gets the lock object used to synchronize access to the list of consumer notifiers.
+        /// </summary>
         private object ConsumerNotifiersLock { get; } = new object();
 
         /// <summary>
@@ -21,9 +24,21 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
         /// </summary>
         protected internal class SenderPayload : ISenderPayload<TSenderMeta, TPayloadMeta, TPayloadBody>
         {
+            /// <summary>
+            /// Gets the metadata associated with the sender.
+            /// </summary>
             public TSenderMeta SenderMeta { get; }
+
+            /// <summary>
+            /// Gets the payload containing metadata and body.
+            /// </summary>
             public IPayload<TPayloadMeta, TPayloadBody> Payload { get; }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="SenderPayload"/> class with the specified sender metadata and payload.
+            /// </summary>
+            /// <param name="senderMeta">The metadata of the sender.</param>
+            /// <param name="payload">The payload containing metadata and body.</param>
             public SenderPayload(TSenderMeta senderMeta, IPayload<TPayloadMeta, TPayloadBody> payload)
             {
                 SenderMeta = senderMeta;
@@ -31,9 +46,12 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
             }
         }
 
-        private List<ICreationNotifier<
-                ISenderPayload<TSenderMeta, TPayloadMeta, TPayloadBody>
-            >> _consumerNotifiers = new();
+        /// <summary>
+        /// The list of consumer notifiers that will be notified when a sender payload is created.
+        /// </summary>
+        private readonly List<ICreationNotifier<
+            ISenderPayload<TSenderMeta, TPayloadMeta, TPayloadBody>
+        >> _consumerNotifiers = new();
 
         /// <summary>
         /// Gets the list of consumer creation notifiers that will be notified when a sender payload is created.
@@ -77,12 +95,16 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
             {
                 // Create a sender payload that includes sender metadata and the payload
                 var senderPayload = new SenderPayload(SenderMeta, payload);
+
+                // Make a copy of the current list of consumer notifiers to ensure thread safety during notification
                 List<ICreationNotifier<ISenderPayload<TSenderMeta, TPayloadMeta, TPayloadBody>>> notifiersCopy;
+
                 // Lock to ensure thread safety when accessing the notifiers list
                 lock (ConsumerNotifiersLock)
                 {
                     notifiersCopy = new List<ICreationNotifier<ISenderPayload<TSenderMeta, TPayloadMeta, TPayloadBody>>>(_consumerNotifiers);
                 }
+
                 // Notify all registered consumer notifiers
                 foreach (var consumerCreationNotifier in notifiersCopy)
                 {
