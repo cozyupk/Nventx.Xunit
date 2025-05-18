@@ -6,7 +6,7 @@
     /// <typeparam name="TSubjectMeta">The type of the subject metadata.</typeparam>
     /// <typeparam name="TPayloadMeta">The type of the payload metadata.</typeparam>
     /// <typeparam name="TPayloadBody">The type of the payload body.</typeparam>
-    public interface IPayloadDispatcherBuilder<TSubjectMeta, TPayloadMeta, TPayloadBody>
+    public interface IPayloadNotifierBuilder<TSubjectMeta, TPayloadMeta, TPayloadBody>
     {
         /// <summary>
         /// Adds a consumer that conditionally receives payload notifications.

@@ -5,10 +5,10 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.P
     /// <summary>
     /// Notifies registered consumers and triggers with payloads containing subject and payload metadata.
     /// </summary>
-    /// <typeparam name="TSubjectMeta">The type of the subject metadata.</typeparam>
+    /// <typeparam name="TSenderMeta">The type of the subject metadata.</typeparam>
     /// <typeparam name="TPayloadMeta">The type of the payload metadata.</typeparam>
     /// <typeparam name="TPayloadBody">The type of the payload body.</typeparam>
-    public interface IPayloadNotifier<TSubjectMeta, TPayloadMeta, TPayloadBody>
+    public interface IPayloadNotifier<TSenderMeta, TPayloadMeta, TPayloadBody>
     {
         /// <summary>
         /// Registers a trigger that will be notified when a payload is created.
@@ -20,6 +20,6 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.P
         /// Adds a consumer that conditionally receives payload notifications.
         /// </summary>
         /// <param name="consumer">The consumer to add.</param>
-        void AddConsumer(IPayloadConsumer<TSubjectMeta, TPayloadMeta, TPayloadBody> consumer);
+        void AddConsumer(IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody> consumer);
     }
 }

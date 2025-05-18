@@ -5,11 +5,11 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.P
     /// <summary>
     /// Represents a consumer that receives payload notifications.
     /// </summary>
-    public interface IPayloadConsumer<in TSubjectMeta, in TPayloadMeta, in TPayloadBody>
+    public interface IPayloadConsumer<in TSenderMeta, in TPayloadMeta, in TPayloadBody>
     {
         /// <summary>
         /// Gets the creation notifier for payloads with subject metadata.
         /// </summary>
-        ICreationNotifier<IPayloadWithSubjectMeta<TSubjectMeta, TPayloadMeta, TPayloadBody>> CreationNotifier { get; }
+        ICreationNotifier<ISenderPayload<TSenderMeta, TPayloadMeta, TPayloadBody>> CreationNotifier { get; }
     }
 }
