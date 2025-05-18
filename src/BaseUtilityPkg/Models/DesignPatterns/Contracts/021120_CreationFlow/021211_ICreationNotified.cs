@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.CreationNotifiedFactory
+namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.CreationFlow
 {
     /// <summary>
-    /// Defines a contract for notifying when a single object of type <typeparamref name="TCreatedObject"/> is created.
+    /// Defines a contract for notifying when a single object of type <typeparamref name="TTarget"/> is created.
     /// This contract enforces unicast semantics.
     /// </summary>
-    public interface ICreationNotified<out TCreatedObject>
+    public interface ICreationNotified<out TTarget>
     {
         /// <summary>
         /// Assigns the handler to be invoked when an object is created.
@@ -18,6 +18,6 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.C
         /// Any attempt to set the handler more than once is expected to throw an exception in the implementation.
         /// This ensures strict ownership of object creation notification and avoids implicit fan-out behavior.
         /// </remarks>
-        Action<TCreatedObject> OnObjectCreated { set; }
+        Action<TTarget> OnObjectCreated { set; }
     }
 }

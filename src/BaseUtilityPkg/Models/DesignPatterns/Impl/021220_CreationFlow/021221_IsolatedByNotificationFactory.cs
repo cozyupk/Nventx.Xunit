@@ -1,21 +1,22 @@
 ﻿using System;
-using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.CreationNotifiedFactory;
+using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.CreationFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.Traits;
-using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Traits;
 
-namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.ShallowClonedNotifierFactory
+namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.CreationFlow
 {
     /// <summary>
-    /// Factory for creating <see cref="ShallowCloned{TCreationArgs}"/> instances and invoking a handler on creation.
+    /// A factory that constructs an object and notifies a registered handler upon completion.
+    /// The created object is never returned to the caller, preserving strict isolation.
+    /// Thread-safe and enforces single-assignment of the notification handler.
     /// </summary>
-    /// <typeparam name="TSource">Type of the creation arguments.</typeparam>
-    public class ClonedNotifierFactory<TSource> : ICreationNotifierFactory<ShallowCloned<TSource>, TSource>
-        where TSource : class, IShallowClonable<TSource>
+    public class IsolatedByNotificationFactory<TTarget, TSource> : ICreationFlow<TTarget, TSource>
+        where TTarget : class
+        where TSource : class, ISelfNewable<TTarget>
     {
         /// <summary>
         /// Handler to be invoked when a new object is created.
         /// </summary>
-        private Action<ShallowCloned<TSource>>? _onObjectCreated;
+        private Action<TTarget>? _onObjectCreated;
 
         /// <summary>
         /// Thread-safe lock object for synchronizing access to the handler.
@@ -27,7 +28,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Shallo
         /// Can only be set once.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown if the handler is already set.</exception>
-        public Action<ShallowCloned<TSource>> OnObjectCreated
+        public Action<TTarget> OnObjectCreated
         {
             set
             {
@@ -45,16 +46,16 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Shallo
         }
 
         /// <summary>
-        /// Creates a new <see cref="ShallowCloned{TCreationArgs}"/> and invokes the handler if set.
+        /// Creates a new shallow-cloned object from the provided arguments and invokes the handler if set.
         /// </summary>
         /// <param name="args">The creation arguments to use.</param>
-        public void TriggerCreation(TSource args)
+        public void CreateAndNotify(TSource args)
         {
             // Validate input arguments
             if (args == null)
                 throw new ArgumentNullException(nameof(args), "Creation arguments cannot be null.");
 
-            Action<ShallowCloned<TSource>>? handler;
+            Action<TTarget>? handler;
 
             // Retrieve the handler in a thread-safe manner
             lock (LockObject)
@@ -67,7 +68,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Shallo
                 throw new ArgumentNullException(nameof(_onObjectCreated), "No handler is registered for object creation.");
 
             // Create a shallow-cloned object and invoke the handler
-            ShallowCloned<TSource> obj = new(args);
+            var obj = args.NewFromSelf();
             handler(obj);
         }
     }

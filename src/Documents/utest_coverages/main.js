@@ -213,8 +213,7 @@ var assemblies = [
   {
     "name": "BaseUtilityPkg.Models.DesignPatterns.Impl",
     "classes": [
-      { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.ShallowClonedNotifierFactory.ClonedNotifierFactory<T>", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_ClonedNotifierFactory_1.html", "cl": 21, "ucl": 0, "cal": 21, "tl": 74, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Traits.ShallowCloned<T>", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_ShallowCloned_1.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 36, "cb": 4, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.ShallowClonedNotifierFactory.CaaS<T1, T2>", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_CaaS_2.html", "cl": 21, "ucl": 0, "cal": 21, "tl": 73, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 

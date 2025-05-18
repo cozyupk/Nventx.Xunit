@@ -1,11 +1,6 @@
-﻿using System;
-using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.Traits;
-using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Traits;
-using Moq;
-using Xunit;
-
-namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.Traits.ShallowClonedTests
+﻿namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.Traits.ShallowClonedTests
 {
+    /*
     /// <summary>
     /// Dummy argument class implementing shallow cloning for test purposes.
     /// </summary>
@@ -125,4 +120,5 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.T
             mock.As<IShallowClonable<DummyArgs>>().Verify(x => x.ShallowClone(), Times.Once);
         }
     }
+    */
 }

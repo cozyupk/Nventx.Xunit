@@ -1,16 +1,15 @@
 ﻿using System;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.Traits;
-using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.ShallowClonedNotifierFactory;
-using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Traits;
+using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.CreationFlow;
 using Moq;
 using Xunit;
 
-namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.ShallowClonedNotifierFactory.ClonedNotifierFactoryTests
+namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.CreationFlow.IsolatedByNotificationFactoryTests
 {
     /// <summary>
     /// DummyArgs is a simple implementation of IShallowClonable for testing purposes.
     /// </summary>
-    public class DummyArgs : IShallowClonable<DummyArgs>
+    public class DummyArgs : ISelfNewable<DummyArgs>
     {
         /// <summary>
         /// Gets or sets a string value for testing.
@@ -20,7 +19,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.S
         /// <summary>
         /// Returns a shallow clone of the current DummyArgs instance.
         /// </summary>
-        public virtual DummyArgs ShallowClone()
+        public virtual DummyArgs NewFromSelf()
         {
             return (DummyArgs)this.MemberwiseClone();
         }
@@ -38,7 +37,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.S
         public void OnObjectCreated_CanBeSetOnce()
         {
             // Arrange
-            var factory = new ClonedNotifierFactory<DummyArgs>
+            var factory = new IsolatedByNotificationFactory<DummyArgs, DummyArgs>
             {
                 // Act
                 OnObjectCreated = _ => { }
@@ -55,7 +54,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.S
         public void OnObjectCreated_ThrowsIfSetTwice()
         {
             // Arrange
-            var factory = new ClonedNotifierFactory<DummyArgs>
+            var factory = new IsolatedByNotificationFactory<DummyArgs, DummyArgs>
             {
                 OnObjectCreated = _ => { }
             };
@@ -72,7 +71,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.S
         public void OnObjectCreated_ThrowsIfSetToNull()
         {
             // Arrange
-            var factory = new ClonedNotifierFactory<DummyArgs>();
+            var factory = new IsolatedByNotificationFactory<DummyArgs, DummyArgs>();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
@@ -86,11 +85,11 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.S
         public void Create_ThrowsIfArgsIsNull()
         {
             // Arrange
-            var factory = new ClonedNotifierFactory<DummyArgs>();
+            var factory = new IsolatedByNotificationFactory<DummyArgs, DummyArgs>();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
-                factory.TriggerCreation(null!));
+                factory.CreateAndNotify(null!));
         }
 
         /// <summary>
@@ -100,8 +99,8 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.S
         public void Create_InvokesHandlerWithClonedObject()
         {
             // Arrange
-            var factory = new ClonedNotifierFactory<DummyArgs>();
-            ShallowCloned<DummyArgs>? received = null;
+            var factory = new IsolatedByNotificationFactory<DummyArgs, DummyArgs>();
+            DummyArgs? received = null;
 
             // Set the handler to capture the created object
             factory.OnObjectCreated = obj => received = obj;
@@ -110,17 +109,17 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.S
             var mock = new Mock<DummyArgs>();
             var clone = new DummyArgs { Value = "test" };
 
-            mock.As<IShallowClonable<DummyArgs>>()
-                .Setup(x => x.ShallowClone())
+            mock.As<ISelfNewable<DummyArgs>>()
+                .Setup(x => x.NewFromSelf())
                 .Returns(clone);
 
             // Act
-            factory.TriggerCreation(mock.Object);
+            factory.CreateAndNotify(mock.Object);
 
             // Assert
             Assert.NotNull(received);
-            Assert.Equal("test", received!.Cloned.Value);
-            Assert.NotSame(mock.Object, received.Cloned);
+            Assert.Equal("test", received!.Value);
+            Assert.NotSame(mock.Object, received);
         }
 
         /// <summary>
@@ -130,11 +129,11 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.S
         public void Create_ThrowsIfHandlerNotSet()
         {
             // Arrange
-            var factory = new ClonedNotifierFactory<DummyArgs>();
+            var factory = new IsolatedByNotificationFactory<DummyArgs, DummyArgs>();
             var args = new DummyArgs { Value = "test" };
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => factory.TriggerCreation(args));
+            Assert.Throws<ArgumentNullException>(() => factory.CreateAndNotify(args));
         }
     }
 }
