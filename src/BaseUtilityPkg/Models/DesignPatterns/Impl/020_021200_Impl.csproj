@@ -9,8 +9,4 @@
 		<ProjectReference Include="..\Contracts\020_021100_Contracts.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="021210_Traits\" />
-	</ItemGroup>
-
 </Project>
