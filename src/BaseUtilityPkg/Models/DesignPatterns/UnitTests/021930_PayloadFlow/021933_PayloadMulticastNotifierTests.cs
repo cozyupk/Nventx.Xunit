@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.NotificationFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.PayloadFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow;
+using Moq;
 using Xunit;
 
 namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.PayloadFlow.PayloadMulticastNotifierTests
@@ -80,7 +81,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         /// <summary>
         /// Consumer that always rejects notifications via IsNotifyNeeded.
         /// </summary>
-        public class RejectingConditionalConsumer : IPayloadConsumer<string, string, string>, IConditionalPayloadConsumer<string, string, string>
+        public class RejectingConditionalConsumer : IPayloadConsumer<string, string, string>, IConditionalNotified<string, string>
         {
             /// <summary>
             /// Indicates whether the consumer was called.
@@ -189,6 +190,52 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
 
             // Assert
             Assert.False(rejectingConsumer.WasCalled); // validate that the consumer was not notified
+        }
+
+        /// <summary>
+        /// Verifies that a consumer implementing ISelfRemovable with CanRemove returning true is removed before notification.
+        /// </summary>
+        [Fact]
+        public void RegisterHandler_WithSelfRemovableConsumer_RemovesBeforeNotification()
+        {
+            // Arrange
+            var notifier = new PayloadMulticastNotifier<string, string, string>("senderXYZ");
+
+            var mockConsumer = new Mock<IPayloadConsumer<string, string, string>>();
+            var mockNotifier = new Mock<INotifyAdapted<ISenderPayload<string, string, string>>>();
+            var selfRemovable = mockConsumer.As<ISelfRemovable>();
+
+            selfRemovable.Setup(r => r.CanRemove()).Returns(true); // ✅ remove対象
+
+            mockConsumer.Setup(c => c.PayloadArrivalNotifier).Returns(mockNotifier.Object);
+
+            notifier.AddConsumer(mockConsumer.Object);
+
+            var trigger = new DummyTrigger();
+            notifier.RegisterHandler(trigger);
+
+            var payload = new DummyPayload("meta", ["data"]);
+
+            // Act
+            trigger.Simulate(payload);
+
+            // Assert
+            mockNotifier.Verify(n => n.Notify(It.IsAny<ISenderPayload<string, string, string>>()), Times.Never);
+            selfRemovable.Verify(r => r.CanRemove(), Times.Once);
+        }
+
+        /// <summary>
+        /// Verifies that RegisterHandler throws an ArgumentNullException when passed a null handler.
+        /// </summary>
+        [Fact]
+        public void RegisterHandler_NullHandler_ThrowsArgumentNullException()
+        {
+            // Arrange
+            var notifier = new PayloadMulticastNotifier<string, string, string>("sender");
+
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() =>
+                notifier.RegisterHandler(null!)); // force null argument
         }
     }
 }

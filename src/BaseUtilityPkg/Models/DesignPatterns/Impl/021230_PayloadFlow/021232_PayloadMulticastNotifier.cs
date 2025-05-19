@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.NotificationFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.PayloadFlow;
 
@@ -48,10 +50,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
             }
         }
 
-        /// <summary>
-        /// List of registered payload consumers.
-        /// </summary>
-        private List<IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody>> Consumers { get; } = new();
+        private ConcurrentDictionary<IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody>, byte> Consumers { get; } = new();
 
         /// <summary>
         /// Gets the sender metadata associated with this notifier.
@@ -69,10 +68,15 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
 
         /// <summary>
         /// Registers a trigger that will notify all registered consumers when a payload is created.
+        /// Can only be called once.
         /// </summary>
         /// <param name="notificationHandler">The notification handler to register.</param>
+        /// <exception cref="InvalidOperationException">Thrown if RegisterHandler is called more than once.</exception>
         public void RegisterHandler(INotificationHandler<IPayload<TPayloadMeta, TPayloadBody>> notificationHandler)
         {
+            if (notificationHandler == null)
+                throw new ArgumentNullException(nameof(notificationHandler));
+
             // Set the action to be performed when a payload is created
             notificationHandler.Handle = (payload) =>
             {
@@ -85,15 +89,27 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
                 // Lock to ensure thread safety when accessing the consumers list
                 lock (ConsumerNotifiersLock)
                 {
-                    consumersCopy = new List<IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody>>(Consumers);
+                    consumersCopy = new List<IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody>>();
+                    foreach(var consumer in Consumers.Keys)
+                    {
+                        // Check if the consumer can be removed
+                        if (consumer is ISelfRemovable selfRemovable && selfRemovable.CanRemove())
+                        {
+                            // Remove the consumer from the list
+                            Consumers.TryRemove(consumer, out _);
+                            continue;
+                        }
+                        // Otherwise, copy the consumer to the copy list
+                        consumersCopy.Add(consumer);
+                    }
                 }
 
                 // Notify all registered consumer notifiers
                 foreach (var consumer in consumersCopy)
                 {
                     // If the consumer is conditional and notification is not needed, skip
-                    if (consumer is IConditionalPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody> consitionalConsumer
-                        && !consitionalConsumer.IsNotifyNeeded(SenderMeta, payload.Meta))
+                    if (consumer is IConditionalNotified<TSenderMeta, TPayloadMeta> conditionalNotified
+                        && !conditionalNotified.IsNotifyNeeded(SenderMeta, payload.Meta))
                     {
                         continue;
                     }
@@ -112,7 +128,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
             // Lock to ensure thread safety when modifying the consumers list
             lock (ConsumerNotifiersLock)
             {
-                Consumers.Add(consumer);
+                Consumers.TryAdd(consumer,byte.MinValue);
             }
         }
     }

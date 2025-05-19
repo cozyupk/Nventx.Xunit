@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "000_build", "000_build", "{
 		build\000200_EntryPoint.ShadowBuild.targets = build\000200_EntryPoint.ShadowBuild.targets
 		build\010000_Layer.props = build\010000_Layer.props
 		build\020000_Layer.props = build\020000_Layer.props
+		build\020_090000_Layer.props = build\020_090000_Layer.props
+		build\020_093000_ComponentGroup.props = build\020_093000_ComponentGroup.props
 		build\030_030000_Layer.props = build\030_030000_Layer.props
 		build\030_060000_Layer.props = build\030_060000_Layer.props
 		build\030_090000_Layer.props = build\030_090000_Layer.props
@@ -120,7 +122,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "020_092000_E2ETests", "020_
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "020_093000_Playgrounds", "020_093000_Playgrounds", "{73BFFFEF-9B04-4D29-8936-DAADA501363A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationDemo", "BaseUtilityPkg\ComponentRoots\PlayGrounds\NotificationDemo\NotificationDemo.csproj", "{3C341F4F-4510-46ED-A637-DA3EC57C11A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "020_093100_NotificationDemo", "BaseUtilityPkg\ComponentRoots\PlayGrounds\NotificationDemo\020_093100_NotificationDemo.csproj", "{3C341F4F-4510-46ED-A637-DA3EC57C11A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
