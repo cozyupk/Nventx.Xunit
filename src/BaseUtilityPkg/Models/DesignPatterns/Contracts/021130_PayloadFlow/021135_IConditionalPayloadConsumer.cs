@@ -3,6 +3,9 @@
     /// <summary>
     /// Represents a consumer that conditionally receives payload notifications based on subject and payload metadata.
     /// </summary>
+    /// <remarks>
+    /// This method should be side-effect free.
+    /// </remarks>
     public interface IConditionalPayloadConsumer<in TSubjectMeta, in TPayloadMeta, in TPayloadBody>
         : IPayloadConsumer<TSubjectMeta, TPayloadMeta, TPayloadBody>
     {
