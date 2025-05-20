@@ -6,6 +6,7 @@ using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.Paylo
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.Traits;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.NotificationFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow;
+using Moq;
 using Xunit;
 
 namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.PayloadFlow.PayloadMulticastNotifierTests
@@ -381,6 +382,47 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             var dummy = (DummyConsumer)consumer;
             Assert.Equal(1, dummy.NotifyCount);
             Assert.Equal("meta", dummy.ReceivedLast?.Meta);
+        }
+
+        /// <summary>
+        /// Verifies that GetConsumers returns all registered consumers.
+        /// </summary>
+        [Fact]
+        public void GetConsumers_ReturnsAllRegisteredConsumers()
+        {
+            // Arrange
+            var notifier = new PayloadMulticastNotifier<string, string, string>("sender");
+            IPayloadConsumer<string, string, string> consumer1 = new Mock<IPayloadConsumer<string, string, string>>().Object;
+            IPayloadConsumer<string, string, string> consumer2 = new Mock<IPayloadConsumer<string, string, string>>().Object;
+
+            notifier.AddConsumer(consumer1);
+            notifier.AddConsumer(consumer2);
+
+            // Act
+            var consumers = notifier.GetConsumers();
+
+            // Assert
+            Assert.Contains(consumer1, consumers);
+            Assert.Contains(consumer2, consumers);
+        }
+
+        /// <summary>
+        /// Verifies that ClearConsumers removes all registered consumers.
+        /// </summary>
+        [Fact]
+        public void ClearConsumers_RemovesAllConsumers()
+        {
+            // Arrange
+            var notifier = new PayloadMulticastNotifier<string, string, string>("sender");
+            IPayloadConsumer<string, string, string> consumer = new Mock<IPayloadConsumer<string, string, string>>().Object;
+            notifier.AddConsumer(consumer);
+
+            // Act
+            notifier.ClearConsumers();
+            var consumers = notifier.GetConsumers();
+
+            // Assert
+            Assert.Empty(consumers);
         }
     }
 }

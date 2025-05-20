@@ -67,6 +67,32 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
         }
 
         /// <summary>
+        /// Returns a thread-safe copy of the current payload consumers, removing any that indicate they should be removed.
+        /// </summary>
+        private IEnumerable<IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody>> GetLatestConsumersCppy()
+        {
+            List<IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody>> consumersCopy;
+
+            // Lock to ensure thread-safe access to the consumer list
+            lock (ConsumerNotifiersLock)
+            {
+                consumersCopy = new List<IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody>>();
+                foreach (var consumer in Consumers.Keys)
+                {
+                    // Remove consumers that indicate they should be removed
+                    if (consumer is ISelfRemovable selfRemovable && selfRemovable.CanRemove())
+                    {
+                        Consumers.TryRemove(consumer, out _);
+                        continue;
+                    }
+                    consumersCopy.Add(consumer);
+                }
+            }
+
+            return consumersCopy;
+        }
+
+        /// <summary>
         /// Registers a handler that will be invoked when a payload is emitted.
         /// The handler is set to the notificationHandler, and when triggered, it notifies all registered consumers.
         /// Supports optional execution context via the runner parameter.
@@ -92,22 +118,8 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
                 // Wrap the payload with sender metadata
                 var senderPayload = new SenderPayload(SenderMeta, payload);
 
-                List<IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody>> consumersCopy;
-                // Lock to ensure thread-safe access to the consumer list
-                lock (ConsumerNotifiersLock)
-                {
-                    consumersCopy = new List<IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody>>();
-                    foreach (var consumer in Consumers.Keys)
-                    {
-                        // Remove consumers that indicate they should be removed
-                        if (consumer is ISelfRemovable selfRemovable && selfRemovable.CanRemove())
-                        {
-                            Consumers.TryRemove(consumer, out _);
-                            continue;
-                        }
-                        consumersCopy.Add(consumer);
-                    }
-                }
+                // Get a thread-safe copy of the current consumers
+                var consumersCopy = GetLatestConsumersCppy();
 
                 // Notify all eligible consumers via the injected execution context.
                 // This allows consumers to be notified synchronously, asynchronously, or with custom logic.
@@ -150,6 +162,26 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
         public void RemoveConsumer(IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody> consumer)
         {
             Consumers.TryRemove(consumer, out _);
+        }
+
+        /// <summary>
+        /// Returns a thread-safe copy of the current payload consumers.
+        /// </summary>
+        protected internal IEnumerable<IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody>> GetConsumers()
+        {
+            return GetLatestConsumersCppy();
+        }
+
+        /// <summary>
+        /// Clears all registered payload consumers in a thread-safe manner.
+        /// </summary>
+        protected internal void ClearConsumers()
+        {
+            // Lock to ensure thread safety when modifying the consumers list
+            lock (ConsumerNotifiersLock)
+            {
+                Consumers.Clear();
+            }
         }
     }
 }

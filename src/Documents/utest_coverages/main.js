@@ -215,7 +215,7 @@ var assemblies = [
     "classes": [
       { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.NotificationFlow.UnicastAdaptationNotifier<T1, T2>", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_UnicastAdaptationNotifier_2.html", "cl": 22, "ucl": 0, "cal": 22, "tl": 69, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow.PayloadConsumerUsingWeakReferenceBase<T1, T2, T3>", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_PayloadConsumerUsingWeakReferenceBase_3.html", "cl": 21, "ucl": 0, "cal": 21, "tl": 77, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow.PayloadMulticastNotifier<T1, T2, T3>", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_PayloadMulticastNotifier_3.html", "cl": 68, "ucl": 0, "cal": 68, "tl": 155, "cb": 18, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow.PayloadMulticastNotifier<T1, T2, T3>", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_PayloadMulticastNotifier_3.html", "cl": 78, "ucl": 0, "cal": 78, "tl": 187, "cb": 18, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow.PayloadMulticastNotifierBuilder<T1, T2, T3>", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_PayloadMulticastNotifierBuilder_3.html", "cl": 20, "ucl": 0, "cal": 20, "tl": 67, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Traits.NotificationHandlerExtensions", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_NotificationHandlerExtensions.html", "cl": 30, "ucl": 0, "cal": 30, "tl": 79, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
@@ -226,17 +226,9 @@ var metrics = [{ "name": "Crap Score", "abbreviation": "crp", "explanationUrl": 
 var historicCoverageExecutionTimes = [];
 
 var riskHotspotMetrics = [
-      { "name": "Crap Score", "explanationUrl": "https://googletesting.blogspot.de/2011/02/this-code-is-crap.html" },
-      { "name": "Cyclomatic complexity", "explanationUrl": "https://en.wikipedia.org/wiki/Cyclomatic_complexity" },
 ];
 
 var riskHotspots = [
-  {
-    "assembly": "BaseUtilityPkg.Models.DesignPatterns.Impl", "class": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow.PayloadMulticastNotifier<T1, T2, T3>", "reportPath": "BaseUtilityPkg.Models.DesignPatterns.Impl_PayloadMulticastNotifier_3.html", "methodName": "RegisterHandler(Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.NotificationFlow.INotificationHandler`1<Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.PayloadFlow.IPayload`2<TPayloadMeta,TPayloadBody>>,System.Action`1<System.Action>)", "methodShortName": "RegisterHandler(...)", "fileIndex": 0, "line": 82,
-    "metrics": [
-      { "value": 18, "exceeded": false },
-      { "value": 18, "exceeded": true },
-    ]},
 ];
 
 var branchCoverageAvailable = true;
