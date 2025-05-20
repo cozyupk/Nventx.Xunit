@@ -43,7 +43,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.ComponentRoots.PlayGrounds.Notifi
         private class ConsoleConsumer : IPayloadConsumer<string, string, string>
         {
             private readonly string _name;
-            public INotifyAdapted<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
+            public IUnicastNotifier<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
 
             public ConsoleConsumer(string name)
             {
@@ -51,7 +51,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.ComponentRoots.PlayGrounds.Notifi
                 PayloadArrivalNotifier = new ConsoleNotifier(_name);
             }
 
-            private class ConsoleNotifier(string consumerName) : INotifyAdapted<ISenderPayload<string, string, string>>
+            private class ConsoleNotifier(string consumerName) : IUnicastNotifier<ISenderPayload<string, string, string>>
             {
                 private readonly string _consumerName = consumerName;
 

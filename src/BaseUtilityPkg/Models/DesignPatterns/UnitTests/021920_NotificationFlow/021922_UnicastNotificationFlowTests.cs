@@ -5,7 +5,7 @@ using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Notificati
 using Moq;
 using Xunit;
 
-namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.NotificationFlow.UnicastAdaptationNotifierTests
+namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.NotificationFlow.UnicastNotificationFlowTests
 {
     /// <summary>
     /// Dummy argument class implementing IAdaptTo for testing purposes.
@@ -39,7 +39,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.N
         public void OnObjectCreated_CanBeSetOnce()
         {
             // Arrange & Act
-            var notifier = new UnicastAdaptationNotifier<DummyArgs, DummyArgs>
+            var notifier = new UnicastNotificationFlow<DummyArgs, DummyArgs>
             {
                 Handle = _ => { }
             };
@@ -55,7 +55,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.N
         public void Handle_ThrowsIfSetTwice()
         {
             // Arrange
-            INotificationFlow<DummyArgs, DummyArgs> notifier = new UnicastAdaptationNotifier<DummyArgs, DummyArgs>
+            IUnicastNotificationFlow<DummyArgs, DummyArgs> notifier = new UnicastNotificationFlow<DummyArgs, DummyArgs>
             {
                 Handle = _ => { }
             };
@@ -72,7 +72,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.N
         public void Handle_ThrowsIfSetToNull()
         {
             // Arrange
-            INotificationFlow<DummyArgs, DummyArgs> notifier = new UnicastAdaptationNotifier<DummyArgs, DummyArgs>();
+            IUnicastNotificationFlow<DummyArgs, DummyArgs> notifier = new UnicastNotificationFlow<DummyArgs, DummyArgs>();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
@@ -86,7 +86,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.N
         public void Notify_ThrowsIfArgsIsNull()
         {
             // Arrange
-            INotificationFlow<DummyArgs, DummyArgs> notifier = new UnicastAdaptationNotifier<DummyArgs, DummyArgs>();
+            IUnicastNotificationFlow<DummyArgs, DummyArgs> notifier = new UnicastNotificationFlow<DummyArgs, DummyArgs>();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
@@ -100,7 +100,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.N
         public void Notify_InvokesHandlerWithClonedObject()
         {
             // Arrange
-            INotificationFlow<DummyArgs, DummyArgs> notifier = new UnicastAdaptationNotifier<DummyArgs, DummyArgs>();
+            IUnicastNotificationFlow<DummyArgs, DummyArgs> notifier = new UnicastNotificationFlow<DummyArgs, DummyArgs>();
             DummyArgs? received = null;
 
             // Set the handler to capture the created object

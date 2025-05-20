@@ -1,4 +1,4 @@
-﻿namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.PayloadFlow
+﻿namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.Traits
 {
     /// <summary>
     /// Represents an interface for objects that can determine if they are eligible for removal.
@@ -6,7 +6,7 @@
     public interface ISelfRemovable
     {
         /// Note: Removability is a suggestion, not a guarantee of disuse.
- 
+
         /// <summary>
         /// Determines whether the object can be removed.
         /// </summary>

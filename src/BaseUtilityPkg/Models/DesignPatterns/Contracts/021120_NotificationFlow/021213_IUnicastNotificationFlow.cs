@@ -5,8 +5,8 @@
     /// </summary>
     /// <typeparam name="TTarget">The type of the adapted target.</typeparam>
     /// <typeparam name="TSource">The type of the source argument.</typeparam>
-    public interface INotificationFlow<out TTarget, in TSource>
-        : INotificationHandler<TTarget>, INotifyAdapted<TSource>
+    public interface IUnicastNotificationFlow<out TTarget, in TSource>
+        : INotificationHandler<TTarget>, IUnicastNotifier<TSource>
     {
     }
 }

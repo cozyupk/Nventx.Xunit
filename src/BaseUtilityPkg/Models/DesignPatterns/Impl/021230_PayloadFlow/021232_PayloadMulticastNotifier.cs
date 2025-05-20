@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.NotificationFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.PayloadFlow;
+using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.Traits;
 
 namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow
 {
@@ -128,8 +129,8 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
                     foreach (var consumer in consumersCopy)
                     {
                         // Skip notification if the consumer's condition is not met
-                        if (consumer is IConditionalNotified<TSenderMeta, TPayloadMeta> conditionalNotified
-                            && !conditionalNotified.IsNotifyNeeded(SenderMeta, payload.Meta))
+                        if (consumer is IShouldNotify<TSenderMeta, TPayloadMeta> conditionalNotified
+                            && !conditionalNotified.ShouldNotify(SenderMeta, payload.Meta))
                         {
                             continue;
                         }

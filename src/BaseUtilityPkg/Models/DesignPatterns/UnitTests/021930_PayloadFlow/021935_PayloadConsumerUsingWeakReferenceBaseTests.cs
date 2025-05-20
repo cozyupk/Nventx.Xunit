@@ -47,7 +47,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         {
             // Arrange: Set up a mock consumer and notifier
             var mockTarget = new Mock<IPayloadConsumer<string, string, string>>();
-            var mockNotifier = new Mock<INotifyAdapted<ISenderPayload<string, string, string>>>();
+            var mockNotifier = new Mock<IUnicastNotifier<ISenderPayload<string, string, string>>>();
 
             mockTarget.Setup(c => c.PayloadArrivalNotifier).Returns(mockNotifier.Object);
 
@@ -108,7 +108,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         /// <summary>
         /// No-op notifier implementation for testing.
         /// </summary>
-        private class NoOpNotifier : INotifyAdapted<ISenderPayload<string, string, string>>
+        private class NoOpNotifier : IUnicastNotifier<ISenderPayload<string, string, string>>
         {
             public void Notify(ISenderPayload<string, string, string> arg) { /* noop */ }
         }

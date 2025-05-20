@@ -9,7 +9,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Notifi
     /// and notifies a single registered handler upon adaptation.
     /// The target object is not returned to the caller, preserving strict isolation.
     /// </summary>
-    public class UnicastAdaptationNotifier<TTarget, TSource> : INotificationFlow<TTarget, TSource>
+    public class UnicastNotificationFlow<TTarget, TSource> : IUnicastNotificationFlow<TTarget, TSource>
         where TTarget : class
         where TSource : class, IAdaptTo<TTarget>
     {

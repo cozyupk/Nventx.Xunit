@@ -35,7 +35,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             public IPayload<string, string>? ReceivedLast { get; private set; }
             public string? SenderLast { get; private set; }
 
-            public INotifyAdapted<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
+            public IUnicastNotifier<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
 
             public DummyConsumer()
             {
@@ -54,7 +54,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             /// <summary>
             /// Simple lambda-based notifier for test purposes.
             /// </summary>
-            private class LambdaNotifier<T>(Action<T> notify) : INotifyAdapted<T>
+            private class LambdaNotifier<T>(Action<T> notify) : IUnicastNotifier<T>
             {
                 private readonly Action<T> _notify = notify;
                 public void Notify(T arg) => _notify(arg);
@@ -64,11 +64,11 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         /// <summary>
         /// Consumer that always rejects notification via IConditionalNotified.
         /// </summary>
-        public class RejectingConditionalConsumer : IPayloadConsumer<string, string, string>, IConditionalNotified<string, string>
+        public class RejectingConditionalConsumer : IPayloadConsumer<string, string, string>, IShouldNotify<string, string>
         {
             public bool WasCalled { get; private set; }
 
-            public INotifyAdapted<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
+            public IUnicastNotifier<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
 
             public RejectingConditionalConsumer()
             {
@@ -82,9 +82,9 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             /// <summary>
             /// Always returns false, so notification is never needed.
             /// </summary>
-            public bool IsNotifyNeeded(string subjectMeta, string payloadMeta) => false;
+            public bool ShouldNotify(string subjectMeta, string payloadMeta) => false;
 
-            private class LambdaNotifier<T>(Action<T> notify) : INotifyAdapted<T>
+            private class LambdaNotifier<T>(Action<T> notify) : IUnicastNotifier<T>
             {
                 private readonly Action<T> _notify = notify;
                 public void Notify(T arg) => _notify(arg);
@@ -99,7 +99,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         {
             public int NotifyCount { get; private set; }
 
-            public INotifyAdapted<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
+            public IUnicastNotifier<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
 
             public bool CanRemoveFlag { get; }
             public bool CanRemoveValue { get; set; }
@@ -125,7 +125,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             {
             }
 
-            private class LambdaNotifier<T>(Action<T> notify) : INotifyAdapted<T>
+            private class LambdaNotifier<T>(Action<T> notify) : IUnicastNotifier<T>
             {
                 private readonly Action<T> _notify = notify;
                 public void Notify(T arg) => _notify(arg);
@@ -154,7 +154,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             /// <summary>
             /// Notifier that triggers when a payload arrives.
             /// </summary>
-            public INotifyAdapted<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
+            public IUnicastNotifier<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="DummyConsumerWithCompletion"/> class.
@@ -176,7 +176,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             /// <summary>
             /// Simple lambda-based notifier for test purposes.
             /// </summary>
-            private class LambdaNotifier<T>(Action<T> notify) : INotifyAdapted<T>
+            private class LambdaNotifier<T>(Action<T> notify) : IUnicastNotifier<T>
             {
                 private readonly Action<T> _notify = notify;
 
@@ -257,7 +257,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             notifier.AddConsumer(removedConsumer);
 
             // Arrange: Create a unicast notifier and register it with the multicast notifier.
-            var unicastNotifier = new UnicastAdaptationNotifier<IPayload<string, string>, DummyPayload>();
+            var unicastNotifier = new UnicastNotificationFlow<IPayload<string, string>, DummyPayload>();
             notifier.RegisterHandler(unicastNotifier);
 
             // Act: Create a dummy payload and notify via the handler.
@@ -292,7 +292,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             notifier.AddConsumer(nonRemoveConsumer);
             notifier.AddConsumer(removeConsumer);
 
-            var unicastNotifier = new UnicastAdaptationNotifier<IPayload<string, string>, DummyPayload>();
+            var unicastNotifier = new UnicastNotificationFlow<IPayload<string, string>, DummyPayload>();
             notifier.RegisterHandler(unicastNotifier);
 
             var payload = new DummyPayload("meta", ["data"]);
@@ -370,7 +370,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             notifier.AddConsumer(consumer);
 
             // Arrange
-            var handler = new UnicastAdaptationNotifier<IPayload<string, string>, DummyPayload>();
+            var handler = new UnicastNotificationFlow<IPayload<string, string>, DummyPayload>();
             notifier.RegisterHandler(handler); // default is sync
 
             // Act

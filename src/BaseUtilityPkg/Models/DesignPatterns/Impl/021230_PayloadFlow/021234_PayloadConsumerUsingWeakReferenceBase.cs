@@ -1,6 +1,7 @@
 ﻿using System;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.NotificationFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.PayloadFlow;
+using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.Traits;
 
 namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow
 {
@@ -32,7 +33,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
         /// <summary>
         /// Forwards notifications to the underlying consumer if still alive.
         /// </summary>
-        public INotifyAdapted<ISenderPayload<TSenderMeta, TPayloadMeta, TPayloadBody>> PayloadArrivalNotifier =>
+        public IUnicastNotifier<ISenderPayload<TSenderMeta, TPayloadMeta, TPayloadBody>> PayloadArrivalNotifier =>
             new LambdaNotifier(payload =>
             {
                 if (WeakConsumer.TryGetTarget(out var target))
@@ -51,7 +52,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
         /// Simple lambda-based notifier.
         /// </summary>
         private class LambdaNotifier
-            : INotifyAdapted<ISenderPayload<TSenderMeta, TPayloadMeta, TPayloadBody>>
+            : IUnicastNotifier<ISenderPayload<TSenderMeta, TPayloadMeta, TPayloadBody>>
         {
             /// <summary>
             /// The handler delegate that processes the payload notification.

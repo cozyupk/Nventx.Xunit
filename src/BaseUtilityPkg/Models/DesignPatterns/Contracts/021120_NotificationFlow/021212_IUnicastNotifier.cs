@@ -4,7 +4,7 @@
     /// Defines a contract for notifying an adapted result derived from the specified source argument.
     /// </summary>
     /// <typeparam name="TSource">The type of the input argument.</typeparam>
-    public interface INotifyAdapted<in TSource>
+    public interface IUnicastNotifier<in TSource>
     {
         /// <summary>
         /// Notifies an adapted object derived from the specified source argument.

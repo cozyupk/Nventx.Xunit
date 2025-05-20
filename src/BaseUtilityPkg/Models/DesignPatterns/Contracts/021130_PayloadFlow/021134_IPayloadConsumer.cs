@@ -11,6 +11,6 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.P
         /// Gets the notifier responsible for handling arrival of a payload notification.
         /// This notifier is expected to follow unicast semantics—i.e., only a single handler is supported.
         /// </summary>
-        INotifyAdapted<ISenderPayload<TSenderMeta, TPayloadMeta, TPayloadBody>> PayloadArrivalNotifier { get; }
+        IUnicastNotifier<ISenderPayload<TSenderMeta, TPayloadMeta, TPayloadBody>> PayloadArrivalNotifier { get; }
     }
 }

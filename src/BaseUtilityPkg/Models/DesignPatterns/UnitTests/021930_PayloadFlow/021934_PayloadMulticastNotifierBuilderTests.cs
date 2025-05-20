@@ -28,7 +28,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             /// <summary>
             /// Notifier that handles WasNotified when notified.
             /// </summary>
-            public INotifyAdapted<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
+            public IUnicastNotifier<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
 
             public DummyConsumer()
             {
@@ -38,7 +38,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             /// <summary>
             /// Test notifier that invokes a callback on notification.
             /// </summary>
-            private class TestNotifier(Action callback) : INotifyAdapted<ISenderPayload<string, string, string>>
+            private class TestNotifier(Action callback) : IUnicastNotifier<ISenderPayload<string, string, string>>
             {
                 private readonly Action _callback = callback;
 
@@ -63,7 +63,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             builder.AddConsumer(consumer2);
 
             var notifier = builder.Build("sender-xyz");
-            var unicastNotifier = new UnicastAdaptationNotifier<IPayload<string, string>, DummyPayload>();
+            var unicastNotifier = new UnicastNotificationFlow<IPayload<string, string>, DummyPayload>();
             notifier.RegisterHandler(unicastNotifier);
 
             // Act
