@@ -37,7 +37,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Notifi
                         throw new InvalidOperationException("Handler has already been assigned.");
 
                     // Handler must not be null
-                    Handler = value ?? throw new ArgumentNullException(nameof(value), "Handler cannot be null.");
+                    Handler = value ?? throw new ArgumentNullException(nameof(Handle), "Handler cannot be null.");
                 }
             }
         }
@@ -59,7 +59,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Notifi
 
             // Ensure a handler is registered before proceeding
             if (handler == null)
-                throw new ArgumentNullException(nameof(Handler), "No handler has been registered.");
+                throw new InvalidOperationException("No handler has been registered.");
 
             // Adapt the source to the target type and invoke the handler
             var adapted = source.Adapt();

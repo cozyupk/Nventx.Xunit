@@ -1,39 +1,54 @@
-﻿using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.PayloadFlow;
+﻿using System;
+using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.PayloadFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow;
-using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.PayloadFlow.IAdaptToTests;
+using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.NotificationFlow.IAdaptToTests;
 using Xunit;
 
 namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.PayloadFlow.PayloadUnicastNotifierTests
 {
     /// <summary>
-    /// Contains unit tests for the <see cref="PayloadUnicastNotifier{TMeta, TBody}"/> class.
+    /// Unit tests for the PayloadUnicastNotifier class.
+    /// Verifies correct notification behavior and exception handling.
     /// </summary>
     public class PayloadUnicastNotifierTests
     {
         /// <summary>
-        /// Verifies that the <see cref="PayloadUnicastNotifier{TMeta, TBody}.OnObjectCreated"/> event is triggered
-        /// and receives the correct payload when <see cref="PayloadUnicastNotifier{TMeta, TBody}.Notify"/> is called.
+        /// Verifies that the assigned handler is called with the correct payload when Notify is invoked.
         /// </summary>
         [Fact]
-        public void Notify_TriggersOnObjectCreated()
+        public void Notify_CallsAssignedHandle_WithCorrectPayload()
         {
-            // Arrange: Create a factory and dummy arguments for payload creation.
-            var factory = new PayloadUnicastNotifier<string, string>();
+            // Arrange: Create a notifier and dummy arguments for payload.
+            var notifier = new PayloadUnicastNotifier<string, string>();
             var args = new DummyPayloadArgs("meta", "body1");
 
-            // Variable to capture the payload passed to the OnObjectCreated event.
+            // Variable to capture the payload passed to the handle.
             IPayload<string, string>? captured = null;
 
-            // Assign a handler to capture the created payload.
-            factory.Handle = payload => captured = payload;
+            // Assign a handler to capture the notified payload.
+            notifier.Handle = payload => captured = payload;
 
-            // Act: Create the payload and trigger the event.
-            factory.Notify(args);
+            // Act: Notify the handler with the payload.
+            notifier.Notify(args);
 
-            // Assert: Ensure the event was triggered and the payload has expected values.
+            // Assert: Ensure the handler was called and the payload has expected values.
             Assert.NotNull(captured);
             Assert.Equal("meta", captured!.Meta);
             Assert.Contains("body1", captured.Bodies);
+        }
+
+        /// <summary>
+        /// Verifies that an InvalidOperationException is thrown if Notify is called when Handle is null.
+        /// </summary>
+        [Fact]
+        public void Notify_WithNullHandle_ThrowsInvalidOperationException()
+        {
+            // Arrange: Create a notifier without assigning a handler.
+            var notifier = new PayloadUnicastNotifier<string, string>();
+            var args = new DummyPayloadArgs("meta", "body1");
+
+            // Act & Assert: Expect an exception when Notify is called without a handler.
+            Assert.Throws<InvalidOperationException>(() => notifier.Notify(args));
         }
     }
 }

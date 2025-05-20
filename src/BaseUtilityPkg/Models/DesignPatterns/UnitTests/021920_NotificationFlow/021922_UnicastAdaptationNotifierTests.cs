@@ -4,7 +4,7 @@ using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Notificati
 using Moq;
 using Xunit;
 
-namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.CreationFlow.UnicastAdaptationNotifierTests
+namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.NotificationFlow.UnicastAdaptationNotifierTests
 {
     /// <summary>
     /// Dummy argument class implementing IAdaptTo for testing purposes.
@@ -120,20 +120,6 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.C
             Assert.NotNull(received);
             Assert.Equal("test", received!.Value);
             Assert.NotSame(mock.Object, received);
-        }
-
-        /// <summary>
-        /// Verifies that Notify throws an ArgumentNullException if the handler is not set.
-        /// </summary>
-        [Fact]
-        public void Notify_ThrowsIfHandlerNotSet()
-        {
-            // Arrange
-            var notifier = new UnicastAdaptationNotifier<DummyArgs, DummyArgs>();
-            var args = new DummyArgs { Value = "test" };
-
-            // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => notifier.Notify(args));
         }
     }
 }

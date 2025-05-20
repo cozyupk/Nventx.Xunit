@@ -131,5 +131,13 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
                 Consumers.TryAdd(consumer,byte.MinValue);
             }
         }
+
+        /// <summary>
+        /// Removes a consumer from the list of payload consumers.
+        /// </summary>
+        public void RemoveConsumer(IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody> consumer)
+        {
+            Consumers.TryRemove(consumer, out _);
+        }
     }
 }

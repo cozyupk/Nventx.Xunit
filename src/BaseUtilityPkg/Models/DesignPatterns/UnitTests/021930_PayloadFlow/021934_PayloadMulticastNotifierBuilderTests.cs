@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.NotificationFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.PayloadFlow;
+using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.Traits;
+using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.NotificationFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow;
 using Xunit;
 
@@ -24,7 +26,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             public bool WasNotified { get; private set; }
 
             /// <summary>
-            /// Notifier that triggers WasNotified when notified.
+            /// Notifier that handles WasNotified when notified.
             /// </summary>
             public INotifyAdapted<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
 
@@ -48,32 +50,27 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         }
 
         /// <summary>
-        /// Test to ensure all added consumers are registered and notified.
+        /// Verifies that all consumers added to the PayloadMulticastNotifierBuilder are properly registered and notified when a payload is sent.
         /// </summary>
         [Fact]
         public void Build_ShouldRegisterAllAddedConsumers()
         {
-            // Arrange: Create builder and dummy consumers
+            // Arrange
             var builder = new PayloadMulticastNotifierBuilder<string, string, string>();
             var consumer1 = new DummyConsumer();
             var consumer2 = new DummyConsumer();
-
             builder.AddConsumer(consumer1);
             builder.AddConsumer(consumer2);
 
-            // Act: Build notifier and register a dummy trigger
             var notifier = builder.Build("sender-xyz");
+            var unicastNotifier = new UnicastAdaptationNotifier<IPayload<string, string>, DummyPayload>();
+            notifier.RegisterHandler(unicastNotifier);
 
-            // Assert: Notifier should not be null
-            Assert.NotNull(notifier);
+            // Act
+            var payload = new DummyPayload("meta", ["test-body"]);
+            unicastNotifier.Notify(payload);
 
-            // Register a dummy trigger and simulate notification
-            var trigger = new DummyTrigger();
-            notifier.RegisterHandler(trigger);
-
-            trigger.Simulate(new DummyPayload("meta", ["test-body"]));
-
-            // Both consumers should have been notified
+            // Assert
             Assert.True(consumer1.WasNotified);
             Assert.True(consumer2.WasNotified);
         }
@@ -81,16 +78,17 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         /// <summary>
         /// Dummy implementation of IPayload for testing.
         /// </summary>
-        private class DummyPayload(string meta, IEnumerable<string> bodies) : IPayload<string, string>
+        private class DummyPayload(string meta, IEnumerable<string> bodies) : IPayload<string, string>, IAdaptTo<IPayload<string, string>>
         {
             public string Meta { get; } = meta;
             public IEnumerable<string> Bodies { get; } = bodies;
+            public IPayload<string, string> Adapt() => this;
         }
 
         /// <summary>
-        /// Dummy trigger implementing INotificationHandler for testing notification flow.
+        /// Dummy handler implementing INotificationHandler for testing notification flow.
         /// </summary>
-        private class DummyTrigger : INotificationHandler<IPayload<string, string>>
+        private class DummyHandler : INotificationHandler<IPayload<string, string>>
         {
             /// <summary>
             /// Delegate to handle notifications.

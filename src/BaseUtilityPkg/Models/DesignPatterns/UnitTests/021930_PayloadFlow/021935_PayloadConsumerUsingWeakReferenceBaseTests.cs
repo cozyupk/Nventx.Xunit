@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.NotificationFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.PayloadFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow;
@@ -17,36 +18,24 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         /// <summary>
         /// Dummy implementation of ISenderPayload for testing purposes.
         /// </summary>
-        private class DummySenderPayload : ISenderPayload<string, string, string>
+        /// <remarks>
+        /// Initializes a new instance of DummySenderPayload.
+        /// </remarks>
+        private class DummySenderPayload(string sender, string meta, IEnumerable<string> bodies) : ISenderPayload<string, string, string>
         {
-            public string SenderMeta { get; }
-            public IPayload<string, string> Payload { get; }
-
-            /// <summary>
-            /// Initializes a new instance of DummySenderPayload.
-            /// </summary>
-            public DummySenderPayload(string sender, string meta, IEnumerable<string> bodies)
-            {
-                SenderMeta = sender;
-                Payload = new DummyPayload(meta, bodies);
-            }
+            public string SenderMeta { get; } = sender;
+            public IPayload<string, string> Payload { get; } = new DummyPayload(meta, bodies);
 
             /// <summary>
             /// Dummy implementation of IPayload for testing.
             /// </summary>
-            private class DummyPayload : IPayload<string, string>
+            /// <remarks>
+            /// Initializes a new instance of DummyPayload.
+            /// </remarks>
+            private class DummyPayload(string meta, IEnumerable<string> bodies) : IPayload<string, string>
             {
-                public string Meta { get; }
-                public IEnumerable<string> Bodies { get; }
-
-                /// <summary>
-                /// Initializes a new instance of DummyPayload.
-                /// </summary>
-                public DummyPayload(string meta, IEnumerable<string> bodies)
-                {
-                    Meta = meta;
-                    Bodies = bodies;
-                }
+                public string Meta { get; } = meta;
+                public IEnumerable<string> Bodies { get; } = bodies;
             }
         }
 
@@ -63,13 +52,13 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             mockTarget.Setup(c => c.PayloadArrivalNotifier).Returns(mockNotifier.Object);
 
             var wrapper = new PayloadConsumerUsingWeakReferenceBase<string, string, string>(mockTarget.Object);
-            var payload = new DummySenderPayload("sender", "meta", new[] { "b1" });
+            var payload = new DummySenderPayload("sender", "meta", ["b1"]);
 
             // Act: Notify through the wrapper
             wrapper.PayloadArrivalNotifier.Notify(payload);
 
             // Assert: Notification is forwarded exactly once
-            mockNotifier.Verify(n => n.Notify(It.IsAny<ISenderPayload<string, string, string>>()), Times.Once);
+            mockNotifier.Verify(n => n.Notify(payload), Times.Once);
         }
 
         /// <summary>
@@ -79,7 +68,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         public void CanRemove_ReturnsTrue_WhenTargetIsCollected()
         {
             // Arrange: Create a consumer in a temporary scope and wrap it
-            IPayloadConsumer<string, string, string> CreateConsumer()
+            static IPayloadConsumer<string, string, string> CreateConsumer()
             {
                 var mock = new Mock<IPayloadConsumer<string, string, string>>();
                 mock.Setup(c => c.PayloadArrivalNotifier).Returns(new NoOpNotifier());
@@ -92,6 +81,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             GC.Collect();
             GC.WaitForPendingFinalizers();
             GC.Collect();
+            Thread.Sleep(50);
 
             // Act: Check if the wrapper is removable
             var result = wrapper.CanRemove();
@@ -104,7 +94,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         /// <summary>
         /// Creates a weak wrapper from a temporary scope and returns the weak reference.
         /// </summary>
-        private PayloadConsumerUsingWeakReferenceBase<string, string, string> CreateWeakWrapperFromTemporaryScope(
+        private static PayloadConsumerUsingWeakReferenceBase<string, string, string> CreateWeakWrapperFromTemporaryScope(
             Func<IPayloadConsumer<string, string, string>> factory,
             out WeakReference<IPayloadConsumer<string, string, string>> weakRef)
         {

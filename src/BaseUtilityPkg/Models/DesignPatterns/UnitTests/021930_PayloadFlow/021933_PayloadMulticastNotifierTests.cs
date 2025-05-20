@@ -2,103 +2,72 @@
 using System.Collections.Generic;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.NotificationFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.PayloadFlow;
+using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.Traits;
+using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.NotificationFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow;
-using Moq;
 using Xunit;
 
 namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.PayloadFlow.PayloadMulticastNotifierTests
 {
     /// <summary>
-    /// Unit tests for the PayloadMulticastNotifier class, verifying notification and conditional consumer logic.
+    /// Unit tests for PayloadMulticastNotifier, verifying multicast notification logic and consumer behaviors.
     /// </summary>
     public class PayloadMulticastNotifierTests
     {
         /// <summary>
-        /// Dummy implementation of IPayload for testing purposes.
+        /// Dummy payload implementation for testing, with meta and bodies.
         /// </summary>
-        public class DummyPayload(string meta, IEnumerable<string> bodies) : IPayload<string, string>
+        public class DummyPayload(string meta, IEnumerable<string> bodies) : IPayload<string, string>, IAdaptTo<IPayload<string, string>>
         {
-            /// <summary>
-            /// Gets the payload metadata.
-            /// </summary>
             public string Meta { get; } = meta;
-
-            /// <summary>
-            /// Gets the payload bodies.
-            /// </summary>
             public IEnumerable<string> Bodies { get; } = bodies;
+            public IPayload<string, string> Adapt() => this;
         }
 
         /// <summary>
-        /// Dummy consumer that records the last received payload and sender.
+        /// Dummy consumer that records notification count and last received payload.
         /// </summary>
         public class DummyConsumer : IPayloadConsumer<string, string, string>
         {
-            /// <summary>
-            /// Gets the last received payload.
-            /// </summary>
-            public IPayload<string, string>? Received { get; private set; }
+            public int NotifyCount { get; private set; } = 0;
+            public IPayload<string, string>? ReceivedLast { get; private set; }
+            public string? SenderLast { get; private set; }
 
-            /// <summary>
-            /// Gets the sender metadata of the last received payload.
-            /// </summary>
-            public string? Sender { get; private set; }
-
-            /// <summary>
-            /// Gets the notifier for payload arrival.
-            /// </summary>
             public INotifyAdapted<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
 
-            /// <summary>
-            /// Initializes a new instance of the DummyConsumer class.
-            /// </summary>
             public DummyConsumer()
             {
-                // Lambda-based notifier that records the received payload and sender.
+                // Notifier increments count and records payload and sender.
                 PayloadArrivalNotifier = new LambdaNotifier<ISenderPayload<string, string, string>>(payload =>
                 {
-                    Received = payload.Payload;
-                    Sender = payload.SenderMeta;
+                    ReceivedLast = payload.Payload;
+                    SenderLast = payload.SenderMeta;
+                    ++NotifyCount;
                 });
             }
 
             /// <summary>
-            /// Lambda-based notifier for testing.
+            /// Simple lambda-based notifier for test purposes.
             /// </summary>
-            /// <typeparam name="T">Type of the notification argument.</typeparam>
             private class LambdaNotifier<T>(Action<T> notify) : INotifyAdapted<T>
             {
                 private readonly Action<T> _notify = notify;
-
-                /// <summary>
-                /// Invokes the notification action.
-                /// </summary>
-                /// <param name="arg">Notification argument.</param>
                 public void Notify(T arg) => _notify(arg);
             }
         }
 
         /// <summary>
-        /// Consumer that always rejects notifications via IsNotifyNeeded.
+        /// Consumer that always rejects notification via IConditionalNotified.
         /// </summary>
         public class RejectingConditionalConsumer : IPayloadConsumer<string, string, string>, IConditionalNotified<string, string>
         {
-            /// <summary>
-            /// Indicates whether the consumer was called.
-            /// </summary>
             public bool WasCalled { get; private set; }
 
-            /// <summary>
-            /// Gets the notifier for payload arrival.
-            /// </summary>
             public INotifyAdapted<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
 
-            /// <summary>
-            /// Initializes a new instance of the RejectingConditionalConsumer class.
-            /// </summary>
             public RejectingConditionalConsumer()
             {
-                // Lambda-based notifier that sets WasCalled to true if invoked.
+                // Notifier sets WasCalled flag if invoked.
                 PayloadArrivalNotifier = new LambdaNotifier<ISenderPayload<string, string, string>>(payload =>
                 {
                     WasCalled = true;
@@ -106,17 +75,10 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             }
 
             /// <summary>
-            /// Always returns false to reject notification.
+            /// Always returns false, so notification is never needed.
             /// </summary>
-            public bool IsNotifyNeeded(string subjectMeta, string payloadMeta)
-            {
-                return false; // Always reject
-            }
+            public bool IsNotifyNeeded(string subjectMeta, string payloadMeta) => false;
 
-            /// <summary>
-            /// Lambda-based notifier for testing.
-            /// </summary>
-            /// <typeparam name="T">Type of the notification argument.</typeparam>
             private class LambdaNotifier<T>(Action<T> notify) : INotifyAdapted<T>
             {
                 private readonly Action<T> _notify = notify;
@@ -125,117 +87,158 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         }
 
         /// <summary>
-        /// Dummy trigger that simulates notification events.
+        /// Consumer that can remove itself from the notifier based on a flag.
         /// </summary>
-        public class DummyTrigger : INotificationHandler<IPayload<string, string>>
+        public class DummySelfRemovingConsumer
+            : IPayloadConsumer<string, string, string>, ISelfRemovable
         {
-            /// <summary>
-            /// Event handler for object creation.
-            /// </summary>
-            public Action<IPayload<string, string>>? Handle { get; set; }
+            public int NotifyCount { get; private set; }
+
+            public INotifyAdapted<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
+
+            public bool CanRemoveFlag { get; }
+            public bool CanRemoveValue { get; set; }
 
             /// <summary>
-            /// Simulates the creation of a payload object.
+            /// Returns the current removable state.
             /// </summary>
-            /// <param name="payload">The payload to notify.</param>
-            public void Simulate(IPayload<string, string> payload)
+            public bool CanRemove() => CanRemoveValue;
+
+            public DummySelfRemovingConsumer(bool removableFlag)
             {
-                Handle?.Invoke(payload);
+                CanRemoveFlag = removableFlag;
+                // Notifier increments count and sets CanRemoveValue.
+                PayloadArrivalNotifier = new LambdaNotifier<ISenderPayload<string, string, string>>(_ =>
+                {
+                    NotifyCount++;
+                    CanRemoveValue = CanRemoveFlag;
+                }
+                );
+            }
+
+            public DummySelfRemovingConsumer() : this(true)
+            {
+            }
+
+            private class LambdaNotifier<T>(Action<T> notify) : INotifyAdapted<T>
+            {
+                private readonly Action<T> _notify = notify;
+                public void Notify(T arg) => _notify(arg);
             }
         }
 
         /// <summary>
-        /// Verifies that registering a handler and adding a consumer results in notification.
+        /// Verifies that a consumer receives the payload and sender meta as expected.
         /// </summary>
         [Fact]
-        public void RegisterHandler_And_AddConsumer_InvokesNotification()
+        public void Notify_ConsumerReceivesPayload()
         {
-            // Arrange
             var notifier = new PayloadMulticastNotifier<string, string, string>("sender123");
             var consumer = new DummyConsumer();
             notifier.AddConsumer(consumer);
 
-            var trigger = new DummyTrigger();
-            notifier.RegisterHandler(trigger);
+            var unicastNotifier = new UnicastAdaptationNotifier<IPayload<string, string>, DummyPayload>();
+            notifier.RegisterHandler(unicastNotifier);
 
             var payload = new DummyPayload("meta", ["log1"]);
+            unicastNotifier.Notify(payload);
 
-            // Act
-            trigger.Simulate(payload);
-
-            // Assert
-            Assert.Equal("sender123", consumer.Sender);
-            Assert.Equal("meta", consumer.Received?.Meta);
-            Assert.Contains("log1", consumer.Received!.Bodies);
+            Assert.Equal("sender123", consumer.SenderLast);
+            Assert.Equal("meta", consumer.ReceivedLast?.Meta);
+            Assert.Contains("log1", consumer.ReceivedLast!.Bodies);
         }
 
         /// <summary>
-        /// Verifies that a rejecting conditional consumer does not receive notifications.
+        /// Verifies that a conditional consumer that rejects notification is not called.
         /// </summary>
         [Fact]
-        public void RegisterHandler_WithRejectingConditionalConsumer_DoesNotInvokeNotification()
+        public void Notify_WithRejectingConditionalConsumer_DoesNotInvokeNotification()
         {
-            // Arrange
             var notifier = new PayloadMulticastNotifier<string, string, string>("senderXYZ");
-            var rejectingConsumer = new RejectingConditionalConsumer();
-            notifier.AddConsumer(rejectingConsumer);
+            var consumer = new RejectingConditionalConsumer();
+            notifier.AddConsumer(consumer);
 
-            var trigger = new DummyTrigger();
-            notifier.RegisterHandler(trigger);
+            var unicastNotifier = new UnicastAdaptationNotifier<IPayload<string, string>, DummyPayload>();
+            notifier.RegisterHandler(unicastNotifier);
 
             var payload = new DummyPayload("meta", ["logX"]);
+            unicastNotifier.Notify(payload);
 
-            // Act
-            trigger.Simulate(payload);
-
-            // Assert
-            Assert.False(rejectingConsumer.WasCalled); // validate that the consumer was not notified
+            Assert.False(consumer.WasCalled);
         }
 
         /// <summary>
-        /// Verifies that a consumer implementing ISelfRemovable with CanRemove returning true is removed before notification.
+        /// Verifies that after removing a consumer, only the remaining consumers are notified.
         /// </summary>
         [Fact]
-        public void RegisterHandler_WithSelfRemovableConsumer_RemovesBeforeNotification()
+        public void Notify_AfterRemovingConsumer_OnlyNotifiesRemaining()
+        {
+            var notifier = new PayloadMulticastNotifier<string, string, string>("senderXYZ");
+            var stayConsumer = new DummyConsumer();
+            var removedConsumer = new DummyConsumer();
+
+            notifier.AddConsumer(stayConsumer);
+            notifier.AddConsumer(removedConsumer);
+
+            var unicastNotifier = new UnicastAdaptationNotifier<IPayload<string, string>, DummyPayload>();
+            notifier.RegisterHandler(unicastNotifier);
+
+            var payload = new DummyPayload("meta", ["data"]);
+            unicastNotifier.Notify(payload);
+            notifier.RemoveConsumer(removedConsumer);
+            unicastNotifier.Notify(payload);
+
+            Assert.Equal(2, stayConsumer.NotifyCount);
+            Assert.Equal(1, removedConsumer.NotifyCount);
+        }
+
+        /// <summary>
+        /// Verifies that a self-removable consumer is removed before the next notification.
+        /// </summary>
+        [Fact]
+        public void Notify_WithSelfRemovableConsumer_RemovesBeforeNotification()
         {
             // Arrange
             var notifier = new PayloadMulticastNotifier<string, string, string>("senderXYZ");
 
-            var mockConsumer = new Mock<IPayloadConsumer<string, string, string>>();
-            var mockNotifier = new Mock<INotifyAdapted<ISenderPayload<string, string, string>>>();
-            var selfRemovable = mockConsumer.As<ISelfRemovable>();
+            var stayConsumer = new DummyConsumer();
+            var nonRemoveConsumer = new DummySelfRemovingConsumer(false);
+            var removeConsumer = new DummySelfRemovingConsumer(true);
 
-            selfRemovable.Setup(r => r.CanRemove()).Returns(true); // ✅ remove対象
+            notifier.AddConsumer(stayConsumer);
+            notifier.AddConsumer(nonRemoveConsumer);
+            notifier.AddConsumer(removeConsumer);
 
-            mockConsumer.Setup(c => c.PayloadArrivalNotifier).Returns(mockNotifier.Object);
-
-            notifier.AddConsumer(mockConsumer.Object);
-
-            var trigger = new DummyTrigger();
-            notifier.RegisterHandler(trigger);
+            var unicastNotifier = new UnicastAdaptationNotifier<IPayload<string, string>, DummyPayload>();
+            notifier.RegisterHandler(unicastNotifier);
 
             var payload = new DummyPayload("meta", ["data"]);
 
             // Act
-            trigger.Simulate(payload);
+            unicastNotifier.Notify(payload);  // First: removeConsumer will be removed
+            unicastNotifier.Notify(payload);  // Second: removeConsumer will not be notified
 
             // Assert
-            mockNotifier.Verify(n => n.Notify(It.IsAny<ISenderPayload<string, string, string>>()), Times.Never);
-            selfRemovable.Verify(r => r.CanRemove(), Times.Once);
+            Assert.Equal(2, stayConsumer.NotifyCount);       // Both notifications received
+            Assert.Equal(2, nonRemoveConsumer.NotifyCount);  // Both notifications received
+            Assert.Equal(1, removeConsumer.NotifyCount);     // Only first notification received
         }
 
         /// <summary>
-        /// Verifies that RegisterHandler throws an ArgumentNullException when passed a null handler.
+        /// Verifies that RegisterHandler throws ArgumentNullException when a null handler is provided.
         /// </summary>
         [Fact]
-        public void RegisterHandler_NullHandler_ThrowsArgumentNullException()
+        public void RegisterHandler_ThrowsArgumentNullException_WhenHandlerIsNull()
         {
-            // Arrange
+            // Arrange: Create a PayloadMulticastNotifier instance with a sample sender.
             var notifier = new PayloadMulticastNotifier<string, string, string>("sender");
 
-            // Act & Assert
-            Assert.Throws<ArgumentNullException>(() =>
-                notifier.RegisterHandler(null!)); // force null argument
+            // Act & Assert: Registering a null handler should throw ArgumentNullException.
+            var ex = Assert.Throws<ArgumentNullException>(() =>
+                notifier.RegisterHandler(null!)); // Explicitly pass null to test exception
+
+            // Assert: The exception's parameter name should be "notificationHandler" for clarity.
+            Assert.Equal("notificationHandler", ex.ParamName);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts;
 
+/*
 namespace Cozyupk.HelloShadowDI.DiagnosticPkg.ComponentRoots.Common.Impl.Models
 {
     public static class DiagnosableModelsFactory
@@ -224,3 +225,4 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.ComponentRoots.Common.Impl.Models
         }
     }
 }
+*/

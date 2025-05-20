@@ -1,4 +1,15 @@
-﻿using System.Linq;
+﻿namespace Cozyupk.HelloShadowDI.DiagnosticPkg.ComponentRoots.Playgrounds.DiagnosingBob
+{
+    internal class Program
+    {
+        public static void Main(string[] _)
+        {
+        }
+    }
+}
+
+/*
+using System.Linq;
 using System.Threading.Tasks;
 using Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.Impl;
 using Cozyupk.HelloShadowDI.DiagnosticPkg.ComponentRoots.Common.Impl.Models;
@@ -36,3 +47,4 @@ namespace Cozyupk.HelloShadowDI.DiagnosticPkg.ComponentRoots.Playgrounds.Diagnos
         }
     }
 }
+*/

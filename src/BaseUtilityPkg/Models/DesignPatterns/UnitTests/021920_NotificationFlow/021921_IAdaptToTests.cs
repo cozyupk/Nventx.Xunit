@@ -3,7 +3,7 @@ using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.Paylo
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.Traits;
 using Xunit;
 
-namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.PayloadFlow.IAdaptToTests
+namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.NotificationFlow.IAdaptToTests
 {
     /// <summary>
     /// Dummy implementation of <see cref="IPayload{TPayloadMeta, TPayloadBody}"/> for testing purposes.
