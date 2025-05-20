@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.NotificationFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.PayloadFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.Traits;
@@ -40,8 +41,11 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
                 // Notifier increments count and records payload and sender.
                 PayloadArrivalNotifier = new LambdaNotifier<ISenderPayload<string, string, string>>(payload =>
                 {
+                    // Record the last received payload for verification in tests.
                     ReceivedLast = payload.Payload;
+                    // Record the sender's metadata for verification in tests.
                     SenderLast = payload.SenderMeta;
+                    // Increment the notification count to track how many times the consumer was notified.
                     ++NotifyCount;
                 });
             }
@@ -128,24 +132,87 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         }
 
         /// <summary>
+        /// Dummy consumer implementation that signals completion via TaskCompletionSource when notified.
+        /// Used for testing asynchronous notification scenarios.
+        /// </summary>
+        public class DummyConsumerWithCompletion : IPayloadConsumer<string, string, string>
+        {
+            // TaskCompletionSource used to signal when notification occurs.
+            private readonly TaskCompletionSource<bool> _tcs;
+
+            /// <summary>
+            /// Gets the number of times this consumer has been notified.
+            /// </summary>
+            public int NotifyCount { get; private set; }
+
+            /// <summary>
+            /// Gets the last payload received by this consumer.
+            /// </summary>
+            public IPayload<string, string>? ReceivedLast { get; private set; }
+
+            /// <summary>
+            /// Notifier that triggers when a payload arrives.
+            /// </summary>
+            public INotifyAdapted<ISenderPayload<string, string, string>> PayloadArrivalNotifier { get; }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DummyConsumerWithCompletion"/> class.
+            /// </summary>
+            /// <param name="tcs">TaskCompletionSource to signal upon notification.</param>
+            public DummyConsumerWithCompletion(TaskCompletionSource<bool> tcs)
+            {
+                _tcs = tcs;
+
+                // Notifier increments count, records payload, and signals completion.
+                PayloadArrivalNotifier = new LambdaNotifier<ISenderPayload<string, string, string>>(payload =>
+                {
+                    NotifyCount++;
+                    ReceivedLast = payload.Payload;
+                    _tcs.TrySetResult(true);
+                });
+            }
+
+            /// <summary>
+            /// Simple lambda-based notifier for test purposes.
+            /// </summary>
+            private class LambdaNotifier<T>(Action<T> notify) : INotifyAdapted<T>
+            {
+                private readonly Action<T> _notify = notify;
+
+                /// <summary>
+                /// Invokes the notification action.
+                /// </summary>
+                /// <param name="arg">The argument to notify with.</param>
+                public void Notify(T arg) => _notify(arg);
+            }
+        }
+
+        /// <summary>
         /// Verifies that a consumer receives the payload and sender meta as expected.
         /// </summary>
         [Fact]
         public void Notify_ConsumerReceivesPayload()
         {
-            var notifier = new PayloadMulticastNotifier<string, string, string>("sender123");
-            var consumer = new DummyConsumer();
+            // Arrange
+            IPayloadMulticastNotifier<string, string, string> notifier = new PayloadMulticastNotifier<string, string, string>("sender123");
+            // Arrange: Create and add a dummy consumer to the notifier.
+            IPayloadConsumer<string, string, string> consumer = new DummyConsumer();
             notifier.AddConsumer(consumer);
 
-            var unicastNotifier = new UnicastAdaptationNotifier<IPayload<string, string>, DummyPayload>();
+            // Arrange
+            IPayloadUnicastNotifier<string, string> unicastNotifier = new PayloadUnicastNotifier<string, string>();
             notifier.RegisterHandler(unicastNotifier);
 
+            // Act
             var payload = new DummyPayload("meta", ["log1"]);
             unicastNotifier.Notify(payload);
 
-            Assert.Equal("sender123", consumer.SenderLast);
-            Assert.Equal("meta", consumer.ReceivedLast?.Meta);
-            Assert.Contains("log1", consumer.ReceivedLast!.Bodies);
+            // Assert
+            Assert.IsType<DummyConsumer>(consumer);
+            var dummy = (DummyConsumer)consumer;
+            Assert.Equal("sender123", dummy.SenderLast);
+            Assert.Equal("meta", dummy.ReceivedLast?.Meta);
+            Assert.Contains("log1", dummy.ReceivedLast?.Bodies!);
         }
 
         /// <summary>
@@ -154,17 +221,21 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         [Fact]
         public void Notify_WithRejectingConditionalConsumer_DoesNotInvokeNotification()
         {
-            var notifier = new PayloadMulticastNotifier<string, string, string>("senderXYZ");
-            var consumer = new RejectingConditionalConsumer();
+            // Arrange
+            IPayloadMulticastNotifier<string, string, string> notifier = new PayloadMulticastNotifier<string, string, string>("senderXYZ");
+            IPayloadConsumer<string, string, string> consumer = new RejectingConditionalConsumer();
+            IPayloadUnicastNotifier<string, string> unicastNotifier = new PayloadUnicastNotifier<string, string>();
             notifier.AddConsumer(consumer);
-
-            var unicastNotifier = new UnicastAdaptationNotifier<IPayload<string, string>, DummyPayload>();
             notifier.RegisterHandler(unicastNotifier);
 
+            // Act
             var payload = new DummyPayload("meta", ["logX"]);
             unicastNotifier.Notify(payload);
 
-            Assert.False(consumer.WasCalled);
+            // Assert
+            Assert.IsType<RejectingConditionalConsumer>(consumer);
+            var dummy = (RejectingConditionalConsumer)consumer;
+            Assert.False(dummy.WasCalled);
         }
 
         /// <summary>
@@ -173,23 +244,34 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         [Fact]
         public void Notify_AfterRemovingConsumer_OnlyNotifiesRemaining()
         {
-            var notifier = new PayloadMulticastNotifier<string, string, string>("senderXYZ");
-            var stayConsumer = new DummyConsumer();
-            var removedConsumer = new DummyConsumer();
+            // Arrange: Create a PayloadMulticastNotifier with a specific sender meta.
+            IPayloadMulticastNotifier<string, string, string> notifier = new PayloadMulticastNotifier<string, string, string>("senderXYZ");
 
+            // Arrange: Create two dummy consumers, one to stay and one to be removed.
+            IPayloadConsumer<string, string, string> stayConsumer = new DummyConsumer();
+            IPayloadConsumer<string, string, string> removedConsumer = new DummyConsumer();
+
+            // Add both consumers to the notifier.
             notifier.AddConsumer(stayConsumer);
             notifier.AddConsumer(removedConsumer);
 
+            // Arrange: Create a unicast notifier and register it with the multicast notifier.
             var unicastNotifier = new UnicastAdaptationNotifier<IPayload<string, string>, DummyPayload>();
             notifier.RegisterHandler(unicastNotifier);
 
+            // Act: Create a dummy payload and notify via the handler.
             var payload = new DummyPayload("meta", ["data"]);
-            unicastNotifier.Notify(payload);
-            notifier.RemoveConsumer(removedConsumer);
-            unicastNotifier.Notify(payload);
+            unicastNotifier.Notify(payload); // Both consumers should be notified.
 
-            Assert.Equal(2, stayConsumer.NotifyCount);
-            Assert.Equal(1, removedConsumer.NotifyCount);
+            // Act: Remove one consumer and notify again.
+            notifier.RemoveConsumer(removedConsumer);
+            unicastNotifier.Notify(payload); // Only the remaining consumer should be notified.
+
+            // Assert: Verify notification counts for both consumers.
+            Assert.IsType<DummyConsumer>(stayConsumer);
+            Assert.IsType<DummyConsumer>(removedConsumer);
+            Assert.Equal(2, ((DummyConsumer)stayConsumer).NotifyCount);
+            Assert.Equal(1, ((DummyConsumer)removedConsumer).NotifyCount);
         }
 
         /// <summary>
@@ -199,11 +281,11 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         public void Notify_WithSelfRemovableConsumer_RemovesBeforeNotification()
         {
             // Arrange
-            var notifier = new PayloadMulticastNotifier<string, string, string>("senderXYZ");
+            IPayloadMulticastNotifier<string, string, string> notifier = new PayloadMulticastNotifier<string, string, string>("senderXYZ");
 
-            var stayConsumer = new DummyConsumer();
-            var nonRemoveConsumer = new DummySelfRemovingConsumer(false);
-            var removeConsumer = new DummySelfRemovingConsumer(true);
+            IPayloadConsumer<string, string, string> stayConsumer = new DummyConsumer();
+            IPayloadConsumer<string, string, string> nonRemoveConsumer = new DummySelfRemovingConsumer(false);
+            IPayloadConsumer<string, string, string> removeConsumer = new DummySelfRemovingConsumer(true);
 
             notifier.AddConsumer(stayConsumer);
             notifier.AddConsumer(nonRemoveConsumer);
@@ -219,9 +301,12 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             unicastNotifier.Notify(payload);  // Second: removeConsumer will not be notified
 
             // Assert
-            Assert.Equal(2, stayConsumer.NotifyCount);       // Both notifications received
-            Assert.Equal(2, nonRemoveConsumer.NotifyCount);  // Both notifications received
-            Assert.Equal(1, removeConsumer.NotifyCount);     // Only first notification received
+            Assert.IsType<DummyConsumer>(stayConsumer);
+            Assert.IsType<DummySelfRemovingConsumer>(nonRemoveConsumer);
+            Assert.IsType<DummySelfRemovingConsumer>(nonRemoveConsumer);
+            Assert.Equal(2, ((DummyConsumer)stayConsumer).NotifyCount);       // Both notifications received
+            Assert.Equal(2, ((DummySelfRemovingConsumer)nonRemoveConsumer).NotifyCount);  // Both notifications received
+            Assert.Equal(1, ((DummySelfRemovingConsumer)removeConsumer).NotifyCount);     // Only first notification received
         }
 
         /// <summary>
@@ -230,15 +315,72 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         [Fact]
         public void RegisterHandler_ThrowsArgumentNullException_WhenHandlerIsNull()
         {
-            // Arrange: Create a PayloadMulticastNotifier instance with a sample sender.
-            var notifier = new PayloadMulticastNotifier<string, string, string>("sender");
+            // Arrange
+            IPayloadMulticastNotifier<string, string, string> notifier = new PayloadMulticastNotifier<string, string, string>("sender");
 
-            // Act & Assert: Registering a null handler should throw ArgumentNullException.
+            // Act & Assert
             var ex = Assert.Throws<ArgumentNullException>(() =>
                 notifier.RegisterHandler(null!)); // Explicitly pass null to test exception
 
-            // Assert: The exception's parameter name should be "notificationHandler" for clarity.
+            // Assert
             Assert.Equal("notificationHandler", ex.ParamName);
+        }
+
+        /// <summary>
+        /// Verifies that RegisterHandler, when used with asynchronous execution (e.g., Task.Run), notifies all consumers in the background and signals completion using TaskCompletionSource.
+        /// </summary>
+        [Fact]
+        public async Task RegisterHandler_AsynchronousExecution_NotifiesAllConsumersInBackground_UsingTaskCompletionSource()
+        {
+            // Arrange
+            IPayloadMulticastNotifier<string, string, string> notifier = new PayloadMulticastNotifier<string, string, string>("senderAsync");
+            var tcs = new TaskCompletionSource<bool>();
+            IPayloadConsumer<string, string, string> consumer = new DummyConsumerWithCompletion(tcs);
+            notifier.AddConsumer(consumer);
+            IPayloadUnicastNotifier<string, string> handler = new PayloadUnicastNotifier<string, string>();
+
+            // RegisterHandler with Task.Run to force async dispatch
+            notifier.RegisterHandler(handler, action => Task.Run(action));
+
+            var payload = new DummyPayload("meta", ["data"]);
+
+            // Act
+            handler.Notify(payload);
+
+            // Assert
+            var completed = await Task.WhenAny(tcs.Task, Task.Delay(1000));
+            Assert.IsType<DummyConsumerWithCompletion>(consumer);
+            var dummy = (DummyConsumerWithCompletion)consumer;
+            Assert.Equal(1, dummy.NotifyCount);
+            Assert.Equal("meta", dummy.ReceivedLast?.Meta);
+            Assert.True(tcs.Task.IsCompletedSuccessfully);
+        }
+
+
+        /// <summary>
+        /// Verifies that RegisterHandler, when used with synchronous execution (the default), notifies all consumers immediately.
+        /// </summary>
+        [Fact]
+        public void RegisterHandler_SynchronousExecution_NotifiesAllConsumersImmediately()
+        {
+            // Arrange
+            IPayloadMulticastNotifier<string,string,string> notifier = new PayloadMulticastNotifier<string, string, string>("senderSync");
+            IPayloadConsumer<string, string, string> consumer = new DummyConsumer();
+            notifier.AddConsumer(consumer);
+
+            // Arrange
+            var handler = new UnicastAdaptationNotifier<IPayload<string, string>, DummyPayload>();
+            notifier.RegisterHandler(handler); // default is sync
+
+            // Act
+            var payload = new DummyPayload("meta", ["data"]);
+            handler.Notify(payload);
+
+            // Assert
+            Assert.IsType<DummyConsumer>(consumer);
+            var dummy = (DummyConsumer)consumer;
+            Assert.Equal(1, dummy.NotifyCount);
+            Assert.Equal("meta", dummy.ReceivedLast?.Meta);
         }
     }
 }

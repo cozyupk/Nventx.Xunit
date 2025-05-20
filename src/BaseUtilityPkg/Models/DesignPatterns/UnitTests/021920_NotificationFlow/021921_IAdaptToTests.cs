@@ -67,13 +67,13 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.N
         [Fact]
         public void NewFromSelf_ReturnsExpectedPayload()
         {
-            // Arrange: Create a DummyPayloadArgs with test data
+            // Arrange
             var args = new DummyPayloadArgs("meta", "a", "b", "c");
 
-            // Act: Generate a payload from the arguments
+            // Act
             var payload = args.Adapt();
 
-            // Assert: Check that the payload has the expected metadata and bodies
+            // Assert
             Assert.Equal("meta", payload.Meta);
             Assert.Collection(payload.Bodies,
                 b => Assert.Equal("a", b),

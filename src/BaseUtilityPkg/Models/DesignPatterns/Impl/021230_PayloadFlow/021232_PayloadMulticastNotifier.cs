@@ -67,55 +67,65 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
         }
 
         /// <summary>
-        /// Registers a trigger that will notify all registered consumers when a payload is created.
-        /// Can only be called once.
+        /// Registers a handler that will be invoked when a payload is emitted.
+        /// The handler is set to the notificationHandler, and when triggered, it notifies all registered consumers.
+        /// Supports optional execution context via the runner parameter.
         /// </summary>
-        /// <param name="notificationHandler">The notification handler to register.</param>
-        /// <exception cref="InvalidOperationException">Thrown if RegisterHandler is called more than once.</exception>
-        public void RegisterHandler(INotificationHandler<IPayload<TPayloadMeta, TPayloadBody>> notificationHandler)
+        /// <param name="notificationHandler">The handler to register for payload notification.</param>
+        /// <param name="runner">
+        /// Optional action to control the execution context of the notification (e.g., for async or thread dispatch).
+        /// If null, notifications are invoked synchronously.
+        /// </param>
+        public void RegisterHandler(
+            INotificationHandler<IPayload<TPayloadMeta, TPayloadBody>> notificationHandler,
+            Action<Action>? runner = null)
         {
             if (notificationHandler == null)
                 throw new ArgumentNullException(nameof(notificationHandler));
 
-            // Set the action to be performed when a payload is created
-            notificationHandler.Handle = (payload) =>
+            // Use synchronous invocation if no runner is provided
+            runner ??= a => a();
+
+            // Assign the handler to be called when a payload is received
+            notificationHandler.Handle = payload =>
             {
-                // Create a sender payload that includes sender metadata and the payload
+                // Wrap the payload with sender metadata
                 var senderPayload = new SenderPayload(SenderMeta, payload);
 
-                // Make a copy of the current list of consumers to ensure thread safety during notification
                 List<IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody>> consumersCopy;
-
-                // Lock to ensure thread safety when accessing the consumers list
+                // Lock to ensure thread-safe access to the consumer list
                 lock (ConsumerNotifiersLock)
                 {
                     consumersCopy = new List<IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody>>();
-                    foreach(var consumer in Consumers.Keys)
+                    foreach (var consumer in Consumers.Keys)
                     {
-                        // Check if the consumer can be removed
+                        // Remove consumers that indicate they should be removed
                         if (consumer is ISelfRemovable selfRemovable && selfRemovable.CanRemove())
                         {
-                            // Remove the consumer from the list
                             Consumers.TryRemove(consumer, out _);
                             continue;
                         }
-                        // Otherwise, copy the consumer to the copy list
                         consumersCopy.Add(consumer);
                     }
                 }
 
-                // Notify all registered consumer notifiers
-                foreach (var consumer in consumersCopy)
+                // Notify all eligible consumers via the injected execution context.
+                // This allows consumers to be notified synchronously, asynchronously, or with custom logic.
+                runner(() =>
                 {
-                    // If the consumer is conditional and notification is not needed, skip
-                    if (consumer is IConditionalNotified<TSenderMeta, TPayloadMeta> conditionalNotified
-                        && !conditionalNotified.IsNotifyNeeded(SenderMeta, payload.Meta))
+                    foreach (var consumer in consumersCopy)
                     {
-                        continue;
+                        // Skip notification if the consumer's condition is not met
+                        if (consumer is IConditionalNotified<TSenderMeta, TPayloadMeta> conditionalNotified
+                            && !conditionalNotified.IsNotifyNeeded(SenderMeta, payload.Meta))
+                        {
+                            continue;
+                        }
+
+                        // Notify the consumer of the payload arrival
+                        consumer.PayloadArrivalNotifier.Notify(senderPayload);
                     }
-                    // Notify the consumer of the new payload
-                    consumer.PayloadArrivalNotifier.Notify(senderPayload);
-                }
+                });
             };
         }
 
@@ -135,6 +145,8 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
         /// <summary>
         /// Removes a consumer from the list of payload consumers.
         /// </summary>
+        /// <param name="consumer">The consumer to remove from receiving payload notifications.</param>
+
         public void RemoveConsumer(IPayloadConsumer<TSenderMeta, TPayloadMeta, TPayloadBody> consumer)
         {
             Consumers.TryRemove(consumer, out _);

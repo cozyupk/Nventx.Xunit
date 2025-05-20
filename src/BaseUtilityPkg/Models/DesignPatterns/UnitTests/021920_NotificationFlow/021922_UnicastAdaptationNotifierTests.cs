@@ -1,4 +1,5 @@
 ﻿using System;
+using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.NotificationFlow;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts.Traits;
 using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.NotificationFlow;
 using Moq;
@@ -54,7 +55,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.N
         public void Handle_ThrowsIfSetTwice()
         {
             // Arrange
-            var notifier = new UnicastAdaptationNotifier<DummyArgs, DummyArgs>
+            INotificationFlow<DummyArgs, DummyArgs> notifier = new UnicastAdaptationNotifier<DummyArgs, DummyArgs>
             {
                 Handle = _ => { }
             };
@@ -71,7 +72,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.N
         public void Handle_ThrowsIfSetToNull()
         {
             // Arrange
-            var notifier = new UnicastAdaptationNotifier<DummyArgs, DummyArgs>();
+            INotificationFlow<DummyArgs, DummyArgs> notifier = new UnicastAdaptationNotifier<DummyArgs, DummyArgs>();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
@@ -85,7 +86,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.N
         public void Notify_ThrowsIfArgsIsNull()
         {
             // Arrange
-            var notifier = new UnicastAdaptationNotifier<DummyArgs, DummyArgs>();
+            INotificationFlow<DummyArgs, DummyArgs> notifier = new UnicastAdaptationNotifier<DummyArgs, DummyArgs>();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() =>
@@ -99,7 +100,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.N
         public void Notify_InvokesHandlerWithClonedObject()
         {
             // Arrange
-            var notifier = new UnicastAdaptationNotifier<DummyArgs, DummyArgs>();
+            INotificationFlow<DummyArgs, DummyArgs> notifier = new UnicastAdaptationNotifier<DummyArgs, DummyArgs>();
             DummyArgs? received = null;
 
             // Set the handler to capture the created object

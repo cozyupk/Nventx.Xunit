@@ -18,8 +18,8 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         [Fact]
         public void Notify_CallsAssignedHandle_WithCorrectPayload()
         {
-            // Arrange: Create a notifier and dummy arguments for payload.
-            var notifier = new PayloadUnicastNotifier<string, string>();
+            // Arrange
+            IPayloadUnicastNotifier<string, string> notifier = new PayloadUnicastNotifier<string, string>();
             var args = new DummyPayloadArgs("meta", "body1");
 
             // Variable to capture the payload passed to the handle.
@@ -28,10 +28,10 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             // Assign a handler to capture the notified payload.
             notifier.Handle = payload => captured = payload;
 
-            // Act: Notify the handler with the payload.
+            // Act
             notifier.Notify(args);
 
-            // Assert: Ensure the handler was called and the payload has expected values.
+            // Assert
             Assert.NotNull(captured);
             Assert.Equal("meta", captured!.Meta);
             Assert.Contains("body1", captured.Bodies);
@@ -43,11 +43,11 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         [Fact]
         public void Notify_WithNullHandle_ThrowsInvalidOperationException()
         {
-            // Arrange: Create a notifier without assigning a handler.
-            var notifier = new PayloadUnicastNotifier<string, string>();
+            // Arrange
+            IPayloadUnicastNotifier<string, string> notifier = new PayloadUnicastNotifier<string, string>();
             var args = new DummyPayloadArgs("meta", "body1");
 
-            // Act & Assert: Expect an exception when Notify is called without a handler.
+            // Act & Assert
             Assert.Throws<InvalidOperationException>(() => notifier.Notify(args));
         }
     }

@@ -56,9 +56,9 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
         public void Build_ShouldRegisterAllAddedConsumers()
         {
             // Arrange
-            var builder = new PayloadMulticastNotifierBuilder<string, string, string>();
-            var consumer1 = new DummyConsumer();
-            var consumer2 = new DummyConsumer();
+            IPayloadMulticastNotifierBuilder<string, string, string> builder = new PayloadMulticastNotifierBuilder<string, string, string>();
+            IPayloadConsumer<string, string, string> consumer1 = new DummyConsumer();
+            IPayloadConsumer<string, string, string> consumer2 = new DummyConsumer();
             builder.AddConsumer(consumer1);
             builder.AddConsumer(consumer2);
 
@@ -71,8 +71,10 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.UnitTests.P
             unicastNotifier.Notify(payload);
 
             // Assert
-            Assert.True(consumer1.WasNotified);
-            Assert.True(consumer2.WasNotified);
+            Assert.IsType<DummyConsumer>(consumer1);
+            Assert.IsType<DummyConsumer>(consumer2);
+            Assert.True(((DummyConsumer)consumer1).WasNotified);
+            Assert.True(((DummyConsumer)consumer2).WasNotified);
         }
 
         /// <summary>

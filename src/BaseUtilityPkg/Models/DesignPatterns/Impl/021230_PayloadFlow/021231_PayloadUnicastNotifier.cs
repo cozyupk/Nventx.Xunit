@@ -10,7 +10,8 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Payloa
     /// <see cref="UnicastAdaptationNotifier{TTarget, TSource}"/> for payload types.
     /// </summary>
     public class PayloadUnicastNotifier<TPayloadMeta, TPayloadBody>
-        : UnicastAdaptationNotifier<IPayload<TPayloadMeta, TPayloadBody>, IAdaptTo<IPayload<TPayloadMeta, TPayloadBody>>>
+        : UnicastAdaptationNotifier<IPayload<TPayloadMeta, TPayloadBody>, IAdaptTo<IPayload<TPayloadMeta, TPayloadBody>>>,
+          IPayloadUnicastNotifier<TPayloadMeta, TPayloadBody>
         where TPayloadMeta : class
     {
     }
