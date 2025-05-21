@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Contracts;
 
-namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl
+namespace Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Impl
 {
     /// <summary>
     /// Provides functionality to create diagnostic notifiers that can notify observers

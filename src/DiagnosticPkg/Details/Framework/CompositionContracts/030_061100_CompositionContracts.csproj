@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<RootNameSpace>Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.CompositionContracts</RootNameSpace>
+		<RootNameSpace>Cozyupk.Shadow.Flow.DiagnosticPkg.Details.Framework.CompositionContracts</RootNameSpace>
 		<AssemblyName>DiagnosticPkg.Details.Framework.CompositionContracts</AssemblyName>
 	</PropertyGroup>
 

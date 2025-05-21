@@ -1,7 +1,7 @@
-﻿using Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.CompositionContracts;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts;
+﻿using Cozyupk.Shadow.Flow.DiagnosticPkg.Details.Framework.CompositionContracts;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Contracts;
 
-namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl
+namespace Cozyupk.Shadow.Flow.DiagnosticPkg.Details.Framework.Impl
 {
     /// <summary>
     /// Default implementation of the diagnostic formatter that converts diagnostic messages

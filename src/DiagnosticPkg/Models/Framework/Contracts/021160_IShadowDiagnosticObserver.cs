@@ -1,4 +1,4 @@
-﻿namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts
+﻿namespace Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Contracts
 {
     /// <summary>
     /// Defines a contract for receiving diagnostic messages emitted during application execution.

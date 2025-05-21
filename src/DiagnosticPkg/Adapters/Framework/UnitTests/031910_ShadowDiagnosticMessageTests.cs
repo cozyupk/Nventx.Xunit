@@ -1,11 +1,11 @@
 ﻿using System;
 using FluentAssertions;
 using Xunit;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.Impl;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Adapters.Framework.Impl;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Contracts;
 using Moq;
 
-namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.UnitTests
+namespace Cozyupk.Shadow.Flow.DiagnosticPkg.Adapters.Framework.UnitTests
 {
 
     /// <summary>

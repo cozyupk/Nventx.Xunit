@@ -1,7 +1,7 @@
 ﻿using System;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Contracts;
 
-namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.Impl
+namespace Cozyupk.Shadow.Flow.DiagnosticPkg.Adapters.Framework.Impl
 {
     /// <summary>
     /// Represents a diagnostic message containing information about an event, its severity, and timestamp.

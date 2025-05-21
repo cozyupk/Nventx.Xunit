@@ -1,9 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts;
-using Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Attributes;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Contracts;
+using Cozyupk.Shadow.Flow.ShadowPkg.ComponentMeta.Attributes;
 
-namespace Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Utils.Impl
+namespace Cozyupk.Shadow.Flow.ShadowPkg.ComponentMeta.Utils.Impl
 {
     /*
     /// <summary>

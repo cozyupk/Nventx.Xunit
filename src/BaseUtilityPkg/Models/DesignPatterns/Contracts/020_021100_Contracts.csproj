@@ -1,8 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<RootNameSpace>Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Contracts</RootNameSpace>
-		<AssemblyName>BaseUtilityPkg.Models.DesignPatterns.Contracts</AssemblyName>
-	</PropertyGroup>
-
-</Project>

@@ -1,8 +1,8 @@
 ﻿using System;
-using Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Attributes;
+using Cozyupk.Shadow.Flow.ShadowPkg.ComponentMeta.Attributes;
 using Xunit;
 
-namespace Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.UnitTests.Attributes
+namespace Cozyupk.Shadow.Flow.ShadowPkg.ComponentMeta.UnitTests.Attributes
 {
     /// <summary>
     /// Unit tests for the <see cref="ShadowInjectableAttribute"/> class.

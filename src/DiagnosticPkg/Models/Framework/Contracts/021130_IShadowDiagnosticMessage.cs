@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts
+namespace Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Contracts
 {
     /// <summary>
     /// Represents the severity level of a diagnostic message.

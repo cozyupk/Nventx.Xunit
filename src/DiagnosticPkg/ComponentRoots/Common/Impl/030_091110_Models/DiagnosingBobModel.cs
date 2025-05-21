@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Contracts;
 
 /*
-namespace Cozyupk.HelloShadowDI.DiagnosticPkg.ComponentRoots.Common.Impl.Models
+namespace Cozyupk.Shadow.Flow.DiagnosticPkg.ComponentRoots.Common.Impl.Models
 {
     public static class DiagnosableModelsFactory
     {

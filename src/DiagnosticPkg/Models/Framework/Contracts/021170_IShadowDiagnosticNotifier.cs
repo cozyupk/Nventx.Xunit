@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts
+namespace Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Contracts
 {
     /// <summary>
     /// Interface for notifying diagnostic messages with varying severity levels.

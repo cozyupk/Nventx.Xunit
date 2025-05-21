@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Contracts;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Impl;
 using Xunit;
 using Moq;
 using System.Linq;
 
-namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.UnitTests
+namespace Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.UnitTests
 {
     /// <summary>
     /// Unit tests for the <see cref="ShadowDiagnosticNotifierProvider"/> class.

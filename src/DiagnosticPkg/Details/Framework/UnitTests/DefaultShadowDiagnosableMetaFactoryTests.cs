@@ -1,8 +1,8 @@
 ﻿using System;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Details.Framework.Impl;
 using Xunit;
 
-namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.UnitTests
+namespace Cozyupk.Shadow.Flow.DiagnosticPkg.Details.Framework.UnitTests
 {
     public class DefaultShadowDiagnosableMetaFactoryTests
     {

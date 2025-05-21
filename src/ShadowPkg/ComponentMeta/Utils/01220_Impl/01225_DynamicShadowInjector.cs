@@ -3,11 +3,11 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Attributes;
+using Cozyupk.Shadow.Flow.ShadowPkg.ComponentMeta.Attributes;
 using Unity;
 using Unity.Lifetime;
 
-namespace Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Utils.Impl
+namespace Cozyupk.Shadow.Flow.ShadowPkg.ComponentMeta.Utils.Impl
 {
     /*
     /// <summary>

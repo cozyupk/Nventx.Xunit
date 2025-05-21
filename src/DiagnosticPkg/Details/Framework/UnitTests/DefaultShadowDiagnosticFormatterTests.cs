@@ -1,10 +1,10 @@
 ﻿using System;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Details.Framework.Impl;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Contracts;
 using Moq;
 using Xunit;
 
-namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.UnitTests
+namespace Cozyupk.Shadow.Flow.DiagnosticPkg.Details.Framework.UnitTests
 {
     public class DefaultShadowDiagnosticFormatterTests
     {

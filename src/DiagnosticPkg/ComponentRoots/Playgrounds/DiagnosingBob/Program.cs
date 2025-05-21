@@ -1,4 +1,4 @@
-﻿namespace Cozyupk.HelloShadowDI.DiagnosticPkg.ComponentRoots.Playgrounds.DiagnosingBob
+﻿namespace Cozyupk.Shadow.Flow.DiagnosticPkg.ComponentRoots.Playgrounds.DiagnosingBob
 {
     internal class Program
     {
@@ -11,12 +11,12 @@
 /*
 using System.Linq;
 using System.Threading.Tasks;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Adapters.Framework.Impl;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.ComponentRoots.Common.Impl.Models;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Adapters.Framework.Impl;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.ComponentRoots.Common.Impl.Models;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Details.Framework.Impl;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Impl;
 
-namespace Cozyupk.HelloShadowDI.DiagnosticPkg.ComponentRoots.Playgrounds.DiagnosingBob
+namespace Cozyupk.Shadow.Flow.DiagnosticPkg.ComponentRoots.Playgrounds.DiagnosingBob
 {
     internal class Program
     {

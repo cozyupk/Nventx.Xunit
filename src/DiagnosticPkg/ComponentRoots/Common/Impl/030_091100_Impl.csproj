@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<RootNameSpace>Cozyupk.HelloShadowDI.DiagnosticPkg.ComponentRoots.Common.Impl</RootNameSpace>
+		<RootNameSpace>Cozyupk.Shadow.Flow.DiagnosticPkg.ComponentRoots.Common.Impl</RootNameSpace>
 		<AssemblyName>DiagnosticPkg.ComponentRoots.Common.Impl</AssemblyName>
 	</PropertyGroup>
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Attributes
+namespace Cozyupk.Shadow.Flow.ShadowPkg.ComponentMeta.Attributes
 {
     /// <summary>
     /// Specifies the injection metadata for a class to be used with dependency injection.

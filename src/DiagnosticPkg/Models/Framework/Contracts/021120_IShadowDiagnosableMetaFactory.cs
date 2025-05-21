@@ -1,4 +1,4 @@
-﻿namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts
+﻿namespace Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Contracts
 {
     /// <summary>
     /// Factory interface for creating <see cref="IShadowDiagnosableMeta"/> instances from metadata information.

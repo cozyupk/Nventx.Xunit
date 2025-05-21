@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<RootNameSpace>Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Attributes</RootNameSpace>
+		<RootNameSpace>Cozyupk.Shadow.Flow.ShadowPkg.ComponentMeta.Attributes</RootNameSpace>
 		<AssemblyName>ShadowPkg.ComponentMeta.Attributes</AssemblyName>
 	</PropertyGroup>
 

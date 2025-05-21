@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
-using Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Attributes;
+using Cozyupk.Shadow.Flow.ShadowPkg.ComponentMeta.Attributes;
 
-namespace Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Utils.Impl2
+namespace Cozyupk.Shadow.Flow.ShadowPkg.ComponentMeta.Utils.Impl2
 {
     /// <summary>
     /// Analyzes assembly dependencies and generates a dependency graph.

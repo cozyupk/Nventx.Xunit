@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<RootNameSpace>
-			Cozyupk.HelloShadowDI.DiagnosticPkg.ComponentRoots.Playgrounds.DiagnosingBob</RootNameSpace>
+			Cozyupk.Shadow.Flow.DiagnosticPkg.ComponentRoots.Playgrounds.DiagnosingBob</RootNameSpace>
 		<AssemblyName>DiagnosticPkg.ComponentRoots.Playgrounds.DiagnosingBob</AssemblyName>
 	</PropertyGroup>
 

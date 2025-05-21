@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cozyupk.HelloShadowDI.ShadowPkg.ComponentMeta.Attributes
+namespace Cozyupk.Shadow.Flow.ShadowPkg.ComponentMeta.Attributes
 {
     /// <summary>
     /// An attribute to define application parameters related to debugging.

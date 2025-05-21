@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.CompositionContracts;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Details.Framework.CompositionContracts;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Contracts;
 
-namespace Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl
+namespace Cozyupk.Shadow.Flow.DiagnosticPkg.Details.Framework.Impl
 {
     /// <summary>
     /// A default diagnostic observer that writes diagnostic messages to the debug output.

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Details.Framework.Impl;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Contracts;
-using Cozyupk.HelloShadowDI.DiagnosticPkg.Models.Framework.Impl;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Details.Framework.Impl;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Contracts;
+using Cozyupk.Shadow.Flow.DiagnosticPkg.Models.Framework.Impl;
 using Unity;
 
-namespace Cozyupk.HelloShadowDI.DiagnosticPkg.ComponentRoots.ContainerBuilder.PkgContainerBuilder.ComponentRoots
+namespace Cozyupk.Shadow.Flow.DiagnosticPkg.ComponentRoots.ContainerBuilder.PkgContainerBuilder.ComponentRoots
 {
     public class DiagnosticContainerBuilder
     {
