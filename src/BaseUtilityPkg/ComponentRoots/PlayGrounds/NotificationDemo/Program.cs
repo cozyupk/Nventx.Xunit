@@ -7,18 +7,30 @@ using Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlo
 namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.ComponentRoots.PlayGrounds.NotificationDemo
 {
     /// <summary>
-    /// Console demo for PayloadMulticastNotifierBuilder and related notification flow.
+    /// Console demo for PayloadMulticastNotifier including:
+    /// - Multicast delivery
+    /// - Payload metadata and sender info propagation
+    /// - Consumer registration via builder
+    /// - Handler simulation
+    /// - Console-based notification tracing
     /// </summary>
     public class Program
     {
         public static void Main(string[] _)
         {
-            Console.WriteLine("== Starting notification demo ==");
+            Console.WriteLine("== Starting Shadow.NotifyConsume demo ==");
+            Console.WriteLine("Features demonstrated:");
+            Console.WriteLine("- Multicast notifier");
+            Console.WriteLine("- Builder-based consumer registration");
+            Console.WriteLine("- Payload metadata and sender binding");
+            Console.WriteLine("- Manual handler triggering");
+            Console.WriteLine("- Console output for notification events");
+            Console.WriteLine();
 
             // Create a multicast notifier builder
             var builder = new PayloadMulticastNotifierBuilder<string, string, string>();
 
-            // Add two consumers that print notification to the console
+            // Add two consumers that print notifications
             builder.AddConsumer(new ConsoleConsumer("ConsumerA"));
             builder.AddConsumer(new ConsoleConsumer("ConsumerB"));
 
@@ -29,16 +41,17 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.ComponentRoots.PlayGrounds.Notifi
             var handler = new ConsolePayloadHandler();
             notifier.RegisterHandler(handler);
 
-            // Simulate a payload notification
+            // Simulate payload notification
             var payload = new DemoPayload("MetaInfo", ["Body1", "Body2"]);
             handler.Simulate(payload);
 
+            Console.WriteLine();
             Console.WriteLine("== Demo complete. Press any key to exit ==");
             Console.ReadKey();
         }
 
         /// <summary>
-        /// Consumer that prints notification to the console.
+        /// Console output consumer (simple observer).
         /// </summary>
         private class ConsoleConsumer : IPayloadConsumer<string, string, string>
         {
@@ -57,13 +70,16 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.ComponentRoots.PlayGrounds.Notifi
 
                 public void Notify(ISenderPayload<string, string, string> payload)
                 {
-                    Console.WriteLine($"[{_consumerName}] Notified: Sender={payload.SenderMeta}, Meta={payload.Payload.Meta}, Bodies=[{string.Join(", ", payload.Payload.Bodies)}]");
+                    Console.WriteLine($"[{_consumerName}] Notified:");
+                    Console.WriteLine($"  SenderMeta: {payload.SenderMeta}");
+                    Console.WriteLine($"  PayloadMeta: {payload.Payload.Meta}");
+                    Console.WriteLine($"  Bodies: {string.Join(", ", payload.Payload.Bodies)}");
                 }
             }
         }
 
         /// <summary>
-        /// Simple payload implementation.
+        /// Simple IPayload implementation.
         /// </summary>
         private class DemoPayload(string meta, IEnumerable<string> bodies) : IPayload<string, string>
         {
@@ -72,7 +88,7 @@ namespace Cozyupk.HelloShadowDI.BaseUtilityPkg.ComponentRoots.PlayGrounds.Notifi
         }
 
         /// <summary>
-        /// Handler that simulates notification and prints to the console.
+        /// Simulates external payload emission.
         /// </summary>
         private class ConsolePayloadHandler : INotificationHandler<IPayload<string, string>>
         {
