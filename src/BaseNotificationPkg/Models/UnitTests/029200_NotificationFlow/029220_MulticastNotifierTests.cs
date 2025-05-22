@@ -1,12 +1,4 @@
-﻿using System;
-using Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Contracts.NotificationFlow;
-using Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Contracts.Traits;
-using Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Impl.NotificationFlow;
-using FluentAssertions;
-using Moq;
-using Xunit;
-
-namespace Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.UnitTests.NotificationFlow
+﻿namespace Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.UnitTests.NotificationFlow
 {
     /*
     public class MulticastNotifierTests

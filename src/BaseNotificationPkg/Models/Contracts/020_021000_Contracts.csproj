@@ -5,4 +5,8 @@
 		<AssemblyName>BaseNotificationPkg.Models.Contracts</AssemblyName>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Folder Include="021200_NotificationFlow\" />
+	</ItemGroup>
+
 </Project>

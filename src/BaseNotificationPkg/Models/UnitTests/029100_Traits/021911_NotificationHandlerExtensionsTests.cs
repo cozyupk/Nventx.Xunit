@@ -2,6 +2,7 @@
 using System;
 using Xunit;
 using Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Impl.Traits;
+using System.Collections.Generic;
 
 namespace Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.UnitTests.Traits.NotificationHandlerExtensionsTests
 {

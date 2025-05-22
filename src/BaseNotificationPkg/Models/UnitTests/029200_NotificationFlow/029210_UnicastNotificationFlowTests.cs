@@ -1,114 +1,284 @@
-﻿using System;
-using Xunit;
-using FluentAssertions;
-using Moq;
+﻿
+using System;
+using System.Collections.Generic;
 using Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Contracts.Traits;
-using Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Impl.NotificationFlow;
+using Microsoft.VisualStudio.TestPlatform.CoreUtilities.Extensions;
+using Xunit;
 
-namespace Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.UnitTests.NotificationFlow
+namespace NventX.Tests
 {
-    public class UnicastNotificationFlowTests
+    public class ObservableXTests
     {
         [Fact]
-        public void UnicastFlow_Should_Invoke_Handler_With_Exact_Instance()
+        public void EnableObservationBy_RegistersHandler_AndNotifiesSuccessfully()
         {
             // Arrange
-            var flow = new UnicastFlow<string>();
-            string? received = null;
-            flow.RegisterReceivingHandler(s => received = s);
+            var messages = new List<string>();
+            var handler = new Consumer<string>(msg => messages.Add(msg));
+            var notifier = new Notifier<string>();
 
             // Act
-            flow.Notify("hello");
+            notifier.EnableObservationBy(handler);
+            notifier.Notify("Hello NventX");
 
             // Assert
-            received.Should().Be("hello");
+            Assert.Single(messages);
+            Assert.Equal("Hello NventX", messages[0]);
         }
 
         [Fact]
-        public void UnicastAdaptationFlow_Should_Invoke_Handler_With_Adapted_Result()
+        public void DisableObservationBy_RemovesHandler_AndNoNotificationOccurs()
         {
             // Arrange
-            var mockAdaptable = new Mock<IAdaptTo<string>>();
-            mockAdaptable.Setup(m => m.Adapt()).Returns("adapted!");
-
-            var flow = new UnicastAdaptationFlow<string, IAdaptTo<string>>();
-            string? received = null;
-            flow.RegisterReceivingHandler(s => received = s);
+            var messages = new List<string>();
+            var handler = new Consumer<string>(msg => messages.Add(msg));
+            var notifier = new Notifier<string>();
+            notifier.EnableObservationBy(handler);
+            notifier.DisableObservationBy(handler);
 
             // Act
-            flow.Notify(mockAdaptable.Object);
+            notifier.Notify("Message should not be received");
 
             // Assert
-            received.Should().Be("adapted!");
+            Assert.Empty(messages);
+        }
+
+        private class DummySelfRemovableConsumer<T>(Action<T> action) : Consumer<T>(val =>
+                {
+                    action(val);
+                }), ISelfRemovable
+        {
+            private bool _hasHandled = false;
+
+            public override void Handle(T value)
+            {
+                base.Handle(value);
+                _hasHandled = true;
+            }
+
+            public bool CanRemove() => _hasHandled;
         }
 
         [Fact]
-        public void Constructor_Should_Throw_If_Lambda_Is_Null()
+        public void DisableObservationBy_AfterSelfRemoving_AndNoNotificationOccurs()
         {
+            // Arrange
+            var messages = new List<string>();
+            var handler = new DummySelfRemovableConsumer<string>(msg => messages.Add(msg));
+            var notifier = new Notifier<string>();
+            notifier.EnableObservationBy(handler);
+
             // Act
-            Action act = () => new UnicastProjectionFlow<string, string>(null!);
+            notifier.Notify("Message should be received");
+            notifier.Notify("Message should not be received");
 
             // Assert
-            act.Should().Throw<ArgumentNullException>()
-               .WithMessage("*Adaptation function cannot be null.*");
+            Assert.Single(messages);
+            Assert.Equal("Message should be received", messages[0]);
         }
 
         [Fact]
-        public void RegisterHandler_Should_Throw_If_Null()
+        public void ProjectionNotifier_TransformsInputBeforeNotify()
         {
             // Arrange
-            var flow = new UnicastFlow<string>();
+            var messages = new List<string>();
+            var handler = new Consumer<string>(msg => messages.Add(msg));
+            var notifier = new ProjectionNotifier<Exception, string>(ex => ex.Message);
+            notifier.EnableObservationBy(handler);
 
             // Act
-            Action act = () => flow.RegisterReceivingHandler(null!);
+            notifier.Notify(new Exception("Disk full"));
 
             // Assert
-            act.Should().Throw<ArgumentNullException>()
-               .WithMessage("*Handler cannot be null*");
+            Assert.Single(messages);
+            Assert.Equal("Disk full", messages[0]);
+        }
+
+
+        private class DummyAdaptable(string value) : IAdaptTo<string>
+        {
+            private readonly string _value = value;
+
+            public string Adapt() => _value;
         }
 
         [Fact]
-        public void RegisterHandler_Should_Throw_If_Registered_Twice()
+        public void ProjectionSwitchBoard_HandlesAndRelays_Notification()
         {
             // Arrange
-            var flow = new UnicastFlow<string>();
-            flow.RegisterReceivingHandler(_ => { });
+            var results = new List<int>();
+            var consumer = new Consumer<int>(n => results.Add(n));
+            var switchBoard = new ProjectionSwitchBoard<int, string>(s => s.Length);
+            switchBoard.EnableObservationBy(consumer);
 
             // Act
-            Action act = () => flow.RegisterReceivingHandler(_ => { });
+            switchBoard.Handle("TestString");
 
             // Assert
-            act.Should().Throw<InvalidOperationException>()
-               .WithMessage("*already been assigned*");
+            Assert.Single(results);
+            Assert.Equal("TestString".Length, results[0]);
         }
 
         [Fact]
-        public void Notify_Should_Throw_If_No_Handler_Registered()
+        public void Constructors_ThrowsNull_IfNoneNullableArgIsNull()
         {
-            // Arrange
-            var flow = new UnicastFlow<string>();
-
-            // Act
-            Action act = () => flow.Notify("hello");
-
             // Assert
-            act.Should().Throw<InvalidOperationException>()
-               .WithMessage("*No handler has been registered*");
+            Assert.Throws<ArgumentNullException>(() => new Consumer<string>(null!));
+            Assert.Throws<ArgumentNullException>(() => new ProjectionSwitchBoard<int, string>(null!));
+            Assert.Throws<ArgumentNullException>(() => new AdaptionNotifier<DummyAdaptable, string>(null!));
+            Assert.Throws<ArgumentNullException>(() => new SwitchBoard<string>().EnableObservationBy(null!));
         }
 
         [Fact]
-        public void Notify_Should_Throw_If_Source_Is_Null()
+        public void AdaptionNotifier_CallsAdaptMethod_WhenNotified()
         {
             // Arrange
-            var flow = new UnicastFlow<string>();
-            flow.RegisterReceivingHandler(_ => { });
+            var messages = new List<string>();
+            var handler = new Consumer<string>(msg => messages.Add(msg));
+
+            var adaptee = new DummyAdaptable("Adapted!");
+            var notifier = new AdaptionNotifier<DummyAdaptable, string>(x => x.Adapt());
+            notifier.EnableObservationBy(handler);
 
             // Act
-            Action act = () => flow.Notify(null!);
+            notifier.Notify(adaptee);
 
             // Assert
-            act.Should().Throw<ArgumentNullException>()
-               .WithMessage("*source cannot be null*");
+            Assert.Single(messages);
+            Assert.Equal("Adapted!", messages[0]);
         }
+
+        [Fact]
+        public void AdaptionSwitchBoard_AdaptsAndNotifiesHandlers()
+        {
+            // Arrange
+            var results = new List<string>();
+            var consumer = new Consumer<string>(x => results.Add(x.AddDoubleQuote()));
+
+            var switchBoard = new AdaptionSwitchBoard<string, DummyAdaptable>();
+            switchBoard.EnableObservationBy(consumer);
+
+            var input = new DummyAdaptable("test");
+
+            // Act
+            switchBoard.Handle(input);
+
+            // Assert
+            Assert.Single(results);
+            Assert.Equal("\"test\"", results[0]);
+        }
+
+        [Fact]
+        public void SwitchBoard_NotifiesHandlers()
+        {
+            // Arrange
+            var results = new List<string>();
+            var consumer = new Consumer<string>(x => results.Add(x));
+
+            var switchBoard = new SwitchBoard<string>();
+            switchBoard.EnableObservationBy(consumer);
+
+            var input = "aaa";
+
+            // Act
+            switchBoard.Handle(input);
+
+            // Assert
+            Assert.Single(results);
+            Assert.Equal("aaa", results[0]);
+        }
+
+
+        [Fact]
+        public void InvokeHandlers_ThrowsArgumentNullException_WhenBeingNotifiedIsNull()
+        {
+            var notifier = new Notifier<string>();
+            Assert.Throws<ArgumentNullException>(() => notifier.Notify(null!));
+        }
+
+        private class ExceptionThrowingHandler : IHandlerOf<string>
+        {
+            public void Handle(string value)
+            {
+                throw new InvalidOperationException("Handler failed intentionally.");
+            }
+        }
+
+        private class TestableNotifier<T>(Action onException) : Notifier<T>
+        {
+            private readonly Action _onException = onException;
+
+            protected internal override void OnExceptionInNotification(IHandlerOf<T> handler, T beingNotified, Exception ex)
+            {
+                _onException();
+            }
+        }
+
+        [Fact]
+        public void OnExceptionInNotification_IsCalled_WhenHandlerThrows()
+        {
+            var errorLogged = false;
+            var handler = new ExceptionThrowingHandler();
+
+            var notifier = new TestableNotifier<string>(() => errorLogged = true);
+            notifier.EnableObservationBy(handler);
+            notifier.Notify("test");
+
+            Assert.True(errorLogged);
+        }
+
+        private class FalseNotifiableNotifier : Notifier<string>
+        {
+            protected internal override bool IsNotifiable(IHandlerOf<string> handler, string beingNotified) => false;
+        }
+
+        [Fact]
+        public void Notify_SkipsHandler_WhenIsNotifiableReturnsFalse()
+        {
+            var messages = new List<string>();
+            var handler = new Consumer<string>(msg => messages.Add(msg));
+            var notifier = new FalseNotifiableNotifier();
+            notifier.EnableObservationBy(handler);
+            notifier.Notify("Invisible message");
+            Assert.Empty(messages);
+        }
+
+        [Fact]
+        public void EnableObservationBy_Throws_WhenHandlerArrayContainsNull()
+        {
+            var notifier = new Notifier<string>();
+            Assert.Throws<ArgumentNullException>(() =>
+                notifier.EnableObservationBy([null!]));
+        }
+
+        [Fact]
+        public void Notify_Continues_WhenHandlerThrowsException()
+        {
+            // Arrange: Create a notifier and a handler that throws an exception
+            var messages = new List<string>();
+            var ExceptionHandler = new Consumer<string>(msg => throw new Exception());
+            var NormalHandler = new Consumer<string>(msg => messages.Add(msg));
+            var notifier = new Notifier<string>();
+            notifier.EnableObservationBy(NormalHandler);
+            notifier.EnableObservationBy(ExceptionHandler);
+
+            // Act & Assert: No exception should be thrown
+            var ex = Record.Exception(() => notifier.Notify("Visible message"));
+            Assert.Null(ex);
+            Assert.Single(messages);
+            Assert.Equal("Visible message", messages[0]);
+        }
+
+        [Fact]
+        public void DisableObservationBy_IgnoresNullHandlers()
+        {
+            // Arrange: Create a notifier and a null handler
+            var notifier = new Notifier<string>();
+
+            // Act & Assert: No exception should be thrown
+            var ex = Record.Exception(() => notifier.DisableObservationBy([null!]));
+            Assert.Null(ex);
+        }
+
     }
 }
