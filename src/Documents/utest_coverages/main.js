@@ -211,13 +211,13 @@ for (i = 0, l = charts.length; i < l; i++) {
 
 var assemblies = [
   {
-    "name": "BaseUtilityPkg.Models.DesignPatterns.Impl",
+    "name": "BaseNotificationPkg.Models.Impl",
     "classes": [
-      { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.NotificationFlow.UnicastNotificationFlow<T1, T2>", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_UnicastNotificationFlow_2.html", "cl": 22, "ucl": 0, "cal": 22, "tl": 69, "cb": 8, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow.PayloadConsumerUsingWeakReferenceBase<T1, T2, T3>", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_PayloadConsumerUsingWeakReferenceBase_3.html", "cl": 21, "ucl": 0, "cal": 21, "tl": 78, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow.PayloadMulticastNotifier<T1, T2, T3>", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_PayloadMulticastNotifier_3.html", "cl": 78, "ucl": 0, "cal": 78, "tl": 188, "cb": 18, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.PayloadFlow.PayloadMulticastNotifierBuilder<T1, T2, T3>", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_PayloadMulticastNotifierBuilder_3.html", "cl": 20, "ucl": 0, "cal": 20, "tl": 67, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Cozyupk.HelloShadowDI.BaseUtilityPkg.Models.DesignPatterns.Impl.Traits.NotificationHandlerExtensions", "rp": "BaseUtilityPkg.Models.DesignPatterns.Impl_NotificationHandlerExtensions.html", "cl": 30, "ucl": 0, "cal": 30, "tl": 79, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Impl.NotificationFlow.MulticastNotifier<T1, T2>", "rp": "BaseNotificationPkg.Models.Impl_MulticastNotifier_2.html", "cl": 0, "ucl": 86, "cal": 86, "tl": 179, "cb": 0, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Impl.NotificationFlow.UnicastAdaptationFlow<T1, T2>", "rp": "BaseNotificationPkg.Models.Impl_UnicastAdaptationFlow_2.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 19, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Impl.NotificationFlow.UnicastFlow<T>", "rp": "BaseNotificationPkg.Models.Impl_UnicastFlow_1.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 17, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Impl.NotificationFlow.UnicastProjectionFlow<T1, T2>", "rp": "BaseNotificationPkg.Models.Impl_UnicastProjectionFlow_2.html", "cl": 29, "ucl": 0, "cal": 29, "tl": 77, "cb": 10, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Impl.Traits.NotificationHandlerExtensions", "rp": "BaseNotificationPkg.Models.Impl_NotificationHandlerExtensions.html", "cl": 30, "ucl": 0, "cal": 30, "tl": 79, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
@@ -226,9 +226,29 @@ var metrics = [{ "name": "Crap Score", "abbreviation": "crp", "explanationUrl": 
 var historicCoverageExecutionTimes = [];
 
 var riskHotspotMetrics = [
+      { "name": "Crap Score", "explanationUrl": "https://googletesting.blogspot.de/2011/02/this-code-is-crap.html" },
+      { "name": "Cyclomatic complexity", "explanationUrl": "https://en.wikipedia.org/wiki/Cyclomatic_complexity" },
 ];
 
 var riskHotspots = [
+  {
+    "assembly": "BaseNotificationPkg.Models.Impl", "class": "Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Impl.NotificationFlow.MulticastNotifier<T1, T2>", "reportPath": "BaseNotificationPkg.Models.Impl_MulticastNotifier_2.html", "methodName": "RegisterSendingFlow(Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Contracts.NotificationFlow.INotificationHandler`1<TMulticastSource>,System.Action`1<System.Action>)", "methodShortName": "RegisterSendingFlow(...)", "fileIndex": 0, "line": 99,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "BaseNotificationPkg.Models.Impl", "class": "Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Impl.NotificationFlow.MulticastNotifier<T1, T2>", "reportPath": "BaseNotificationPkg.Models.Impl_MulticastNotifier_2.html", "methodName": "GetLatestReceiversSnapshot()", "methodShortName": "GetLatestReceiversSnapshot()", "fileIndex": 0, "line": 70,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "BaseNotificationPkg.Models.Impl", "class": "Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Impl.NotificationFlow.MulticastNotifier<T1, T2>", "reportPath": "BaseNotificationPkg.Models.Impl_MulticastNotifier_2.html", "methodName": "AttachReceivingFlow(Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Contracts.NotificationFlow.IUnicastNotifier`1<TMulticastTarget>[])", "methodShortName": "AttachReceivingFlow(...)", "fileIndex": 0, "line": 145,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
 ];
 
 var branchCoverageAvailable = true;

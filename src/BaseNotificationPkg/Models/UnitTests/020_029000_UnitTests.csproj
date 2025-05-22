@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.UnitTests</RootNameSpace>
+		<AssemblyName>BaseNotificationPkg.Models.UnitTests</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="029200_NotificationFlow\029220_MulticastNotifierTests.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Impl\020_022000_Impl.csproj" />
+	</ItemGroup>
+	
+</Project>

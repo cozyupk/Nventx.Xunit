@@ -1,9 +1,0 @@
-<Project>  
- <!-- Define the main property group for the project -->  
- <PropertyGroup>  
-   <OutputType>WinExe</OutputType> <!-- Specifies the output type as a Windows executable -->  
-   <TargetFramework>net8.0</TargetFramework> <!-- Targets .NET 8.0 framework -->  
-   <ImplicitUsings>enable</ImplicitUsings> <!-- Enables implicit using directives -->  
-   <Nullable>enable</Nullable> <!-- Enables nullable reference types -->  
- </PropertyGroup>  
-</Project>

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Contracts.NotificationFlow;
-using Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Contracts.PayloadFlow;
-using Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Impl.PayloadFlow;
 
 namespace Cozyupk.Shadow.Flow.BaseNotificationPkg.ComponentRoots.PlayGrounds.NotificationDemo
 {
@@ -18,6 +14,7 @@ namespace Cozyupk.Shadow.Flow.BaseNotificationPkg.ComponentRoots.PlayGrounds.Not
     {
         public static void Main(string[] _)
         {
+            /*
             Console.WriteLine("== Starting Shadow.NotifyConsume demo ==");
             Console.WriteLine("Features demonstrated:");
             Console.WriteLine("- Multicast notifier");
@@ -44,12 +41,14 @@ namespace Cozyupk.Shadow.Flow.BaseNotificationPkg.ComponentRoots.PlayGrounds.Not
             // Simulate payload notification
             var payload = new DemoPayload("MetaInfo", ["Body1", "Body2"]);
             handler.Simulate(payload);
+            */
 
             Console.WriteLine();
             Console.WriteLine("== Demo complete. Press any key to exit ==");
             Console.ReadKey();
         }
 
+        /*
         /// <summary>
         /// Console output consumer (simple observer).
         /// </summary>
@@ -104,5 +103,6 @@ namespace Cozyupk.Shadow.Flow.BaseNotificationPkg.ComponentRoots.PlayGrounds.Not
                 _handle?.Invoke(payload);
             }
         }
+        */
     }
 }

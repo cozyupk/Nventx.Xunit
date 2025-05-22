@@ -1,8 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<RootNameSpace>Cozyupk.Shadow.Flow.DiagnosticPkg.ComponentRoots.E2ETests.DiagnosticPkgTests</RootNameSpace>
-		<AssemblyName>DiagnosticPkg.ComponentRoots.E2ETests.DiagnosticPkgTests</AssemblyName>
-	</PropertyGroup>
-
-</Project>

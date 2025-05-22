@@ -1,9 +1,0 @@
-<Project>  
- <!-- Define project properties -->  
- <PropertyGroup>  
-   <TargetFramework>netstandard2.0</TargetFramework> <!-- Target .NET Standard 2.0 -->  
-   <LangVersion>8.0</LangVersion> <!-- Use C# language version 8.0 -->  
-   <ImplicitUsings>disable</ImplicitUsings> <!-- Disable implicit using directives -->  
-   <Nullable>enable</Nullable> <!-- Enable nullable reference types -->  
- </PropertyGroup>  
-</Project>
