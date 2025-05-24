@@ -211,17 +211,18 @@ for (i = 0, l = charts.length; i < l; i++) {
 
 var assemblies = [
   {
-    "name": "BaseNotificationPkg.Models.Impl",
+    "name": "NventX.FoundationPkg.Impl",
     "classes": [
-      { "name": "Cozyupk.Shadow.Flow.BaseNotificationPkg.Models.Impl.Traits.NotificationHandlerExtensions", "rp": "BaseNotificationPkg.Models.Impl_NotificationHandlerExtensions.html", "cl": 30, "ucl": 0, "cal": 30, "tl": 79, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.AdaptionNotifier<T1, T2>", "rp": "BaseNotificationPkg.Models.Impl_AdaptionNotifier_2.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 309, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.AdaptionSwitchBoard<T1, T2>", "rp": "BaseNotificationPkg.Models.Impl_AdaptionSwitchBoard_2.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 309, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.Consumer<T>", "rp": "BaseNotificationPkg.Models.Impl_Consumer_1.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 309, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.Notifier<T>", "rp": "BaseNotificationPkg.Models.Impl_Notifier_1.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 309, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.ObservableX<T>", "rp": "BaseNotificationPkg.Models.Impl_ObservableX_1.html", "cl": 77, "ucl": 0, "cal": 77, "tl": 309, "cb": 26, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.ProjectionNotifier<T1, T2>", "rp": "BaseNotificationPkg.Models.Impl_ProjectionNotifier_2.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 309, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.ProjectionSwitchBoard<T1, T2>", "rp": "BaseNotificationPkg.Models.Impl_ProjectionSwitchBoard_2.html", "cl": 8, "ucl": 0, "cal": 8, "tl": 309, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.SwitchBoard<T>", "rp": "BaseNotificationPkg.Models.Impl_SwitchBoard_1.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 309, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.FoundationPkg.Abstractions.Observing.ConcurrentHashSetSupportingSelfRemovable<T>", "rp": "NventX.FoundationPkg.Impl_ConcurrentHashSetSupportingSelfRemovable_1.html", "cl": 14, "ucl": 32, "cal": 46, "tl": 114, "cb": 5, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.FoundationPkg.Impl.Adaptive.AdaptionNotifier<T1, T2>", "rp": "NventX.FoundationPkg.Impl_AdaptionNotifier_2.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 28, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.FoundationPkg.Impl.Adaptive.AdaptionSwitchBoard<T1, T2>", "rp": "NventX.FoundationPkg.Impl_AdaptionSwitchBoard_2.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 27, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.FoundationPkg.Impl.Observing.ObservableX<T>", "rp": "NventX.FoundationPkg.Impl_ObservableX_1.html", "cl": 0, "ucl": 43, "cal": 43, "tl": 107, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.FoundationPkg.Impl.Observing.ProjectionNotifier<T1, T2>", "rp": "NventX.FoundationPkg.Impl_ProjectionNotifier_2.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 32, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.FoundationPkg.Impl.Observing.ProjectionSwitchBoard<T1, T2>", "rp": "NventX.FoundationPkg.Impl_ProjectionSwitchBoard_2.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 49, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.FoundationPkg.Impl.Passthrough.Notifier<T>", "rp": "NventX.FoundationPkg.Impl_Notifier_1.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 21, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.FoundationPkg.Impl.Passthrough.SwitchBoard<T>", "rp": "NventX.FoundationPkg.Impl_SwitchBoard_1.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 24, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.FoundationPkg.Impl.Simple.Consumer<T>", "rp": "NventX.FoundationPkg.Impl_Consumer_1.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 38, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.FoundationPkg.Impl.Traits.NotificationHandlerExtensions", "rp": "NventX.FoundationPkg.Impl_NotificationHandlerExtensions.html", "cl": 30, "ucl": 0, "cal": 30, "tl": 79, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
@@ -230,9 +231,23 @@ var metrics = [{ "name": "Crap Score", "abbreviation": "crp", "explanationUrl": 
 var historicCoverageExecutionTimes = [];
 
 var riskHotspotMetrics = [
+      { "name": "Crap Score", "explanationUrl": "https://googletesting.blogspot.de/2011/02/this-code-is-crap.html" },
+      { "name": "Cyclomatic complexity", "explanationUrl": "https://en.wikipedia.org/wiki/Cyclomatic_complexity" },
 ];
 
 var riskHotspots = [
+  {
+    "assembly": "NventX.FoundationPkg.Impl", "class": "NventX.FoundationPkg.Abstractions.Observing.ConcurrentHashSetSupportingSelfRemovable<T>", "reportPath": "NventX.FoundationPkg.Impl_ConcurrentHashSetSupportingSelfRemovable_1.html", "methodName": "get_Snapshot()", "methodShortName": "get_Snapshot()", "fileIndex": 0, "line": 37,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "NventX.FoundationPkg.Impl", "class": "NventX.FoundationPkg.Impl.Observing.ObservableX<T>", "reportPath": "NventX.FoundationPkg.Impl_ObservableX_1.html", "methodName": "InvokeHandlers(TType)", "methodShortName": "InvokeHandlers(...)", "fileIndex": 0, "line": 50,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
 ];
 
 var branchCoverageAvailable = true;

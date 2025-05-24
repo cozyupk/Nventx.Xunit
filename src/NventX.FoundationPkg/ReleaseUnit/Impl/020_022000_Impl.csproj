@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>NventX.FoundationPkg.Impl</RootNameSpace>
+		<AssemblyName>NventX.FoundationPkg.Impl</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Abstractions\020_021000_Abstractions.csproj" />
+	</ItemGroup>
+
+</Project>

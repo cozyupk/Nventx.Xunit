@@ -8,7 +8,7 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BaseNotificationPkg\Models\Contracts\020_021000_Contracts.csproj" />
+    <ProjectReference Include="..\BaseNotificationPkg\Models\Contracts\020_021000_Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

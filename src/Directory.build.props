@@ -26,7 +26,7 @@
 	<!-- Import suitable props file(s) -->
 	<!-- 1. Layer-specific configuration -->
 	<PropertyGroup>
-		<LayerPropsPath>$(SolutionDir)build\$(LayerNumber)0000_Layer.props</LayerPropsPath>
+		<LayerPropsPath>$(SolutionDir)build\0010_Layers\$(LayerNumber)0000_Layer.props</LayerPropsPath>
 		<LayerPropsExists Condition="Exists('$(LayerPropsPath)')">true</LayerPropsExists>
 		<LayerPropsExists Condition=" '$(LayerPropsExists)' == '' ">false</LayerPropsExists>
 	</PropertyGroup>
@@ -38,7 +38,7 @@
 	</ItemGroup>
 	<!-- 2. Pkg and Layer-specific configuration -->
 	<PropertyGroup>
-		<PkgLayerPropsPath>$(SolutionDir)build\$(PkgNumber)_$(LayerNumber)0000_Layer.props</PkgLayerPropsPath>
+		<PkgLayerPropsPath>$(SolutionDir)build\0020_PkgLayers\$(PkgNumber)_$(LayerNumber)0000_Layer.props</PkgLayerPropsPath>
 		<PkgLayerPropsExists Condition="Exists('$(PkgLayerPropsPath)')">true</PkgLayerPropsExists>
 		<PkgLayerPropsExists Condition=" '$(PkgLayerPropsExists)' == '' ">false</PkgLayerPropsExists>
 	</PropertyGroup>
@@ -53,7 +53,7 @@
 		<ComponentGroupPropsPath>$(SolutionDir)build\$(LayerNumber)$(ComponentGroupNumber)_ComponentGroup.props</ComponentGroupPropsPath>
 	-->
 	<PropertyGroup>
-		<ComponentGroupPropsPath>$(SolutionDir)build\$(LayerNumber)$(ComponentGroupNumber)000_ComponentGroup.props</ComponentGroupPropsPath>
+		<ComponentGroupPropsPath>$(SolutionDir)build\0030_ComponentGroups\$(LayerNumber)$(ComponentGroupNumber)000_ComponentGroup.props</ComponentGroupPropsPath>
 		<ComponentGroupPropsExists Condition="Exists('$(ComponentGroupPropsPath)')">true</ComponentGroupPropsExists>
 		<ComponentGroupPropsExists Condition=" '$(ComponentGroupPropsExists)' == '' ">false</ComponentGroupPropsExists>
 	</PropertyGroup>
@@ -65,7 +65,7 @@
 	</ItemGroup>
 	<!-- 4. Pkg and Component group configuration -->
 	<PropertyGroup>
-		<PkgComponentGroupPropsPath>$(SolutionDir)build\$(PkgNumber)_$(LayerNumber)$(ComponentGroupNumber)000_ComponentGroup.props</PkgComponentGroupPropsPath>
+		<PkgComponentGroupPropsPath>$(SolutionDir)build\0040_PkgComponentGroups\$(PkgNumber)_$(LayerNumber)$(ComponentGroupNumber)000_ComponentGroup.props</PkgComponentGroupPropsPath>
 		<PkgComponentGroupPropsExists Condition="Exists('$(PkgComponentGroupPropsPath)')">true</PkgComponentGroupPropsExists>
 		<PkgComponentGroupPropsExists Condition=" '$(PkgComponentGroupPropsExists)' == '' ">false</PkgComponentGroupPropsExists>
 	</PropertyGroup>
@@ -77,7 +77,7 @@
 	</ItemGroup>
 	<!-- 5. Unit test specific configuration -->
 	<PropertyGroup>
-		<UnitTestPropsPath>$(SolutionDir)build\000001_UnitTests.props</UnitTestPropsPath>
+		<UnitTestPropsPath>$(SolutionDir)build\0050_UnitTests\000001_UnitTests.props</UnitTestPropsPath>
 		<UnitTestPropsExists Condition="Exists('$(UnitTestPropsPath)')">true</UnitTestPropsExists>
 		<UnitTestPropsExists Condition=" '$(UnitTestPropsExists)' == '' ">false</UnitTestPropsExists>
 	</PropertyGroup>
@@ -95,6 +95,6 @@
 	</PropertyGroup>
 
 	<!-- Import common targets -->
-	<Import Project="build\000000_Common.targets" />
+	<Import Project="build\Common.targets" />
 	
 </Project>

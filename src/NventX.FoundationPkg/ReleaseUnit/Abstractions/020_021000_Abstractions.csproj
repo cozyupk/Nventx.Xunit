@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>NventX.FoundationPkg.Abstractions</RootNameSpace>
+		<AssemblyName>NventX.FoundationPkg.Abstractions</AssemblyName>
+	</PropertyGroup>
+
+</Project>
