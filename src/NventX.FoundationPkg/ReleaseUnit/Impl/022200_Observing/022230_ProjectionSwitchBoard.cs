@@ -3,6 +3,7 @@ using System;
 
 namespace NventX.FoundationPkg.Impl.Observing
 {
+    /*
     /// <summary>
     /// A projection-enabled notification relay that receives notifications of type <typeparamref name="TSource"/>,
     /// transforms them into <typeparamref name="TTarget"/> using a projection function,
@@ -46,4 +47,5 @@ namespace NventX.FoundationPkg.Impl.Observing
             InvokeHandlers(Projection(notified));
         }
     }
+        */
 }

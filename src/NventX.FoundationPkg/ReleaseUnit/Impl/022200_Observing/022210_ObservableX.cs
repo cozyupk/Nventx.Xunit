@@ -3,6 +3,7 @@ using NventX.FoundationPkg.Abstractions.Observing;
 
 namespace NventX.FoundationPkg.Impl.Observing
 {
+    /*
     /// <summary>
     /// Provides a thread-safe observable pattern implementation for handling notifications to registered handlers.
     /// </summary>
@@ -101,4 +102,5 @@ namespace NventX.FoundationPkg.Impl.Observing
             Handlers.RemoveElements(handlers);
         }
     }
+    */
 }

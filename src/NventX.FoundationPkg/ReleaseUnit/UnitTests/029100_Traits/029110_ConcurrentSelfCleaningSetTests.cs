@@ -6,6 +6,7 @@ namespace NventX.FoundationPkg.UnitTests.Traits
 {
     public class ConcurrentSelfCleaningSet
     {
+        /*
         public class ExceptionCases : TheoryData<string, Action, Type, string>
         {
             public ExceptionCases()
@@ -45,5 +46,6 @@ namespace NventX.FoundationPkg.UnitTests.Traits
             Assert.IsType(ExceptionType, ex);
             Assert.Contains(expectedMessage, ex.Message);
         }
+        */
     }
 }

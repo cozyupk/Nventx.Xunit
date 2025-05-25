@@ -3,6 +3,7 @@ using NventX.FoundationPkg.Impl.Observing;
 
 namespace NventX.FoundationPkg.Impl.Passthrough
 {
+    /*
     /// <summary>
     /// A simplified switchboard that receives notifications and dispatches them directly to all handlers,
     /// without any transformation.
@@ -21,4 +22,5 @@ namespace NventX.FoundationPkg.Impl.Passthrough
             // No additional initialization needed
         }
     }
+    */
 }

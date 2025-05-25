@@ -4,6 +4,7 @@ using System;
 
 namespace NventX.FoundationPkg.Impl.Adaptive
 {
+    /*
     /// <summary>
     /// A notifier that adapts input arguments of type <typeparamref name="TArgs"/> to 
     /// a target type <typeparamref name="TTarget"/> using a custom projection function,
@@ -25,4 +26,5 @@ namespace NventX.FoundationPkg.Impl.Adaptive
             // No additional initialization needed
         }
     }
+    */
 }

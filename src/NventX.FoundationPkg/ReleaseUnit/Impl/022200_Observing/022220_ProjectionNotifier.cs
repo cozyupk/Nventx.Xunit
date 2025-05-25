@@ -3,6 +3,7 @@ using System;
 
 namespace NventX.FoundationPkg.Impl.Observing
 {
+    /*
     /// <summary>
     /// Notifies handlers by projecting input arguments to a target type before notification.
     /// </summary>
@@ -29,4 +30,5 @@ namespace NventX.FoundationPkg.Impl.Observing
             InvokeHandlers(Projection(beingNotified));
         }
     }
+    */
 }

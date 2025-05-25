@@ -3,6 +3,7 @@ using NventX.FoundationPkg.Impl.Observing;
 
 namespace NventX.FoundationPkg.Impl.Passthrough
 {
+    /*
     /// <summary>
     /// Notifies handlers with the same type as the input argument.
     /// </summary>
@@ -18,4 +19,5 @@ namespace NventX.FoundationPkg.Impl.Passthrough
             // No additional initialization needed
         }
     }
+    */
 }

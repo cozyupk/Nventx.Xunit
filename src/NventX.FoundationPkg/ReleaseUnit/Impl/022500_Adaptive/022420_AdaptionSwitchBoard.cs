@@ -4,6 +4,7 @@ using NventX.FoundationPkg.Impl.Observing;
 
 namespace NventX.FoundationPkg.Impl.Adaptive
 {
+    /*
     /// <summary>
     /// A switchboard that adapts incoming notifications using the <see cref="IAdaptTo{T}"/> interface,
     /// and forwards the adapted values to all registered handlers.
@@ -24,4 +25,5 @@ namespace NventX.FoundationPkg.Impl.Adaptive
             // No additional initialization needed
         }
     }
+    */
 }

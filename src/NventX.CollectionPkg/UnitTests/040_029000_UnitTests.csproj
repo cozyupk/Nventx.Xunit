@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>NventX.CollectionPkg.UnitTest</RootNameSpace>
+		<AssemblyName>NventX.CollectionPkg.UnitTest</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Impl\040_021000_Impl.csproj" />
+	</ItemGroup>
+
+</Project>
