@@ -1,249 +1,241 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
-using NventX.CollectionPkg.Impl;
 using Xunit;
+using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace NventX.CollectionPkg.UnitTest
 {
-    /// ▽▽ Framework for tests that use a dictionary-based collection. ▽▽
-    public abstract class TestsBase
+    /// ▽▽ Framework for tests ▽▽
+    public abstract class MySaikyoTestsBase
     {
-        protected static ConcurrentDictionary<string, Task> Tasks { get; } = new();
-
-        protected static object CasesLock { get; } = new();
-        private static bool IsCasesCommitted { get; set; } = false;
-
-        private static void RegisterTaskWithLabel(string label, Task task)
+        [XunitTestCaseDiscoverer("NventX.CollectionPkg.UnitTest.ExceptionFactDiscoverer", "NventX.CollectionPkg.UnitTest")]
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+        public class ExceptionFactAttribute(Type? expectedExceptionType = null, string? expectedMessage = null) : FactAttribute
         {
-            ArgumentNullException.ThrowIfNull(label);
-            ArgumentNullException.ThrowIfNull(task);
-            Console.WriteLine("OK");
-            if (Tasks.TryAdd(label, task) == false)
+            public Type? ExpectedExceptionType { get; } = expectedExceptionType;
+            public string? ExpectedMessage { get; } = expectedMessage;
+        }
+
+        [Serializable]
+        public class ExceptionExpectedTestCase : XunitTestCase, ITest
+        {
+            protected Type? ExpectedExceptionType { get; set; }
+            protected string? ExpectedMessage { get; set; }
+
+            public ITestCase TestCase => this;
+
+            [EditorBrowsable(EditorBrowsableState.Never)]
+            [Obsolete("Called by the de-serializer", true)]
+            public ExceptionExpectedTestCase() { }
+
+#pragma warning disable CS0618
+            public ExceptionExpectedTestCase(
+                IMessageSink diagnosticMessageSink, TestMethodDisplay testMethodDisplay, ITestMethod testMethod,
+                Type? expectedExceptionType = null, string? expectedMessage = null
+            ) : base(diagnosticMessageSink, testMethodDisplay, testMethod)
             {
-                // throw new InvalidOperationException($"Test case '{label}' already exists in the collection. Please use a unique test case name.");
-            } else
+                ExpectedExceptionType = expectedExceptionType;
+                ExpectedMessage = expectedMessage;
+            }
+#pragma warning restore CS0618
+
+            public override async Task<RunSummary> RunAsync(
+                IMessageSink diagnosticMessageSink,
+                IMessageBus messageBus,
+                object[] constructorArguments,
+                ExceptionAggregator aggregator,
+                CancellationTokenSource cancellationTokenSource)
             {
-                // throw new InvalidOperationException($"Test case '{label}' registered!");
-                Console.WriteLine($"Test case '{label}' registered!");
+                var runner = new ExceptionExpectedTestRunner(
+                    this,                     // ITest
+                    messageBus,
+                    TestMethod.TestClass.Class.ToRuntimeType(),
+                    constructorArguments,
+                    TestMethod.Method.ToRuntimeMethod(),
+                    TestMethodArguments,
+                    SkipReason,
+                    [],
+                    aggregator,
+                    cancellationTokenSource,
+                    ExpectedExceptionType,
+                    ExpectedMessage
+                );
+
+                return await runner.RunAsync();
+            }
+
+            public override void Serialize(IXunitSerializationInfo data)
+            {
+                base.Serialize(data);
+                data.AddValue(nameof(ExpectedExceptionType), ExpectedExceptionType, typeof(Type));
+                data.AddValue(nameof(ExpectedMessage), ExpectedMessage);
+            }
+
+            public override void Deserialize(IXunitSerializationInfo data)
+            {
+                base.Deserialize(data);
+                ExpectedExceptionType = data.GetValue<Type>(nameof(ExpectedExceptionType));
+                ExpectedMessage = data.GetValue<string>(nameof(ExpectedMessage));
             }
         }
 
-        private static void CommitCasesBase(Action action)
+        public class ExceptionExpectedTestRunner(ITest test, IMessageBus messageBus, Type testClass, object[] constructorArguments,
+                                       MethodInfo testMethod, object[] testMethodArguments, string skipReason,
+                                       IReadOnlyList<BeforeAfterTestAttribute> beforeAfterAttributes, ExceptionAggregator aggregator,
+                                       CancellationTokenSource cancellationTokenSource,
+                                       Type? expectedExceptionType, string? expectedMessage
+            ) : XunitTestRunner(test, messageBus, testClass, constructorArguments, testMethod, testMethodArguments,
+               skipReason, beforeAfterAttributes, aggregator, cancellationTokenSource)
         {
-            lock (CasesLock)
+            private readonly Type? _expectedExceptionType = expectedExceptionType;
+            private readonly string? _expectedMessage = expectedMessage;
+
+            public override async Task<RunSummary> RunAsync()
             {
-                /*
-                if (IsCasesCommitted)
+                var summary = new RunSummary();
+
+                try
                 {
-                    // Silently ignore if cases are already committed.
-                    return;
+                    decimal time = await InvokeTestMethodAsync(Aggregator);
+                    summary.Time = time;
                 }
-                */
-                action?.Invoke();
-                IsCasesCommitted = true;
-            }
-        }
+                catch (Exception ex)
+                {
+                    Aggregator.Add(ex);
+                }
 
-        // Generated by GPT. Starting strong!
-        public abstract class TheoryDataWithTasks<T1> : TheoryData<string, T1>
-        {
-            protected void AddWithAction(string label, T1 p1, Task task)
-            {
-                RegisterTaskWithLabel(label, task);
-                Add(label, p1);
+                summary.Total = 1;
+                summary.Failed = Aggregator.HasExceptions ? 1 : 0;
+                return summary;
             }
 
-            protected void CommitCases(Action action)
+            protected override async Task<decimal> InvokeTestMethodAsync(ExceptionAggregator aggregator)
             {
-                CommitCasesBase(action);
-            }
-        }
+                Exception? thrown = null;
+                MethodInfo method = TestMethod;
 
-        // Still alive. T2 is okay.
-        public abstract class TheoryDataWithTasks<T1, T2> : TheoryData<string, T1, T2>
-        {
-            protected void AddWithAction(string label, T1 p1, T2 p2, Task task)
-            {
-                RegisterTaskWithLabel(label, task);
-                Add(label, p1, p2);
-            }
+                // 判断: 戻り値が Task
+                bool returnsTask = typeof(Task).IsAssignableFrom(method.ReturnType);
 
-            protected void CommitCases(Action action)
-            {
-                CommitCasesBase(action);
-            }
-        }
+                try
+                {
+                    if (method.IsStatic)
+                    {
+                        if (returnsTask)
+                        {
+                            var func = (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), method);
+                            await func();
+                        }
+                        else
+                        {
+                            var action = (Action)Delegate.CreateDelegate(typeof(Action), method);
+                            action();
+                        }
+                    }
+                    else
+                    {
+                        if (returnsTask)
+                        {
+                            var func = (Func<Task>)Delegate.CreateDelegate(typeof(Func<Task>), TestCase, method);
+                            await func();
+                        }
+                        else
+                        {
+                            var action = (Action)Delegate.CreateDelegate(typeof(Action), TestCase, method);
+                            action();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    thrown = ex;
+                }
+                if (thrown is null)
+                {
+                    aggregator.Add(new Exception("Expected an exception, but none was thrown."));
+                }
+                else
+                {
+                    if (_expectedExceptionType != null && !_expectedExceptionType.IsAssignableFrom(thrown.GetType()))
+                    {
+                        aggregator.Add(new Exception($"Expected exception of type {_expectedExceptionType.Name}, but got {thrown.GetType().Name}."));
+                    }
+                    if (_expectedMessage != null && !thrown.Message.Contains(_expectedMessage))
+                    {
+                        aggregator.Add(new Exception($"Expected message to contain '{_expectedMessage}', but got '{thrown.Message}'"));
+                    }
+                }
 
-        // Slightly dizzy, but hanging in. T3 coming in.
-        public abstract class TheoryDataWithTasks<T1, T2, T3> : TheoryData<string, T1, T2, T3>
-        {
-            protected void AddWithAction(string label, T1 p1, T2 p2, T3 p3, Task task)
-            {
-                RegisterTaskWithLabel(label, task);
-                Add(label, p1, p2, p3);
-            }
-
-            protected void CommitCases(Action action)
-            {
-                CommitCasesBase(action);
-            }
-        }
-
-        // Determined. T4 is here.
-        public abstract class TheoryDataWithTasks<T1, T2, T3, T4> : TheoryData<string, T1, T2, T3, T4>
-        {
-            protected void AddWithAction(string label, T1 p1, T2 p2, T3 p3, T4 p4, Task task)
-            {
-                RegisterTaskWithLabel(label, task);
-                Add(label, p1, p2, p3, p4);
-            }
-
-            protected void CommitCases(Action action)
-            {
-                CommitCasesBase(action);
-            }
-        }
-
-        // Still going. GPT hasn't collapsed yet. T5.
-        public abstract class TheoryDataWithTasks<T1, T2, T3, T4, T5> : TheoryData<string, T1, T2, T3, T4, T5>
-        {
-            protected void AddWithAction(string label, T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, Task task)
-            {
-                RegisterTaskWithLabel(label, task);
-                Add(label, p1, p2, p3, p4, p5);
-            }
-
-            protected void CommitCases(Action action)
-            {
-                CommitCasesBase(action);
-            }
-        }
-
-        // You asked for it. Let's go.
-        public abstract class TheoryDataWithTasks<T1, T2, T3, T4, T5, T6> : TheoryData<string, T1, T2, T3, T4, T5, T6>
-        {
-            protected void AddWithAction(string label, T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, Task task)
-            {
-                RegisterTaskWithLabel(label, task);
-                Add(label, p1, p2, p3, p4, p5, p6);
-            }
-
-            protected void CommitCases(Action action)
-            {
-                CommitCasesBase(action);
-            }
-        }
-
-        // Okay this is getting serious.
-        public abstract class TheoryDataWithTasks<T1, T2, T3, T4, T5, T6, T7> : TheoryData<string, T1, T2, T3, T4, T5, T6, T7>
-        {
-            protected void AddWithAction(string label, T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, Task task)
-            {
-                RegisterTaskWithLabel(label, task);
-                Add(label, p1, p2, p3, p4, p5, p6, p7);
-            }
-
-            protected void CommitCases(Action action)
-            {
-                CommitCasesBase(action);
-            }
-        }
-
-        // GPT is now sweating.
-        public abstract class TheoryDataWithTasks<T1, T2, T3, T4, T5, T6, T7, T8> : TheoryData<string, T1, T2, T3, T4, T5, T6, T7, T8>
-        {
-            protected void AddWithAction(string label, T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, Task task)
-            {
-                RegisterTaskWithLabel(label, task);
-                Add(label, p1, p2, p3, p4, p5, p6, p7, p8);
-            }
-
-            protected void CommitCases(Action action)
-            {
-                CommitCasesBase(action);
-            }
-        }
-
-        // You still reading this? Respect.
-        public abstract class TheoryDataWithTasks<T1, T2, T3, T4, T5, T6, T7, T8, T9> : TheoryData<string, T1, T2, T3, T4, T5, T6, T7, T8, T9>
-        {
-            protected void AddWithAction(string label, T1 p1, T2 p2, T3 p3, T4 p4, T5 p5, T6 p6, T7 p7, T8 p8, T9 p9, Task task)
-            {
-                RegisterTaskWithLabel(label, task);
-                Add(label, p1, p2, p3, p4, p5, p6, p7, p8, p9);
-            }
-
-            protected void CommitCases(Action action)
-            {
-                CommitCasesBase(action);
+                return 1;
             }
         }
     }
-    /// △△ Framework for tests that use a dictionary-based collection. △△
 
-    public class DictionaryBasedCollectionTests : TestsBase
+    public class ExceptionFactDiscoverer(IMessageSink diagnosticMessageSink) : IXunitTestCaseDiscoverer
     {
-        public class ExceptionCases : TheoryDataWithTasks<Type, string, Dictionary<string, string>>
+        private readonly IMessageSink _diagnosticMessageSink = diagnosticMessageSink;
+
+        public IEnumerable<IXunitTestCase> Discover(ITestFrameworkDiscoveryOptions discoveryOptions,
+                                                    ITestMethod testMethod,
+                                                    IAttributeInfo factAttribute)
         {
-             public ExceptionCases()
-            {
-                CommitCases(() =>
-                {
-                    AddWithAction(
-                        "ConstructorInvokedWithNullFuncToCreateBaseDictionary",
-                        typeof(ArgumentNullException),
-                        "hoge",
-                        Task.Run(() =>
-                        {
-                            lock (CasesLock)
-                            {
-                                _ = new DictionaryBasedCollection<string>(null!);
-                            }
-                        })
-                    );
-                    /*
-                    AddWithAction(
-                        "ConstructorInvokedWithFuncReturningNullDictionary",
-                        typeof(ArgumentNullException),
-                        "hoge",
-                        Task.Run(() =>
-                        {
-                            lock (CasesLock)
-                            {
-                                _ = new DictionaryBasedCollection<string>(() => null!);
-                            }
-                        })
-                    );
-                    */
-                });
-            }
+            _diagnosticMessageSink.OnMessage(new DiagnosticMessage($"■ Discover called for: {testMethod.Method.Name}"));
+
+            var expectedExceptionType = factAttribute.GetNamedArgument<Type>("ExpectedExceptionType");
+            var expectedMessage = factAttribute.GetNamedArgument<string>("ExpectedMessage");
+            var testMethodDisplay = discoveryOptions.MethodDisplayOrDefault();
+
+            // return Array.Empty<IXunitTestCase>();
+
+            return [
+                new MySaikyoTestsBase.ExceptionExpectedTestCase(_diagnosticMessageSink, testMethodDisplay, testMethod, expectedExceptionType, expectedMessage)
+            ];
+        }
+    }
+
+    /// △△ Framework for tests △△
+
+    public class XXXTests : MySaikyoTestsBase
+    {
+        [ExceptionFact]
+        public static void ExceptionFact_Fail_IfNoExceptionThrown()
+        {
         }
 
-        [ExceptionCase(typeof(ArgumentNullException)), "funcToCreateBasedCollection is null."]
-        async static void ConstructorInvokedWithNullFuncToCreateBaseDictionary()
+        [ExceptionFact]
+        public static void ExceptionFact_Success_IfExceptionThrown()
+        {
+            throw new ArgumentNullException("hoge", "This is a test exception for test method.");
+        }
+
+        [ExceptionFact(typeof(InvalidOperationException))]
+        public static void ExceptionFact_WithType_Fail_IfNoExceptionThrown()
+        {
+        }
+
+        [ExceptionFact(typeof(InvalidOperationException))]
+        public static void ExceptionFact_WithType_Fail_IfExceptionTypeDiffer()
+        {
+            throw new Exception("This is a test exception for test method.");
+        }
+
+        [ExceptionFact(typeof(InvalidOperationException))]
+        public static void ExceptionFact_WithType_Success_IfExceptionTypeIsExpected()
+        {
+            throw new InvalidOperationException("This is a test exception for test method.");
+        }
+
+        [ExceptionFact(typeof(ArgumentNullException), "expected message")]
+        public static async Task ExceptionFact_WithTypeAndMessage_Fail_IfNoExceptionThrown()
         {
             await Task.Run(() =>
             {
-                lock (CasesLock)
-                {
-                    _ = new DictionaryBasedCollection<string>(null!);
-                }
             });
-        }
-
-        [Theory]
-        [ClassData(typeof(ExceptionCases))]
-        public async Task ExceptionCases_Throws_ExpectedException(string label, Type expectedExceptionType, string expectedMessage)
-        {
-            // Arrange &  Act
-            var ex = await Record.ExceptionAsync(() => Tasks[label]);
-
-            // Assert
-            Assert.NotNull(ex);
-            Assert.IsType(expectedExceptionType, ex);
-            Assert.Contains(expectedMessage, ex.Message);
         }
     }
 }

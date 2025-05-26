@@ -1,16 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestPlatform.CoreUtilities.Extensions;
-using NventX.FoundationPkg.Abstractions.Observing;
-using NventX.FoundationPkg.Abstractions.Traits;
-using NventX.FoundationPkg.Impl.Adaptive;
-using NventX.FoundationPkg.Impl.Observing;
-using NventX.FoundationPkg.Impl.Passthrough;
-using NventX.FoundationPkg.Impl.Simple;
-using Xunit;
-
-namespace NventX.Tests
+﻿namespace NventX.Tests
 {
     /*
     public class ObservableXTests
