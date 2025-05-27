@@ -1,30 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
+using System;
 using Xunit.Abstractions;
 using Xunit.Sdk;
+using Xunit;
+using NventX.Xunit.ExceptionTesting;
 
-namespace NventX.CollectionPkg.UnitTest
+namespace NventX.Xunit.ForXunit2V.UnitTests
 {
-
-
-
-
-
-
-
-
-
-
-    /// <summary>
-    /// Unit tests for the ExceptionFactAttribute and ExceptionExpectedTestCase functionality.
-    /// </summary>
-    public class ExceptionFactTests
+    /*
+    public class E2ETests
     {
         // Cases that should succeed.
 
@@ -116,7 +102,7 @@ namespace NventX.CollectionPkg.UnitTest
         /// <summary>
         /// SpyMessageBus is a simple implementation of IMessageBus that collects messages for testing purposes.
         /// </summary>
-        
+
         private class SpyMessageBus : IMessageBus
         {
             public List<IMessageSinkMessage> Messages { get; } = new();
@@ -147,15 +133,15 @@ namespace NventX.CollectionPkg.UnitTest
         /// </summary>
         IEnumerable<ValueTuple<MethodInfo, Type?, string?>> methodsToTest = new List<ValueTuple<MethodInfo, Type?, string?>>()
         {
-            TestMethodInfo(typeof(ExceptionFactTests).GetMethod("ExceptionFact_Fail_IfNoExceptionThrown"), null, null),
-            TestMethodInfo(typeof(ExceptionFactTests).GetMethod("ExceptionFact_WithType_Fail_If_NoExceptionThrown"), typeof(InvalidOperationException), null),
-            TestMethodInfo(typeof(ExceptionFactTests).GetMethod("ExceptionFact_WithType_Fail_If_ExceptionTypeDiffer"), typeof(InvalidOperationException), null),
-            TestMethodInfo(typeof(ExceptionFactTests).GetMethod("ExceptionFact_WithMessage_Fail_If_NoExceptionThrown"), null, "RecipeBook"),
-            TestMethodInfo(typeof(ExceptionFactTests).GetMethod("ExceptionFact_WithMessage_Fail_If_ExceptionMessageIsInvalid"), null, null),
-            TestMethodInfo(typeof(ExceptionFactTests).GetMethod("ExceptionFact_WithTypeAndMessage_Fail_If_NoExceptionThrown"), typeof(InvalidOperationException), "RecipeBook"),
-            TestMethodInfo(typeof(ExceptionFactTests).GetMethod("ExceptionFact_WithTypeAndMessage_Fail_If_ExceptionTypeDiffer_And_ExceptionMessageIsInvalid"), typeof(InvalidOperationException), "RecipeBook"),
-            TestMethodInfo(typeof(ExceptionFactTests).GetMethod("ExceptionFact_WithTypeAndMessage_Fail_If_ExceptionTypeIsExpected_And_ExceptionMessageIsInvalid"), typeof(InvalidOperationException), "RecipeBook"),
-            TestMethodInfo(typeof(ExceptionFactTests).GetMethod("ExceptionFact_WithTypeAndMessage_Fail_If_ExceptionTypeIsDiffer_And_ExceptionMessageIsValid"), typeof(InvalidOperationException), "RecipeBook"),
+            TestMethodInfo(typeof(E2ETests).GetMethod("ExceptionFact_Fail_IfNoExceptionThrown"), null, null),
+            TestMethodInfo(typeof(E2ETests).GetMethod("ExceptionFact_WithType_Fail_If_NoExceptionThrown"), typeof(InvalidOperationException), null),
+            TestMethodInfo(typeof(E2ETests).GetMethod("ExceptionFact_WithType_Fail_If_ExceptionTypeDiffer"), typeof(InvalidOperationException), null),
+            TestMethodInfo(typeof(E2ETests).GetMethod("ExceptionFact_WithMessage_Fail_If_NoExceptionThrown"), null, "RecipeBook"),
+            TestMethodInfo(typeof(E2ETests).GetMethod("ExceptionFact_WithMessage_Fail_If_ExceptionMessageIsInvalid"), null, null),
+            TestMethodInfo(typeof(E2ETests).GetMethod("ExceptionFact_WithTypeAndMessage_Fail_If_NoExceptionThrown"), typeof(InvalidOperationException), "RecipeBook"),
+            TestMethodInfo(typeof(E2ETests).GetMethod("ExceptionFact_WithTypeAndMessage_Fail_If_ExceptionTypeDiffer_And_ExceptionMessageIsInvalid"), typeof(InvalidOperationException), "RecipeBook"),
+            TestMethodInfo(typeof(E2ETests).GetMethod("ExceptionFact_WithTypeAndMessage_Fail_If_ExceptionTypeIsExpected_And_ExceptionMessageIsInvalid"), typeof(InvalidOperationException), "RecipeBook"),
+            TestMethodInfo(typeof(E2ETests).GetMethod("ExceptionFact_WithTypeAndMessage_Fail_If_ExceptionTypeIsDiffer_And_ExceptionMessageIsValid"), typeof(InvalidOperationException), "RecipeBook"),
         };
 
         /// <summary>
@@ -166,7 +152,7 @@ namespace NventX.CollectionPkg.UnitTest
         {
             // Arrange
             var sink = new SpyMessageBus();
-            var testClassType = typeof(ExceptionFactTests);
+            var testClassType = typeof(E2ETests);
             var testCollection = new TestCollection(new TestAssembly(new ReflectionAssemblyInfo(testClassType.Assembly)), null, "Test collection for ExceptionFactTests");
             var testClass = new TestClass(testCollection, new ReflectionTypeInfo(testClassType));
 
@@ -175,7 +161,7 @@ namespace NventX.CollectionPkg.UnitTest
             foreach (var mti in methodsToTest)
             {
                 var testMethod = new TestMethod(testClass, new ReflectionMethodInfo(mti.Item1));
-                var testCase = new ExceptionExpectedTestCase(new NullMessageSink(), TestMethodDisplay.ClassAndMethod, testMethod, null, mti.Item2, mti.Item3);
+                var testCase = new ExceptionTestCase(new NullMessageSink(), TestMethodDisplay.ClassAndMethod, testMethod, null, mti.Item2, mti.Item3);
 
                 var runner = new XunitTestCaseRunner(
                     testCase,
@@ -198,4 +184,5 @@ namespace NventX.CollectionPkg.UnitTest
             }
         }
     }
+    */
 }

@@ -211,18 +211,14 @@ for (i = 0, l = charts.length; i < l; i++) {
 
 var assemblies = [
   {
-    "name": "NventX.FoundationPkg.Impl",
+    "name": "NventX.Xunit.ForXunitV2",
     "classes": [
-      { "name": "NventX.FoundationPkg.Abstractions.Observing.ConcurrentHashSetSupportingSelfRemovable<T>", "rp": "NventX.FoundationPkg.Impl_ConcurrentHashSetSupportingSelfRemovable_1.html", "cl": 14, "ucl": 32, "cal": 46, "tl": 113, "cb": 5, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.FoundationPkg.Impl.Adaptive.AdaptionNotifier<T1, T2>", "rp": "NventX.FoundationPkg.Impl_AdaptionNotifier_2.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 30, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.FoundationPkg.Impl.Adaptive.AdaptionSwitchBoard<T1, T2>", "rp": "NventX.FoundationPkg.Impl_AdaptionSwitchBoard_2.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 29, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.FoundationPkg.Impl.Observing.ObservableX<T>", "rp": "NventX.FoundationPkg.Impl_ObservableX_1.html", "cl": 0, "ucl": 43, "cal": 43, "tl": 106, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.FoundationPkg.Impl.Observing.ProjectionNotifier<T1, T2>", "rp": "NventX.FoundationPkg.Impl_ProjectionNotifier_2.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 34, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.FoundationPkg.Impl.Observing.ProjectionSwitchBoard<T1, T2>", "rp": "NventX.FoundationPkg.Impl_ProjectionSwitchBoard_2.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 51, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.FoundationPkg.Impl.Passthrough.Notifier<T>", "rp": "NventX.FoundationPkg.Impl_Notifier_1.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 23, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.FoundationPkg.Impl.Passthrough.SwitchBoard<T>", "rp": "NventX.FoundationPkg.Impl_SwitchBoard_1.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 26, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.FoundationPkg.Impl.Simple.Consumer<T>", "rp": "NventX.FoundationPkg.Impl_Consumer_1.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 38, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.FoundationPkg.Impl.Traits.NotificationHandlerExtensions", "rp": "NventX.FoundationPkg.Impl_NotificationHandlerExtensions.html", "cl": 30, "ucl": 0, "cal": 30, "tl": 79, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.Xunit.ExceptionTesting.ExceptionFactAttribute", "rp": "NventX.Xunit.ForXunitV2_ExceptionFactAttribute.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.Xunit.ExceptionTesting.ExceptionFactDiscoverer", "rp": "NventX.Xunit.ForXunitV2_ExceptionFactDiscoverer.html", "cl": 13, "ucl": 0, "cal": 13, "tl": 41, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.Xunit.ExceptionTesting.ExceptionTestCase", "rp": "NventX.Xunit.ForXunitV2_ExceptionTestCase.html", "cl": 7, "ucl": 18, "cal": 25, "tl": 100, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.Xunit.ExceptionTesting.ExceptionTestCaseRunner", "rp": "NventX.Xunit.ForXunitV2_ExceptionTestCaseRunner.html", "cl": 13, "ucl": 0, "cal": 13, "tl": 68, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.Xunit.ExceptionTesting.ExceptionTestInvoker", "rp": "NventX.Xunit.ForXunitV2_ExceptionTestInvoker.html", "cl": 71, "ucl": 0, "cal": 71, "tl": 121, "cb": 12, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.Xunit.ExceptionTesting.NventX.Xunit.ExceptionTesting.ExceptionTestRunner", "rp": "NventX.Xunit.ForXunitV2_ExceptionTestRunner.html", "cl": 15, "ucl": 0, "cal": 15, "tl": 59, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
@@ -231,23 +227,9 @@ var metrics = [{ "name": "Crap Score", "abbreviation": "crp", "explanationUrl": 
 var historicCoverageExecutionTimes = [];
 
 var riskHotspotMetrics = [
-      { "name": "Crap Score", "explanationUrl": "https://googletesting.blogspot.de/2011/02/this-code-is-crap.html" },
-      { "name": "Cyclomatic complexity", "explanationUrl": "https://en.wikipedia.org/wiki/Cyclomatic_complexity" },
 ];
 
 var riskHotspots = [
-  {
-    "assembly": "NventX.FoundationPkg.Impl", "class": "NventX.FoundationPkg.Abstractions.Observing.ConcurrentHashSetSupportingSelfRemovable<T>", "reportPath": "NventX.FoundationPkg.Impl_ConcurrentHashSetSupportingSelfRemovable_1.html", "methodName": "get_Snapshot()", "methodShortName": "get_Snapshot()", "fileIndex": 0, "line": 37,
-    "metrics": [
-      { "value": 72, "exceeded": true },
-      { "value": 8, "exceeded": false },
-    ]},
-  {
-    "assembly": "NventX.FoundationPkg.Impl", "class": "NventX.FoundationPkg.Impl.Observing.ObservableX<T>", "reportPath": "NventX.FoundationPkg.Impl_ObservableX_1.html", "methodName": "InvokeHandlers(TType)", "methodShortName": "InvokeHandlers(...)", "fileIndex": 0, "line": 50,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
 ];
 
 var branchCoverageAvailable = true;

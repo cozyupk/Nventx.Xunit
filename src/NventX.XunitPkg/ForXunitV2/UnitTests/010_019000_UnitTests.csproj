@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>NventX.Xunit.ForXunit2V.UnitTests</RootNameSpace>
+		<AssemblyName>NventX.Xunit.ForXunit2V.UnitTests</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Impl\010_011000_Impl.csproj" />
+	</ItemGroup>
+
+</Project>
