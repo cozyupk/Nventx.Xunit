@@ -1,8 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<RootNameSpace>NventX.CollectionPkg.Impl</RootNameSpace>
-		<AssemblyName>NventX.CollectionPkg.Impl</AssemblyName>
-	</PropertyGroup>
-
-</Project>
