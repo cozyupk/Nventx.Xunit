@@ -30,7 +30,7 @@ namespace NventX.Xunit.ExceptionTesting
         /// This constructor is used by the de-serializer and should not be called directly.
         /// </remarks>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Called by the de-serializer", true)]
+        [Obsolete("Called by the de-serializer", false)]
         public ExceptionTestCase() { }
 
         /// <summary>

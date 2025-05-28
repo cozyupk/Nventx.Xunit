@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
-using System;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 using Xunit;
 using NventX.Xunit.ExceptionTesting;
 
-namespace NventX.Xunit.ForXunit2V.UnitTests
+namespace NventX.Xunit.E2ETests.ForXunitV2
 {
-    /*
     public class E2ETests
     {
         // Cases that should succeed.
@@ -22,6 +21,12 @@ namespace NventX.Xunit.ForXunit2V.UnitTests
 
         [ExceptionFact(typeof(InvalidOperationException))]
         public static void ExceptionFact_WithType_Success_If_ExceptionTypeIsExpected()
+        {
+            throw new InvalidOperationException("This is a test exception for test method.");
+        }
+
+        [ExceptionFact(typeof(Exception))]
+        public static void ExceptionFact_WithType_Success_If_ExceptionTypeIsAssignableToExpected()
         {
             throw new InvalidOperationException("This is a test exception for test method.");
         }
@@ -42,7 +47,9 @@ namespace NventX.Xunit.ForXunit2V.UnitTests
         // Cases that should not succeed.
         // Note: for technical reasons, these methods are not actually executed as tests,
 
+#pragma warning disable IDE0079 // Delete unnecessary suppression
 #pragma warning disable xUnit1013 // Public method should be marked as test
+#pragma warning restore IDE0079 // Delete unnecessary suppression
 
         // [ExceptionFact]
         public static void ExceptionFact_Fail_IfNoExceptionThrown()
@@ -94,7 +101,9 @@ namespace NventX.Xunit.ForXunit2V.UnitTests
             throw new Exception("invalid RecipeBook.");
         }
 
+#pragma warning disable IDE0079 // Delete unnecessary suppression
 #pragma warning restore xUnit1013 // Public method should be marked as test
+#pragma warning restore IDE0079 // Delete unnecessary suppression
 
         // Tests to verifay negative cases of ExceptionFact attribute.
 
@@ -105,7 +114,7 @@ namespace NventX.Xunit.ForXunit2V.UnitTests
 
         private class SpyMessageBus : IMessageBus
         {
-            public List<IMessageSinkMessage> Messages { get; } = new();
+            public List<IMessageSinkMessage> Messages { get; } = [];
 
             public bool QueueMessage(IMessageSinkMessage message)
             {
@@ -131,8 +140,8 @@ namespace NventX.Xunit.ForXunit2V.UnitTests
         /// <summary>
         /// List of test methods that are expected to throw exceptions.
         /// </summary>
-        IEnumerable<ValueTuple<MethodInfo, Type?, string?>> methodsToTest = new List<ValueTuple<MethodInfo, Type?, string?>>()
-        {
+        IEnumerable<ValueTuple<MethodInfo, Type?, string?>> MethodsToTest { get; } =
+        [
             TestMethodInfo(typeof(E2ETests).GetMethod("ExceptionFact_Fail_IfNoExceptionThrown"), null, null),
             TestMethodInfo(typeof(E2ETests).GetMethod("ExceptionFact_WithType_Fail_If_NoExceptionThrown"), typeof(InvalidOperationException), null),
             TestMethodInfo(typeof(E2ETests).GetMethod("ExceptionFact_WithType_Fail_If_ExceptionTypeDiffer"), typeof(InvalidOperationException), null),
@@ -142,7 +151,7 @@ namespace NventX.Xunit.ForXunit2V.UnitTests
             TestMethodInfo(typeof(E2ETests).GetMethod("ExceptionFact_WithTypeAndMessage_Fail_If_ExceptionTypeDiffer_And_ExceptionMessageIsInvalid"), typeof(InvalidOperationException), "RecipeBook"),
             TestMethodInfo(typeof(E2ETests).GetMethod("ExceptionFact_WithTypeAndMessage_Fail_If_ExceptionTypeIsExpected_And_ExceptionMessageIsInvalid"), typeof(InvalidOperationException), "RecipeBook"),
             TestMethodInfo(typeof(E2ETests).GetMethod("ExceptionFact_WithTypeAndMessage_Fail_If_ExceptionTypeIsDiffer_And_ExceptionMessageIsValid"), typeof(InvalidOperationException), "RecipeBook"),
-        };
+        ];
 
         /// <summary>
         /// Runs all test methods that are expected to throw exceptions and verifies that they fail as expected.
@@ -158,7 +167,7 @@ namespace NventX.Xunit.ForXunit2V.UnitTests
 
             // Act 
             var summaries = new List<RunSummary>();
-            foreach (var mti in methodsToTest)
+            foreach (var mti in MethodsToTest)
             {
                 var testMethod = new TestMethod(testClass, new ReflectionMethodInfo(mti.Item1));
                 var testCase = new ExceptionTestCase(new NullMessageSink(), TestMethodDisplay.ClassAndMethod, testMethod, null, mti.Item2, mti.Item3);
@@ -184,5 +193,4 @@ namespace NventX.Xunit.ForXunit2V.UnitTests
             }
         }
     }
-    */
 }

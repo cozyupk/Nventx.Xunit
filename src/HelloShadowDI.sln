@@ -43,6 +43,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0030_ComponentGroups", "003
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0040_PkgComponentGroups", "0040_PkgComponentGroups", "{EFC52F96-0535-4166-90D4-CD66204D92E1}"
 	ProjectSection(SolutionItems) = preProject
+		build\0040_PkgComponentGroups\010_092000_ComponentGroup.props = build\0040_PkgComponentGroups\010_092000_ComponentGroup.props
 		build\0040_PkgComponentGroups\020_093000_ComponentGroup.props = build\0040_PkgComponentGroups\020_093000_ComponentGroup.props
 	EndProjectSection
 EndProject
@@ -74,6 +75,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_011000_Impl", "NventX.XunitPkg\ForXunitV2\Impl\010_011000_Impl.csproj", "{AD4E2685-D9F3-B0B5-8A81-1D89E42BAFD1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_019000_UnitTests", "NventX.XunitPkg\ForXunitV2\UnitTests\010_019000_UnitTests.csproj", "{2FE462EF-D4F6-4BF3-AF8E-52279AC080C4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "010_090000_ComponentRoots", "010_090000_ComponentRoots", "{2765D4AD-AA7B-4743-B64D-66EEDC0A207B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "010_092000_E2ETests", "010_092000_E2ETests", "{2EE9CBB4-53F9-4BE2-8E3F-7E74E7281F60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_092100_ForXunitV2", "NventX.XunitPkg\ComponentRoots\E2ETests\ForXunitV2\010_092100_ForXunitV2.csproj", "{32B36244-EFA3-4784-A9BC-E3A124639674}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +120,10 @@ Global
 		{2FE462EF-D4F6-4BF3-AF8E-52279AC080C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FE462EF-D4F6-4BF3-AF8E-52279AC080C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FE462EF-D4F6-4BF3-AF8E-52279AC080C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32B36244-EFA3-4784-A9BC-E3A124639674}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32B36244-EFA3-4784-A9BC-E3A124639674}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32B36244-EFA3-4784-A9BC-E3A124639674}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32B36244-EFA3-4784-A9BC-E3A124639674}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,6 +149,9 @@ Global
 		{162FC9CD-B19D-49C0-B736-9E3582E034E6} = {10C1BC99-3FA5-4883-923A-56C575AB5AC8}
 		{AD4E2685-D9F3-B0B5-8A81-1D89E42BAFD1} = {162FC9CD-B19D-49C0-B736-9E3582E034E6}
 		{2FE462EF-D4F6-4BF3-AF8E-52279AC080C4} = {162FC9CD-B19D-49C0-B736-9E3582E034E6}
+		{2765D4AD-AA7B-4743-B64D-66EEDC0A207B} = {10C1BC99-3FA5-4883-923A-56C575AB5AC8}
+		{2EE9CBB4-53F9-4BE2-8E3F-7E74E7281F60} = {2765D4AD-AA7B-4743-B64D-66EEDC0A207B}
+		{32B36244-EFA3-4784-A9BC-E3A124639674} = {2EE9CBB4-53F9-4BE2-8E3F-7E74E7281F60}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F01E5B92-8BC7-4A77-A34E-79C72F78E4AE}
