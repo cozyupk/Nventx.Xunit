@@ -61,3 +61,11 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+###############################################################################
+# Exclude src/Documents from GitHub language statistics.
+#
+# This prevents files under this directory from affecting the language
+# breakdown shown on GitHub's repository page.
+###############################################################################
+src/Documents/** linguist-vendored
