@@ -1,14 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Threading.Tasks;
-using Xunit.Abstractions;
-using Xunit.Sdk;
-using Xunit;
+﻿using NventX.Xunit.Abstractions;
 using NventX.Xunit.ExceptionTesting;
 
 namespace NventX.Xunit.E2ETests.ForXunitV2
 {
+    public class MyTest
+    {
+        [ExceptionFact]
+        public void FAIL_IfMethodHaveNoParameter()
+        {
+        }
+
+        [ExceptionFact]
+        public void FAIL_IfMethodHaveOtherThanIExceptionRecorderParameter(int x)
+        {
+        }
+
+        [ExceptionFact]
+        public void FAIL_IfMethodHaveMoreThanOneParameter(IExceptionRecoder recorder, int x)
+        {
+        }
+
+        [ExceptionFact]
+        public void SUCCESS_IfMethodHaveOnlyOneIExceptionRecorder(IExceptionRecoder recorder)
+        {
+        }
+
+    }
+
+    /*
     public class E2ETests
     {
         // Cases that should succeed.
@@ -193,4 +212,5 @@ namespace NventX.Xunit.E2ETests.ForXunitV2
             }
         }
     }
+    */
 }

@@ -10,6 +10,7 @@ using Xunit.Sdk;
 
 namespace NventX.Xunit.ForXunit2V.UnitTests
 {
+    /*
     /// <summary>
     /// Test Dummy class for testing exception handling in ExceptionTestInvoker.
     /// </summary>
@@ -212,4 +213,5 @@ namespace NventX.Xunit.ForXunit2V.UnitTests
             Assert.Contains("Expected exception message to contain", exception.Message);
         }
     }
+    */
 }

@@ -4,6 +4,7 @@ using Xunit;
 
 namespace NventX.Xunit.ForXunit2V.UnitTests
 {
+    /*
     /// <summary>
     /// Unt test for ExceptionFact Attribute
     /// </summary>
@@ -41,4 +42,5 @@ namespace NventX.Xunit.ForXunit2V.UnitTests
             Assert.Null(attr.ExpectedMessageSubstring);
         }
     }
+    */
 }

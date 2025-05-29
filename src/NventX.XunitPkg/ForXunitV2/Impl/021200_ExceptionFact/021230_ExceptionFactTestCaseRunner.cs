@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using NventX.Xunit.ExceptionTesting.NventX.Xunit.ExceptionTesting;
+using NventX.Xunit.ExceptionTesting;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace NventX.Xunit.ExceptionTesting
+namespace NventX.Xunit.ExceptionFact
 {
     /// <summary>
     /// Runs a test case that expects an exception to be thrown.
     /// </summary>
-    internal class ExceptionTestCaseRunner : XunitTestCaseRunner
+    internal class ExceptionFactTestCaseRunner : XunitTestCaseRunner
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExceptionTestCaseRunner"/> class.
+        /// Initializes a new instance of the <see cref="ExceptionFactTestCaseRunner"/> class.
         /// </summary>
-        public ExceptionTestCaseRunner(IExceptionTestCase testCase, string displayName, IMessageBus messageBus, object[] constructorArguments,
+        public ExceptionFactTestCaseRunner(IExceptionTestCase testCase, string displayName, IMessageBus messageBus, object[] constructorArguments,
                                object[] testMethodArguments, string skipReason,
                                ExceptionAggregator aggregator,
                                CancellationTokenSource cancellationTokenSource
@@ -34,7 +34,7 @@ namespace NventX.Xunit.ExceptionTesting
             object[] testMethodArguments, string skipReason, IReadOnlyList<BeforeAfterTestAttribute> beforeAfterAttributes,
             ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
         {
-            return new ExceptionTestRunner(
+            return new ExceptionFactTestRunner(
                 test, messageBus, testClass, constructorArguments, testMethod, testMethodArguments,
                 skipReason, beforeAfterAttributes, new ExceptionAggregator(aggregator), cancellationTokenSource
             );

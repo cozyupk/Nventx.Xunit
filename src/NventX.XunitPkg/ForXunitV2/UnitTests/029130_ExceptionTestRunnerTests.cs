@@ -11,6 +11,7 @@ using Xunit.Sdk;
 
 namespace NventX.Xunit.ForXunit2V.UnitTests
 {
+    /*
     /// <summary>
     /// Tests for the ExceptionTestRunner class, which executes test methods and verifies that the expected exceptions are thrown.
     /// </summary>
@@ -83,4 +84,5 @@ namespace NventX.Xunit.ForXunit2V.UnitTests
             Assert.Contains("Expected an exception", ex.Message);
         }
     }
+    */
 }

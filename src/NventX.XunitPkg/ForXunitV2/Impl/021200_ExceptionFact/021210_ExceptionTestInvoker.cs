@@ -4,10 +4,11 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using NventX.Xunit.ExceptionTesting;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace NventX.Xunit.ExceptionTesting
+namespace NventX.Xunit.ExceptionFact
 {
     /// <summary>
     /// Represents a test invoker that executes a test method and verifies that the expected exception is thrown.

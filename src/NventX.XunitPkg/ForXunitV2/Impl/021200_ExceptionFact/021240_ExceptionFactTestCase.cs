@@ -2,16 +2,17 @@
 using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
+using NventX.Xunit.ExceptionTesting;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace NventX.Xunit.ExceptionTesting
+namespace NventX.Xunit.ExceptionFact
 {
     /// <summary>
     /// Represents a test case that expects an exception to be thrown during its execution.
     /// </summary>
     [Serializable]
-    internal class ExceptionTestCase : XunitTestCase, IExceptionTestCase
+    internal class ExceptionFactTestCase : XunitTestCase, IExceptionTestCase
     {
         /// <summary>
         /// Gets or sets the type of the expected exception.
@@ -24,23 +25,23 @@ namespace NventX.Xunit.ExceptionTesting
         public string? ExpectedMessageSubstring { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExceptionTestCase"/> class.
+        /// Initializes a new instance of the <see cref="ExceptionFactTestCase"/> class.
         /// </summary>
         /// <remarks>
         /// This constructor is used by the de-serializer and should not be called directly.
         /// </remarks>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Called by the de-serializer", false)]
-        public ExceptionTestCase() { }
+        public ExceptionFactTestCase() { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExceptionTestCase"/> class with the specified parameters.
+        /// Initializes a new instance of the <see cref="ExceptionFactTestCase"/> class with the specified parameters.
         /// </summary>
         /// <remarks>
         /// The unique paramsters are the expected exception type and message, which are used to verify that the test method throws the expected exception.
         /// Other parameters are inherited from the base class <see cref="XunitTestCase"/>.
         /// </remarks>
-        public ExceptionTestCase(
+        public ExceptionFactTestCase(
             IMessageSink diagnosticMessageSink, TestMethodDisplay defaultMethodDisplay,
             ITestMethod testMethod, object[]? testMethodArguments = null,
             Type? expectedExceptionType = null, string? expectedMessageSubstring = null
@@ -57,7 +58,7 @@ namespace NventX.Xunit.ExceptionTesting
         /// Runs the test case asynchronously, executing the test method and verifying that the expected exception is thrown.
         /// </summary>
         /// <remarks>
-        /// All parameters are need to be passed to the <see cref="ExceptionTestCaseRunner"/> for execution,
+        /// All parameters are need to be passed to the <see cref="ExceptionFactTestCaseRunner"/> for execution,
         /// and the base class is not holding.
         /// </remarks>
         public override Task<RunSummary> RunAsync(
@@ -68,7 +69,7 @@ namespace NventX.Xunit.ExceptionTesting
             CancellationTokenSource cancellationTokenSource)
         {
             // Create a new instance of the ExceptionTestCaseRunner with the current test case and parameters
-            var runner = new ExceptionTestCaseRunner(
+            var runner = new ExceptionFactTestCaseRunner(
                   this, DisplayName, messageBus, constructorArguments,
                   TestMethodArguments, SkipReason, aggregator, cancellationTokenSource
                 );

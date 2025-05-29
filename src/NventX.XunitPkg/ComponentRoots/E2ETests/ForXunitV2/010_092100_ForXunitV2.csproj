@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\ForXunitV2\Impl\010_011000_Impl.csproj" />
+	  <ProjectReference Include="..\..\..\ForXunitV2\Impl\010_021000_Impl.csproj" />
 	</ItemGroup>
 
 

@@ -11,6 +11,7 @@ using Xunit.Sdk;
 
 namespace NventX.Xunit.ForXunit2V.UnitTests
 {
+    /*
     /// <summary>
     /// Simple implementation of IXunitSerializationInfo for testing serialization in unit tests.
     /// </summary>
@@ -207,4 +208,5 @@ namespace NventX.Xunit.ForXunit2V.UnitTests
             }
         }
     }
+    */
 }

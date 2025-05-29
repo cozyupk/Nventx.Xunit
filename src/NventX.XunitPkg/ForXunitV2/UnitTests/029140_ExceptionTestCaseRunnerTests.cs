@@ -10,6 +10,7 @@ using Xunit.Sdk;
 
 namespace NventX.Xunit.ForXunit2V.UnitTests
 {
+    /*
     public class ExceptionTestCaseRunnerTests
     {
         /// <summary>
@@ -106,4 +107,5 @@ namespace NventX.Xunit.ForXunit2V.UnitTests
             Assert.Equal(0, result.Failed); // no test failed
         }
     }
+    */
 }

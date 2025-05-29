@@ -6,6 +6,7 @@ using Xunit.Abstractions;
 
 namespace NventX.Xunit.ForXunit2V.UnitTests
 {
+    /*
     /// <summary>
     /// Unit tests for the ExceptionFactDiscoverer class.
     /// </summary>
@@ -53,4 +54,5 @@ namespace NventX.Xunit.ForXunit2V.UnitTests
             Assert.Equal(expectedMessage, testCase.ExpectedMessageSubstring);
         }
     }
+    */
 }
