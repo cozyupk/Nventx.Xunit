@@ -1,10 +1,4 @@
-﻿using System;
-using Moq;
-using NventX.Xunit.ExceptionTesting;
-using Xunit;
-using Xunit.Abstractions;
-
-namespace NventX.Xunit.ForXunit2V.UnitTests
+﻿namespace NventX.Xunit.ForXunit2V.UnitTests
 {
     /*
     /// <summary>

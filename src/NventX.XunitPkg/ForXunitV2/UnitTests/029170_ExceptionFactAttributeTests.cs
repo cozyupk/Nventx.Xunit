@@ -1,8 +1,4 @@
-﻿using System;
-using NventX.Xunit.ExceptionTesting;
-using Xunit;
-
-namespace NventX.Xunit.ForXunit2V.UnitTests
+﻿namespace NventX.Xunit.ForXunit2V.UnitTests
 {
     /*
     /// <summary>

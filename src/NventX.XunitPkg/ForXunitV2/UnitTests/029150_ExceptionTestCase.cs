@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using Moq;
-using NventX.Xunit.ExceptionTesting;
-using Xunit;
-using Xunit.Abstractions;
-using Xunit.Sdk;
-
-namespace NventX.Xunit.ForXunit2V.UnitTests
+﻿namespace NventX.Xunit.ForXunit2V.UnitTests
 {
     /*
     /// <summary>

@@ -39,7 +39,7 @@ namespace NventX.Xunit.ExceptionFact
             } else
             {
                 var parameterType = parameters.First().ParameterType.ToRuntimeType();
-                if (!typeof(IExceptionRecoder).IsAssignableFrom(parameterType))
+                if (!typeof(IExceptionRecorder).IsAssignableFrom(parameterType))
                 {
                     message = $"[ExceptionFact] method must have exactly one parameter of type IExceptionRecorder. Unexpected parameter type: {parameterType}";
                 }

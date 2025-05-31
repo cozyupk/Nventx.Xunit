@@ -1,5 +1,6 @@
 ﻿using NventX.Xunit.Abstractions;
-using NventX.Xunit.ExceptionTesting;
+using NventX.Xunit.ExceptionTest;
+using Xunit;
 
 namespace NventX.Xunit.E2ETests.ForXunitV2
 {
@@ -11,20 +12,55 @@ namespace NventX.Xunit.E2ETests.ForXunitV2
         }
 
         [ExceptionFact]
-        public void FAIL_IfMethodHaveOtherThanIExceptionRecorderParameter(int x)
+        public void FAIL_IfMethodHaveOtherThanIExceptionRecorderParameter(int _)
         {
         }
 
         [ExceptionFact]
-        public void FAIL_IfMethodHaveMoreThanOneParameter(IExceptionRecoder recorder, int x)
+        public void FAIL_IfMethodHaveMoreThanOneParameter(IExceptionRecorder recorder, int _)
+        {
+            recorder.Record(() => throw new InvalidOperationException("This is a test exception for test method."));
+        }
+
+        [ExceptionFact (DisplayName = "Tashiro")]
+        public void SUCCESS_IfMethodHaveOnlyOneIExceptionRecorder(IExceptionRecorder recorder)
+        {
+            recorder.Record(() => throw new InvalidOperationException("This is a test exception for test method."));
+        }
+
+        [Fact (DisplayName = "KIKUCHI")]
+        public void Hoge()
         {
         }
 
-        [ExceptionFact]
-        public void SUCCESS_IfMethodHaveOnlyOneIExceptionRecorder(IExceptionRecoder recorder)
+        [ExceptionFact(Skip = "Tashiro")]
+        public void SUCCESS_IfMethodHaveOnlyOneIExceptionRecorder2(IExceptionRecorder recorder)
+        {
+            recorder.Record(() => throw new InvalidOperationException("This is a test exception for test method."));
+        }
+
+        [Fact(Skip = "KIKUCHI")]
+        public void Hoge2()
         {
         }
 
+        [Fact]
+        public void TestException()
+            => Assert.Throws<InvalidOperationException>(() => {});
+
+        [Fact]
+        public void TestException2()
+        {
+            var ex = Record.Exception(() => { });
+            Assert.IsType<InvalidOperationException>(ex);
+            Assert.Contains("This is a test exception for test method.", ex.Message);
+            ex = Record.Exception(() => { });
+            Assert.IsType<InvalidOperationException>(ex);
+            Assert.Contains("This is a test exception for test method.", ex.Message);
+            ex = Record.Exception(() => { });
+            Assert.IsType<InvalidOperationException>(ex);
+            Assert.Contains("This is a test exception for test method.", ex.Message);
+        }
     }
 
     /*

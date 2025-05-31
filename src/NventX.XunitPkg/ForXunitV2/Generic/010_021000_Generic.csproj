@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>NventX.Xunit.Generic</RootNameSpace>
+		<AssemblyName>NventX.Xunit.ForXunitV2.Generic</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="021030_ISerializableTestProofFactory.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	  <PackageReference Include="System.Text.Json" Version="9.0.5" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Abstractions\010_011000_Abstractions.csproj" />
+	</ItemGroup>
+	
+</Project>

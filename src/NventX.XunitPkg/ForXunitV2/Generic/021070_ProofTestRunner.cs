@@ -1,30 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
+using System;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-
-namespace NventX.Xunit.ExceptionFact
+namespace NventX.Xunit.Generic
 {
-    /// <summary>
-    /// Executes the test method, measures its execution time, and verifies that the expected exception is thrown.
-    /// If the thrown exception type or messageSubstring does not match the expected values, an XunitException is added to the aggregator.
-    /// </summary>
-    /// <remarks>
-    /// Initializes a new instance of the <see cref="ExceptionFactTestRunner"/> class.
-    /// </remarks>
-    internal class ExceptionFactTestRunner : XunitTestRunner
+    internal class ProofTestRunner : XunitTestRunner
     {
-        public ExceptionFactTestRunner(ITest test, IMessageBus messageBus, Type testClass, object[] constructorArguments,
-                                  MethodInfo testMethod, object[] testMethodArguments, string skipReason,
-                                  IReadOnlyList<BeforeAfterTestAttribute> beforeAfterAttributes, ExceptionAggregator aggregator,
-                                  CancellationTokenSource cancellationTokenSource
-        ) : base(
-            test, messageBus, testClass, constructorArguments, testMethod, testMethodArguments,
-            skipReason, beforeAfterAttributes, aggregator, cancellationTokenSource)
+
+        public ProofTestRunner(ITest test, IMessageBus messageBus, Type testClass, object[] constructorArguments,
+                               MethodInfo testMethod, object[] testMethodArguments, string skipReason,
+                               IReadOnlyList<BeforeAfterTestAttribute> beforeAfterAttributes, ExceptionAggregator aggregator,
+                               CancellationTokenSource cancellationTokenSource
+            ) : base(
+                test, messageBus, testClass, constructorArguments, testMethod, testMethodArguments,
+                skipReason, beforeAfterAttributes, aggregator, cancellationTokenSource)
         {
             // no additional initialization required
         }
@@ -47,7 +40,7 @@ namespace NventX.Xunit.ExceptionFact
             // Note: We use the aggregator passed as a parameter here instead of the base class's Aggregator,
             // because the provided aggregator may be a child (nested) aggregator of the base Aggregator.
             // This ensures that exceptions are correctly propagated and isolated within the intended scope.
-            return new ExceptionFactTestInvoker(
+            return new ProofTestInvoker(
                          Test, MessageBus, TestClass, ConstructorArguments,
                          TestMethod, TestMethodArguments, BeforeAfterAttributes,
                          aggregator, CancellationTokenSource

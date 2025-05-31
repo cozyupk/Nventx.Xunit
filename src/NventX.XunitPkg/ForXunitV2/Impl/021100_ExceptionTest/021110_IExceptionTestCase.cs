@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit.Sdk;
 
-namespace NventX.Xunit.ExceptionTesting
+namespace NventX.Xunit.ExceptionTest
 {
     /// <summary>
     /// Represents a test case that is expected to throw an exception,

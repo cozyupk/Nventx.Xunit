@@ -9,4 +9,9 @@
 	  <ProjectReference Include="..\..\..\Abstractions\010_011000_Abstractions.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="021150_GenericProposition\" />
+	  <Folder Include="021300_ExceptionTheory\" />
+	</ItemGroup>
+
 </Project>

@@ -2,7 +2,7 @@
 using Xunit;
 using Xunit.Sdk;
 
-namespace NventX.Xunit.ExceptionTesting
+namespace NventX.Xunit.ExceptionTest
 {
     /// <summary>
     /// Attribute to mark a test method that is expected to throw an exception.

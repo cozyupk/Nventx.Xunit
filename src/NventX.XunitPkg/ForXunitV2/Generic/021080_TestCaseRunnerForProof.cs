@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using NventX.Xunit.ExceptionTest;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace NventX.Xunit.ExceptionFact
+namespace NventX.Xunit.Generic
 {
     /// <summary>
     /// Runs a test case that expects an exception to be thrown.
     /// </summary>
-    internal class ExceptionFactTestCaseRunner : XunitTestCaseRunner
+    public class TestCaseRunnerForProof : XunitTestCaseRunner
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionFactTestCaseRunner"/> class.
         /// </summary>
-        public ExceptionFactTestCaseRunner(IExceptionTestCase testCase, string displayName, IMessageBus messageBus, object[] constructorArguments,
+        public TestCaseRunnerForProof(ITestCaseForProof testCase, string displayName, IMessageBus messageBus, object[] constructorArguments,
                                object[] testMethodArguments, string skipReason,
                                ExceptionAggregator aggregator,
                                CancellationTokenSource cancellationTokenSource
@@ -34,7 +33,7 @@ namespace NventX.Xunit.ExceptionFact
             object[] testMethodArguments, string skipReason, IReadOnlyList<BeforeAfterTestAttribute> beforeAfterAttributes,
             ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
         {
-            return new ExceptionFactTestRunner(
+            return new ProofTestRunner(
                 test, messageBus, testClass, constructorArguments, testMethod, testMethodArguments,
                 skipReason, beforeAfterAttributes, new ExceptionAggregator(aggregator), cancellationTokenSource
             );
