@@ -8,9 +8,15 @@ using Xunit.Sdk;
 
 namespace NventX.Xunit
 {
+    /// <summary>
+    /// A test runner for tests that expect a proof to be verified during their execution.
+    /// </summary>
     internal class ProofTestRunner : XunitTestRunner
     {
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProofTestRunner"/> class.
+        /// </summary>
         public ProofTestRunner(ITest test, IMessageBus messageBus, Type testClass, object[] constructorArguments,
                                MethodInfo testMethod, object[] testMethodArguments, string skipReason,
                                IReadOnlyList<BeforeAfterTestAttribute> beforeAfterAttributes, ExceptionAggregator aggregator,

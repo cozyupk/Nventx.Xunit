@@ -8,7 +8,6 @@ using Xunit.Sdk;
 
 namespace NventX.Xunit
 {
-
     /// <summary>
     /// Represents a test case that expects a proof to be verified during its execution.
     /// </summary>
@@ -17,7 +16,15 @@ namespace NventX.Xunit
         where TTestProof : ITestProof
         where TSerializableTestProofFactory : ISerializableTestProofFactory<TTestProof>, new()
     {
+        /// <summary>
+        /// The factory used to create instances of the test proof for this test case.
+        /// </summary>
         private TSerializableTestProofFactory TestProofFactory { get; set; }
+
+        /// <summary>
+        /// The kind of proof invocation that this test case represents, which defines how the proof is expected to be invoked during the test execution.
+        /// </summary>
+        public ProofInvocationKind ProofInvocationKind { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestCaseForProof"/> class.
@@ -40,13 +47,21 @@ namespace NventX.Xunit
         /// </remarks>
         public TestCaseForProof(
             IMessageSink diagnosticMessageSink, TestMethodDisplay defaultMethodDisplay,
-            ITestMethod testMethod, TSerializableTestProofFactory testProofFactory,
+            ITestMethod testMethod, ProofInvocationKind proofInvocationKind,
+            TSerializableTestProofFactory testProofFactory,
             object[]? testMethodArguments = null
 #pragma warning disable CS0618 // The constructor is marked as obsolete, but we need to support it for being called by the de-serializer.
         ) : base(diagnosticMessageSink, defaultMethodDisplay, testMethod, testMethodArguments)
 #pragma warning restore CS0618 // The constructor is marked as obsolete, but we need to support it for being called by the de-serializer.
         {
+            // Validate the arguments and initialize the properties
             TestProofFactory = testProofFactory ?? throw new ArgumentNullException(nameof(testProofFactory));
+            ProofInvocationKind = 
+                (proofInvocationKind == ProofInvocationKind.SingleCase
+                || proofInvocationKind == ProofInvocationKind.Parameterized
+                || proofInvocationKind == ProofInvocationKind.Unknown)
+                ? proofInvocationKind
+                : throw new ArgumentOutOfRangeException(nameof(proofInvocationKind), "Invalid proof invocation kind.");
         }
 
         /// <summary>
@@ -76,21 +91,21 @@ namespace NventX.Xunit
         /// <summary>
         /// Serializes the test case, including the test proof information.
         /// </summary>
-        /// <param name="data"></param>
         public override void Serialize(IXunitSerializationInfo data)
         {
             base.Serialize(data);
+            data.AddValue(nameof(ProofInvocationKind), ProofInvocationKind);
             data.AddValue(nameof(TestProofFactory), TestProofFactory?.SerializeToString());
         }
 
         /// <summary>
         /// Deserializes the test case, restoring the test proof information.
         /// </summary>
-        /// <param name="data"></param>
         public override void Deserialize(IXunitSerializationInfo data)
         {
             base.Deserialize(data);
             TestProofFactory = new TSerializableTestProofFactory();
+            ProofInvocationKind = data.GetValue<ProofInvocationKind>(nameof(ProofInvocationKind));
             TestProofFactory.DeserializeFromString(data.GetValue<string>(nameof(TestProofFactory)));
         }
 

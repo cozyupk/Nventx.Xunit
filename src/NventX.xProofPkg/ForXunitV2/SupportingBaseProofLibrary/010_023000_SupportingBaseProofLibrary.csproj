@@ -5,4 +5,9 @@
 		<AssemblyName>NventX.Xunit.ForXunitV2.SupportingBaseProofLibrary</AssemblyName>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Foundation\BaseProofLibrary\010_013000_BaseProofLibrary.csproj" />
+	  <ProjectReference Include="..\Impl\010_022000_Impl.csproj" />
+	</ItemGroup>
+
 </Project>

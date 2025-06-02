@@ -1,11 +1,12 @@
 ﻿using System;
+using NventX.xProof.Abstractions;
 
 namespace NventX.xProof.Utils
 {
     /// <summary>
     /// Represents a failure encountered during test probing.
     /// </summary>
-    public class ProbingFailure
+    public class ProbingFailure : IProbingFailure
     {
         /// <summary>
         /// Human-readable description of the failure.

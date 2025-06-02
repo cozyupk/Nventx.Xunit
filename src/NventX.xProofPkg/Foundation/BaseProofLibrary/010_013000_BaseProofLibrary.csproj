@@ -5,4 +5,8 @@
 		<AssemblyName>NventX.xProof.BaseProofLibrary</AssemblyName>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Utils\010_012000_Utils.csproj" />
+	</ItemGroup>
+
 </Project>

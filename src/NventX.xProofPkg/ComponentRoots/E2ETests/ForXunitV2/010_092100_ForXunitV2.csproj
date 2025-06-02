@@ -5,5 +5,9 @@
 		<AssemblyName>NventX.Xunit.E2ETests.ForXunitV2</AssemblyName>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\ForXunitV2\SupportingBaseProofLibrary\010_023000_SupportingBaseProofLibrary.csproj" />
+	</ItemGroup>
+
 
 </Project>

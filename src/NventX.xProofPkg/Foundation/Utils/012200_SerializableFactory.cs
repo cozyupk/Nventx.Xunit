@@ -12,8 +12,19 @@ namespace NventX.xProof.Utils
     [Serializable]
     public class SerializableFactory<TTarget>
     {
+        /// <summary>
+        /// The resolver used to inject parameters for object creation.
+        /// </summary>
         private INamedArgumentResolver? resolver;
+
+        /// <summary>
+        /// Flag indicating whether parameters have been set for the factory.
+        /// </summary>
         private bool isParameterSet = false;
+
+        /// <summary>
+        /// A cache for resolved parameter values, allowing serialization and deserialization of the factory state.
+        /// </summary>
         private Dictionary<string, object>? cachedValues;
 
         private static bool IsSupported(Type type)
@@ -27,6 +38,10 @@ namespace NventX.xProof.Utils
                 || type == typeof(Type);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the SerializableFactory class.
+        /// </summary>
+        /// <exception cref="NotSupportedException"></exception>
         public SerializableFactory() {
             var ctor = GetTargetConstructor();
 
@@ -83,6 +98,9 @@ namespace NventX.xProof.Utils
             return (TTarget)ctor.Invoke(args);
         }
 
+        /// <summary>
+        /// Serializes the factory state to a JSON string.
+        /// </summary>
         public string SerializeToString()
         {
             if (!isParameterSet || cachedValues == null)
@@ -102,22 +120,30 @@ namespace NventX.xProof.Utils
             return System.Text.Json.JsonSerializer.Serialize(serializableDict);
         }
 
+        /// <summary>
+        /// Deserializes the factory state from a JSON string.
+        /// </summary>
         public void DeserializeFromString(string json)
         {
+            // the JSON string must not be null or empty
             if (string.IsNullOrWhiteSpace(json))
                 throw new ArgumentException("Invalid JSON string", nameof(json));
 
+            // Deserialize the JSON string into a dictionary
             var dict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, System.Text.Json.JsonElement>>(json)
                 ?? throw new InvalidOperationException("Deserialization failed.");
 
-            // 文字列の辞書から object に変換して DictionaryBasedResolver に渡す
+            // pass the dictionary to SetParameter after converting the values
             var converted = dict.ToDictionary(
                 kv => kv.Key,
                 kv => ExtractPrimitive(kv.Value)
             );
-
             SetParameter(new DictionaryBasedResolver(converted));
         }
+
+        /// <summary>
+        /// Gets the target constructor for TTarget, which is the one with the least parameters.
+        /// </summary>
 
         private ConstructorInfo GetTargetConstructor()
         {
@@ -128,6 +154,9 @@ namespace NventX.xProof.Utils
                 ?? throw new InvalidOperationException($"No accessible constructor for {typeof(TTarget)}");
         }
 
+        /// <summary>
+        /// Extracts a primitive value from a JSON element.
+        /// </summary>
         private static object ExtractPrimitive(System.Text.Json.JsonElement element)
         {
             string strValue;
@@ -165,13 +194,22 @@ namespace NventX.xProof.Utils
     /// </summary>
     internal class DictionaryBasedResolver : INamedArgumentResolver
     {
+        /// <summary>
+        /// The dictionary containing named arguments.
+        /// </summary>
         private readonly Dictionary<string, object> _dict;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DictionaryBasedResolver"/> class with the specified dictionary.
+        /// </summary>
         public DictionaryBasedResolver(Dictionary<string, object> dict)
         {
             _dict = dict;
         }
 
+        /// <summary>
+        /// Resolves a named argument of type T from the dictionary.
+        /// </summary>
         public T Resolve<T>(string name)
         {
             if (_dict.TryGetValue(name, out var value))

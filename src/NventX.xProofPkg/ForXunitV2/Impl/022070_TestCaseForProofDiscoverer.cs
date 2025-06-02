@@ -9,15 +9,6 @@ using Xunit.Sdk;
 namespace NventX.Xunit
 {
     /// <summary>
-    /// Defines the type of test case proposition, which can be either a Fact or a Theory.
-    /// </summary>
-    public enum TestCasePropositionType
-    {
-        Fact,
-        Theory,
-    }
-
-    /// <summary>
     /// A wrapper for <see cref="IAttributeInfo"/> that implements <see cref="INamedArgumentResolver"/>.
     /// </summary>
     internal class XunitAttributeInfoWrapper : INamedArgumentResolver
@@ -58,9 +49,9 @@ namespace NventX.Xunit
         /// Initializes a new instance of the <see cref="TestCaseForProofDiscoverer{TTestProof}"/> class with the specified test case proposition type and diagnostic message sink.
         /// </summary>
         public TestCaseForProofDiscoverer(
-            TestCasePropositionType testCasePropositionType,
+            ProofInvocationKind proofInvocationKind,
             IMessageSink diagnosticMessageSink
-        ) : base(testCasePropositionType, diagnosticMessageSink)
+        ) : base(proofInvocationKind, diagnosticMessageSink)
         {
         }
     }
@@ -75,22 +66,23 @@ namespace NventX.Xunit
         /// <summary>
         /// The type of test case proposition that defines the expected behavior of the test cases.
         /// </summary>
-        private TestCasePropositionType TestCasePropositionType { get; }
+        private ProofInvocationKind ProofInvocationKind { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestCaseForProofDiscoverer{TTestProof, TSerializableTestProofFactory}"/> class.
         /// </summary>
-        public TestCaseForProofDiscoverer(TestCasePropositionType testCasePropositionType, IMessageSink diagnosticMessageSink)
+        public TestCaseForProofDiscoverer(ProofInvocationKind proofInvocationKind, IMessageSink diagnosticMessageSink)
         {
             // Validate the arguments
             _ = diagnosticMessageSink ?? throw new ArgumentNullException(nameof(diagnosticMessageSink));
-            _ = TestCasePropositionType != TestCasePropositionType.Fact &&
-                TestCasePropositionType != TestCasePropositionType.Theory
-                ? throw new ArgumentOutOfRangeException(nameof(testCasePropositionType), "Invalid test case proposition type.")
-                : testCasePropositionType;
+            _ = proofInvocationKind != ProofInvocationKind.SingleCase &&
+                proofInvocationKind != ProofInvocationKind.Parameterized &&
+                proofInvocationKind != ProofInvocationKind.Unknown
+                ? throw new ArgumentOutOfRangeException(nameof(proofInvocationKind), "Invalid proof invocation kind.")
+                : proofInvocationKind;
 
             // Hold the test proposition type that defines the expected behavior of the test cases
-            TestCasePropositionType = testCasePropositionType;
+            ProofInvocationKind = proofInvocationKind;
 
             // Initialize the diagnostic message sink to be used for outputting messages during test execution
             DiagnosticMessageSink = diagnosticMessageSink ?? throw new ArgumentNullException(nameof(diagnosticMessageSink));
@@ -123,7 +115,7 @@ namespace NventX.Xunit
             List<string> messages = new();
 
             // Check if the method is for a Fact or Theory proposition type
-            if (TestCasePropositionType == TestCasePropositionType.Fact)
+            if (ProofInvocationKind == ProofInvocationKind.SingleCase)
             {
                 if (parameters.Count() != 1)
                 {
@@ -192,6 +184,7 @@ namespace NventX.Xunit
                         DiagnosticMessageSink,
                         testMethodDisplay,
                         testMethod,
+                        ProofInvocationKind,
                         testProofFactory,
                         null
                     )

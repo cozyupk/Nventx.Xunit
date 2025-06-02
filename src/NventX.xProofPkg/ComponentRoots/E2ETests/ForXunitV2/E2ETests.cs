@@ -1,10 +1,17 @@
-﻿using NventX.Xunit.E2ETests.ForXunitV2.Mock;
+﻿using NventX.xProof.BaseProofLibrary;
+using NventX.Xunit.SupportingBaseProofLibrary;
 
 namespace NventX.Xunit.E2ETests.ForXunitV2
 {
 
     public class MyTest
     {
+
+        [FailLateFact]
+        public static void SUCCESS_IF_WithConcreteArgument(FailLateProof _)
+        {
+        }
+
         /*
         [NonExceptionFact]
         public void FAIL_IF_NoArguments()
@@ -25,16 +32,7 @@ namespace NventX.Xunit.E2ETests.ForXunitV2
         public void FAIL_IF_WithTooMuchArguments(ITestProof _1, string _2)
         {
         }
-        */
 
-
-        [NonExceptionFact]
-        public void SUCCESS_IF_WithConcreteArgument(NonExceptionProof _)
-        {
-        }
-
-
-        /*
         [ExceptionFact]
         public void FAIL_IfMethodHaveNoParameter()
         {

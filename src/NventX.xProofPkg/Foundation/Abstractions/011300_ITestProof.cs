@@ -10,7 +10,7 @@ namespace NventX.xProof.Abstractions
         /// <summary>
         /// Sets up the test proof environment.
         /// </summary>
-        void Setup();
+        void Setup(ProofInvocationKind proofInvocationKind);
 
         /// <summary>
         /// Collects probing failures encountered during the test execution.

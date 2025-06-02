@@ -10,8 +10,14 @@ using Xunit.Sdk;
 
 namespace NventX.Xunit
 {
+    /// <summary>
+    /// A test invoker for tests that expect a proof to be verified during their execution.
+    /// </summary>
     internal class ProofTestInvoker : XunitTestInvoker
     {
+        /// <summary>
+        /// The test case that contains the proof to be verified.
+        /// </summary>
         private ITestCaseForProof ProofTestCase { get; }
 
         /// <summary>
@@ -30,6 +36,9 @@ namespace NventX.Xunit
             return result;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProofTestInvoker"/> class.
+        /// </summary>
         public ProofTestInvoker(
             ITest test, IMessageBus messageBus, Type testClass, object[] constructorArguments, MethodInfo testMethod,
             object[] testMethodArguments, IReadOnlyList<BeforeAfterTestAttribute> beforeAfterAttributes,
@@ -46,6 +55,9 @@ namespace NventX.Xunit
             ProofTestCase = proofTestCase;
         }
 
+        /// <summary>
+        /// Invokes the test method and measures its execution time for unit testing purposes.
+        /// </summary>
         internal Task<decimal> InvokeTestMethodAsyncForUT(object testClassInstance)
         {
             // This method is for unit testing purposes only.
@@ -84,7 +96,7 @@ namespace NventX.Xunit
                 ExecutionPhase phase = ExecutionPhase.Starting;
                 try
                 {
-                    proof.Setup();
+                    proof.Setup(ProofTestCase.ProofInvocationKind);
                     phase = ExecutionPhase.InvokingTestMethod;
                     TestMethod.Invoke(testClassInstance, testMethodArguments);
                     phase = ExecutionPhase.ValidatingAfterProbing;

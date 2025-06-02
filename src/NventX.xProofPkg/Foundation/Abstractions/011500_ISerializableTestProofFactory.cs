@@ -1,5 +1,8 @@
 ﻿namespace NventX.xProof.Abstractions
 {
+    /// <summary>
+    /// Factory interface for creating serializable test proofs.
+    /// </summary>
     public interface ISerializableTestProofFactory<out TTestProof>
         where TTestProof : ITestProof
     {  
