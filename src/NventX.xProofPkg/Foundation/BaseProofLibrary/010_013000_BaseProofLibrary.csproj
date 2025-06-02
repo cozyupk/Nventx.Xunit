@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>NventX.xProof.BaseProofLibrary</RootNameSpace>
+		<AssemblyName>NventX.xProof.BaseProofLibrary</AssemblyName>
+	</PropertyGroup>
+
+</Project>

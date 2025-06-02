@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>NventX.xProof.Abstractions</RootNameSpace>
+		<AssemblyName>NventX.xProof.Abstractions</AssemblyName>
+	</PropertyGroup>
+
+</Project>

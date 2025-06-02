@@ -1,0 +1,11 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<ItemGroup>
+		<PackageReference Include="System.Text.Json" Version="9.0.5" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PropsImported Include="$(MSBuildThisFileFullPath)" />
+	</ItemGroup>
+	
+</Project>

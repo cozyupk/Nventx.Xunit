@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>NventX.Xunit.E2ETests.ForXunitV2</RootNameSpace>
+		<AssemblyName>NventX.Xunit.E2ETests.ForXunitV2</AssemblyName>
+	</PropertyGroup>
+
+
+</Project>

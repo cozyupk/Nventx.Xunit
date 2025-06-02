@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>NventX.xProof.Utils</RootNameSpace>
+		<AssemblyName>NventX.xProof.Utils</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Abstractions\010_011000_Abstractions.csproj" />
+	</ItemGroup>
+
+</Project>

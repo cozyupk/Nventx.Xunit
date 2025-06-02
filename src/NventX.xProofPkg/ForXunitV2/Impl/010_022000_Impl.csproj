@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>NventX.Xunit</RootNameSpace>
+		<AssemblyName>NventX.Xunit.ForXunitV2</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Foundation\Utils\010_012000_Utils.csproj" />
+	</ItemGroup>
+
+</Project>
