@@ -4,11 +4,11 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using NventX.xProof.Abstractions;
+using NventX.xProof.Abstractions.TestProofForTestRunner;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace NventX.Xunit
+namespace NventX.xProof.Xunit
 {
     /// <summary>
     /// A test invoker for tests that expect a proof to be verified during their execution.
@@ -28,7 +28,7 @@ namespace NventX.Xunit
         /// <summary>
         /// Adds a new object to the front of an existing array of objects.
         /// </summary>
-        private static object[] AddProofToFront(object[] original, ITestProof proof)
+        private static object[] AddProofToFront(object[] original, IInvokableProof proof)
         {
             object[] result = new object[original.Length + 1];
             result[0] = proof;

@@ -1,4 +1,4 @@
-﻿namespace NventX.xProof.Abstractions
+﻿namespace NventX.xProof.Abstractions.Utils
 {
     /// <summary>
     /// Interface for resolving named arguments in test proofs.

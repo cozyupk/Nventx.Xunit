@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace NventX.xProof.Abstractions
+namespace NventX.xProof.Abstractions.TestProofForTestRunner
 {
     /// <summary>
     /// Interface for test proof, which is used to set up and collect probing failures.
     /// </summary>
-    public interface ITestProof
+    public interface IInvokableProof
     {
         /// <summary>
         /// Sets up the test proof environment.
@@ -17,5 +18,13 @@ namespace NventX.xProof.Abstractions
         /// </summary>
         /// <returns></returns>
         IEnumerable<IProbingFailure> CollectProbingFailure();
+
+        /// <summary>
+        /// Records a probing failure with a label, exception and caller details.
+        /// </summary>
+        void RecordProbingFailure(
+            string? label, Delegate act, Exception ex,
+            string? callerFilePath, int callerLineNumber, string? callerMemberName
+        );
     }
 }

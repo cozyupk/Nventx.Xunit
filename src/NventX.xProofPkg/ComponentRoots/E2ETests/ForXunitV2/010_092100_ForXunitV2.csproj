@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<RootNameSpace>NventX.Xunit.E2ETests.ForXunitV2</RootNameSpace>
-		<AssemblyName>NventX.Xunit.E2ETests.ForXunitV2</AssemblyName>
+		<RootNameSpace>NventX.xProof.Xunit.E2ETests.ForXunitV2</RootNameSpace>
+		<AssemblyName>NventX.xProof.ForXunitV2.E2ETests.ForXunitV2</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>

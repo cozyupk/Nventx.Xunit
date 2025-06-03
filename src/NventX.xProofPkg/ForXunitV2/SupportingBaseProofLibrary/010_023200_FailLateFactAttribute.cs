@@ -2,7 +2,7 @@
 using Xunit;
 using Xunit.Sdk;
 
-namespace NventX.Xunit.SupportingBaseProofLibrary
+namespace NventX.xProof.Xunit.SupportingBaseProofLibrary
 {
     [XunitTestCaseDiscoverer("NventX.Xunit.E2ETests.ForXunitV2.Mock." + nameof(FailLateFactFactTestCaseDiscoverer), "NventX.Xunit.E2ETests.ForXunitV2")]
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace NventX.Xunit
+namespace NventX.xProof.Xunit
 {
     /// <summary>
     /// A test runner for tests that expect a proof to be verified during their execution.

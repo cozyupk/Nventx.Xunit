@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NventX.xProof.Abstractions;
+using NventX.xProof.Abstractions.TestProofForTestRunner;
+using NventX.xProof.Abstractions.Utils;
 using NventX.xProof.Utils;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace NventX.Xunit
+namespace NventX.xProof.Xunit
 {
     /// <summary>
     /// A wrapper for <see cref="IAttributeInfo"/> that implements <see cref="INamedArgumentResolver"/>.
@@ -43,7 +44,7 @@ namespace NventX.Xunit
     /// A discoverer for test cases that expect a proof to be verified during their execution.
     /// </summary>
     public class TestCaseForProofDiscoverer<TTestProof> : TestCaseForProofDiscoverer<TTestProof, SerializableTestProofFactory<TTestProof>>
-        where TTestProof : ITestProof
+        where TTestProof : IInvokableProof
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TestCaseForProofDiscoverer{TTestProof}"/> class with the specified test case proposition type and diagnostic message sink.
@@ -60,7 +61,7 @@ namespace NventX.Xunit
     /// A discoverer for test cases that expect a proof to be verified during their execution,
     /// </summary>
     public class TestCaseForProofDiscoverer<TTestProof, TSerializableTestProofFactory> : IXunitTestCaseDiscoverer
-        where TTestProof : ITestProof
+        where TTestProof : IInvokableProof
         where TSerializableTestProofFactory : ISerializableTestProofFactory<TTestProof>, new()
     {
         /// <summary>

@@ -1,13 +1,13 @@
-﻿using NventX.xProof.Abstractions;
+﻿using NventX.xProof.Abstractions.TestProofForTestRunner;
 using Xunit.Abstractions;
 
-namespace NventX.Xunit
+namespace NventX.xProof.Xunit
 {
     /// <summary>
     /// A discoverer for test cases that expect a proof to be verified during their execution.
     /// </summary>
     public class TheoryTestCaseDiscoverer<TTestProof> : TestCaseForProofDiscoverer<TTestProof>
-        where TTestProof : ITestProof
+        where TTestProof : IInvokableProof
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TheoryTestCaseDiscoverer{TTestProof}"/> class with the specified diagnostic message sink.

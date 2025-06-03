@@ -1,9 +1,9 @@
-﻿using NventX.xProof.BaseProofLibrary;
+﻿using NventX.xProof.Abstractions.TestProofForTestRunner;
 using Xunit.Abstractions;
 
-namespace NventX.Xunit.SupportingBaseProofLibrary
+namespace NventX.xProof.Xunit.SupportingBaseProofLibrary
 {
-    internal class FailLateFactFactTestCaseDiscoverer : FactTestCaseDiscoverer<FailLateProof>
+    internal class FailLateFactFactTestCaseDiscoverer : FactTestCaseDiscoverer<IInvokableProof>
     {
         public FailLateFactFactTestCaseDiscoverer(IMessageSink diagnosticMessageSink)
             : base(diagnosticMessageSink)

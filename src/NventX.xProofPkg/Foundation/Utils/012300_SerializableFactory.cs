@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using NventX.xProof.Abstractions;
+using NventX.xProof.Abstractions.Utils;
 
 namespace NventX.xProof.Utils
 {

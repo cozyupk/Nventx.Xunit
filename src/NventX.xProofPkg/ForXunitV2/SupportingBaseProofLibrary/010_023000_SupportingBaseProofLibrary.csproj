@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<RootNameSpace>NventX.Xunit.SupportingBaseProofLibrary</RootNameSpace>
-		<AssemblyName>NventX.Xunit.ForXunitV2.SupportingBaseProofLibrary</AssemblyName>
+		<RootNameSpace>NventX.xProof.Xunit.SupportingBaseProofLibrary</RootNameSpace>
+		<AssemblyName>NventX.xProof.ForXunitV2.SupportingBaseProofLibrary</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>

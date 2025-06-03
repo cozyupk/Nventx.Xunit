@@ -1,10 +1,12 @@
-﻿namespace NventX.xProof.Abstractions
+﻿using NventX.xProof.Abstractions.TestProofForTestRunner;
+
+namespace NventX.xProof.Abstractions.Utils
 {
     /// <summary>
     /// Factory interface for creating serializable test proofs.
     /// </summary>
     public interface ISerializableTestProofFactory<out TTestProof>
-        where TTestProof : ITestProof
+        where TTestProof : IInvokableProof
     {  
         /// <summary>
         /// Injects parameters for object creation via resolver. Can only be called once.

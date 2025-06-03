@@ -211,14 +211,35 @@ for (i = 0, l = charts.length; i < l; i++) {
 
 var assemblies = [
   {
-    "name": "NventX.Xunit.ForXunitV2",
+    "name": "NventX.xProof.BaseProofLibrary",
     "classes": [
-      { "name": "NventX.Xunit.ExceptionTesting.ExceptionFactAttribute", "rp": "NventX.Xunit.ForXunitV2_ExceptionFactAttribute.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.Xunit.ExceptionTesting.ExceptionFactDiscoverer", "rp": "NventX.Xunit.ForXunitV2_ExceptionFactDiscoverer.html", "cl": 13, "ucl": 0, "cal": 13, "tl": 41, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.Xunit.ExceptionTesting.ExceptionTestCase", "rp": "NventX.Xunit.ForXunitV2_ExceptionTestCase.html", "cl": 25, "ucl": 0, "cal": 25, "tl": 100, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.Xunit.ExceptionTesting.ExceptionTestCaseRunner", "rp": "NventX.Xunit.ForXunitV2_ExceptionTestCaseRunner.html", "cl": 13, "ucl": 0, "cal": 13, "tl": 68, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.Xunit.ExceptionTesting.ExceptionTestInvoker", "rp": "NventX.Xunit.ForXunitV2_ExceptionTestInvoker.html", "cl": 71, "ucl": 0, "cal": 71, "tl": 121, "cb": 12, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.Xunit.ExceptionTesting.NventX.Xunit.ExceptionTesting.ExceptionTestRunner", "rp": "NventX.Xunit.ForXunitV2_ExceptionTestRunner.html", "cl": 15, "ucl": 0, "cal": 15, "tl": 59, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.BaseProofLibrary.FailLateProof", "rp": "NventX.xProof.BaseProofLibrary_FailLateProof.html", "cl": 68, "ucl": 0, "cal": 68, "tl": 155, "cb": 11, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+    ]},
+  {
+    "name": "NventX.xProof.ForXunitV2",
+    "classes": [
+      { "name": "NventX.xProof.Xunit.FactTestCaseDiscoverer<T>", "rp": "NventX.xProof.ForXunitV2_FactTestCaseDiscoverer_1.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Xunit.ProofTestInvoker", "rp": "NventX.xProof.ForXunitV2_ProofTestInvoker.html", "cl": 0, "ucl": 98, "cal": 98, "tl": 160, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Xunit.ProofTestRunner", "rp": "NventX.xProof.ForXunitV2_ProofTestRunner.html", "cl": 0, "ucl": 15, "cal": 15, "tl": 56, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Xunit.TestCaseForProof<T1, T2>", "rp": "NventX.xProof.ForXunitV2_TestCaseForProof_2.html", "cl": 0, "ucl": 34, "cal": 34, "tl": 120, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Xunit.TestCaseForProofDiscoverer<T>", "rp": "NventX.xProof.ForXunitV2_TestCaseForProofDiscoverer_1.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 194, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Xunit.TestCaseForProofDiscoverer<T1, T2>", "rp": "NventX.xProof.ForXunitV2_TestCaseForProofDiscoverer_2.html", "cl": 0, "ucl": 78, "cal": 78, "tl": 194, "cb": 0, "tb": 36, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Xunit.TestCaseRunnerForProof", "rp": "NventX.xProof.ForXunitV2_TestCaseRunnerForProof.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 54, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Xunit.TheoryTestCaseDiscoverer<T>", "rp": "NventX.xProof.ForXunitV2_TheoryTestCaseDiscoverer_1.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Xunit.XunitAttributeInfoWrapper", "rp": "NventX.xProof.ForXunitV2_XunitAttributeInfoWrapper.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 194, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+    ]},
+  {
+    "name": "NventX.xProof.ForXunitV2.SupportingBaseProofLibrary",
+    "classes": [
+      { "name": "NventX.xProof.Xunit.SupportingBaseProofLibrary.FailLateFactAttribute", "rp": "NventX.xProof.ForXunitV2.SupportingBaseProofLibrary_FailLateFactAttribute.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 20, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Xunit.SupportingBaseProofLibrary.FailLateFactFactTestCaseDiscoverer", "rp": "NventX.xProof.ForXunitV2.SupportingBaseProofLibrary_FailLateFactFactTestCaseDiscoverer.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+    ]},
+  {
+    "name": "NventX.xProof.Utils",
+    "classes": [
+      { "name": "NventX.xProof.Utils.DictionaryBasedResolver", "rp": "NventX.xProof.Utils_DictionaryBasedResolver.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 225, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Utils.ProbingFailure", "rp": "NventX.xProof.Utils_ProbingFailure.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 30, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Utils.SerializableFactory<T>", "rp": "NventX.xProof.Utils_SerializableFactory_1.html", "cl": 0, "ucl": 94, "cal": 94, "tl": 225, "cb": 0, "tb": 65, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
@@ -227,9 +248,77 @@ var metrics = [{ "name": "Crap Score", "abbreviation": "crp", "explanationUrl": 
 var historicCoverageExecutionTimes = [];
 
 var riskHotspotMetrics = [
+      { "name": "Crap Score", "explanationUrl": "https://googletesting.blogspot.de/2011/02/this-code-is-crap.html" },
+      { "name": "Cyclomatic complexity", "explanationUrl": "https://en.wikipedia.org/wiki/Cyclomatic_complexity" },
 ];
 
 var riskHotspots = [
+  {
+    "assembly": "NventX.xProof.ForXunitV2", "class": "NventX.xProof.Xunit.TestCaseForProofDiscoverer<T1, T2>", "reportPath": "NventX.xProof.ForXunitV2_TestCaseForProofDiscoverer_2.html", "methodName": "Discover(Xunit.Abstractions.ITestFrameworkDiscoveryOptions,Xunit.Abstractions.ITestMethod,Xunit.Abstractions.IAttributeInfo)", "methodShortName": "Discover(...)", "fileIndex": 0, "line": 102,
+    "metrics": [
+      { "value": 702, "exceeded": true },
+      { "value": 26, "exceeded": true },
+    ]},
+  {
+    "assembly": "NventX.xProof.Utils", "class": "NventX.xProof.Utils.SerializableFactory<T>", "reportPath": "NventX.xProof.Utils_SerializableFactory_1.html", "methodName": "SerializeToString()", "methodShortName": "SerializeToString()", "fileIndex": 0, "line": 105,
+    "metrics": [
+      { "value": 210, "exceeded": true },
+      { "value": 14, "exceeded": false },
+    ]},
+  {
+    "assembly": "NventX.xProof.Utils", "class": "NventX.xProof.Utils.SerializableFactory<T>", "reportPath": "NventX.xProof.Utils_SerializableFactory_1.html", "methodName": "IsSupported(System.Type)", "methodShortName": "IsSupported(...)", "fileIndex": 0, "line": 31,
+    "metrics": [
+      { "value": 156, "exceeded": true },
+      { "value": 12, "exceeded": false },
+    ]},
+  {
+    "assembly": "NventX.xProof.Utils", "class": "NventX.xProof.Utils.SerializableFactory<T>", "reportPath": "NventX.xProof.Utils_SerializableFactory_1.html", "methodName": "ExtractPrimitive(System.Text.Json.JsonElement)", "methodShortName": "ExtractPrimitive(...)", "fileIndex": 0, "line": 161,
+    "metrics": [
+      { "value": 132, "exceeded": true },
+      { "value": 11, "exceeded": false },
+    ]},
+  {
+    "assembly": "NventX.xProof.ForXunitV2", "class": "NventX.xProof.Xunit.TestCaseForProofDiscoverer<T1, T2>", "reportPath": "NventX.xProof.ForXunitV2_TestCaseForProofDiscoverer_2.html", "methodName": ".ctor(NventX.xProof.Abstractions.ProofInvocationKind,Xunit.Abstractions.IMessageSink)", "methodShortName": ".ctor(...)", "fileIndex": 0, "line": 74,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "NventX.xProof.Utils", "class": "NventX.xProof.Utils.DictionaryBasedResolver", "reportPath": "NventX.xProof.Utils_DictionaryBasedResolver.html", "methodName": "Resolve(System.String)", "methodShortName": "Resolve(...)", "fileIndex": 0, "line": 214,
+    "metrics": [
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
+    ]},
+  {
+    "assembly": "NventX.xProof.ForXunitV2", "class": "NventX.xProof.Xunit.ProofTestInvoker", "reportPath": "NventX.xProof.ForXunitV2_ProofTestInvoker.html", "methodName": "InvokeTestMethodAsync(System.Object)", "methodShortName": "InvokeTestMethodAsync(...)", "fileIndex": 0, "line": 82,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "NventX.xProof.ForXunitV2", "class": "NventX.xProof.Xunit.TestCaseForProof<T1, T2>", "reportPath": "NventX.xProof.ForXunitV2_TestCaseForProof_2.html", "methodName": ".ctor(Xunit.Abstractions.IMessageSink,Xunit.Sdk.TestMethodDisplay,Xunit.Abstractions.ITestMethod,NventX.xProof.Abstractions.ProofInvocationKind,TSerializableTestProofFactory,System.Object[])", "methodShortName": ".ctor(...)", "fileIndex": 0, "line": 54,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "NventX.xProof.Utils", "class": "NventX.xProof.Utils.SerializableFactory<T>", "reportPath": "NventX.xProof.Utils_SerializableFactory_1.html", "methodName": "DeserializeFromString(System.String)", "methodShortName": "DeserializeFromString(...)", "fileIndex": 0, "line": 127,
+    "metrics": [
+      { "value": 72, "exceeded": true },
+      { "value": 8, "exceeded": false },
+    ]},
+  {
+    "assembly": "NventX.xProof.Utils", "class": "NventX.xProof.Utils.SerializableFactory<T>", "reportPath": "NventX.xProof.Utils_SerializableFactory_1.html", "methodName": "SetParameter(NventX.xProof.Abstractions.INamedArgumentResolver)", "methodShortName": "SetParameter(...)", "fileIndex": 0, "line": 64,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
+  {
+    "assembly": "NventX.xProof.Utils", "class": "NventX.xProof.Utils.SerializableFactory<T>", "reportPath": "NventX.xProof.Utils_SerializableFactory_1.html", "methodName": "Create()", "methodShortName": "Create()", "fileIndex": 0, "line": 89,
+    "metrics": [
+      { "value": 42, "exceeded": true },
+      { "value": 6, "exceeded": false },
+    ]},
 ];
 
 var branchCoverageAvailable = true;

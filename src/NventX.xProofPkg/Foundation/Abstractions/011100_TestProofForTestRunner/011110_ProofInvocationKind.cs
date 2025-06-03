@@ -1,4 +1,4 @@
-﻿namespace NventX.xProof.Abstractions
+﻿namespace NventX.xProof.Abstractions.TestProofForTestRunner
 {
     /// <summary>
     /// Represents the kind of proof invocation used in test proofs.

@@ -1,4 +1,5 @@
-﻿using NventX.xProof.Abstractions;
+﻿using NventX.xProof.Abstractions.TestProofForTestRunner;
+using NventX.xProof.Abstractions.Utils;
 
 namespace NventX.xProof.Utils
 {
@@ -6,7 +7,7 @@ namespace NventX.xProof.Utils
     /// A factory for creating serializable test proofs that implement the ITestProof interface.
     /// </summary>
     public class SerializableTestProofFactory<TTestProof> : SerializableFactory<TTestProof>, ISerializableTestProofFactory<TTestProof>
-        where TTestProof : ITestProof
+        where TTestProof : IInvokableProof
     {
     }
 }

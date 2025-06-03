@@ -5,4 +5,8 @@
 		<AssemblyName>NventX.xProof.Abstractions</AssemblyName>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <None Include="011100_TestProofForTestRunner\011130_IInvokableProof.cs" />
+	</ItemGroup>
+
 </Project>

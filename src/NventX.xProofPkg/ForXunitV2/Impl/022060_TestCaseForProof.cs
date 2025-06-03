@@ -2,18 +2,19 @@
 using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
-using NventX.xProof.Abstractions;
+using NventX.xProof.Abstractions.TestProofForTestRunner;
+using NventX.xProof.Abstractions.Utils;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace NventX.Xunit
+namespace NventX.xProof.Xunit
 {
     /// <summary>
     /// Represents a test case that expects a proof to be verified during its execution.
     /// </summary>
     [Serializable]
     internal class TestCaseForProof<TTestProof, TSerializableTestProofFactory> : XunitTestCase, ITestCaseForProof
-        where TTestProof : ITestProof
+        where TTestProof : IInvokableProof
         where TSerializableTestProofFactory : ISerializableTestProofFactory<TTestProof>, new()
     {
         /// <summary>
@@ -57,9 +58,9 @@ namespace NventX.Xunit
             // Validate the arguments and initialize the properties
             TestProofFactory = testProofFactory ?? throw new ArgumentNullException(nameof(testProofFactory));
             ProofInvocationKind = 
-                (proofInvocationKind == ProofInvocationKind.SingleCase
+                proofInvocationKind == ProofInvocationKind.SingleCase
                 || proofInvocationKind == ProofInvocationKind.Parameterized
-                || proofInvocationKind == ProofInvocationKind.Unknown)
+                || proofInvocationKind == ProofInvocationKind.Unknown
                 ? proofInvocationKind
                 : throw new ArgumentOutOfRangeException(nameof(proofInvocationKind), "Invalid proof invocation kind.");
         }
@@ -112,7 +113,7 @@ namespace NventX.Xunit
         /// <summary>
         /// Creates a test proof instance typed as ITestProof using the factory.
         /// </summary>
-        public ITestProof CreateTestProof()
+        public IInvokableProof CreateTestProof()
         {
             return TestProofFactory.Create();
         }

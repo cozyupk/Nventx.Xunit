@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NventX.xProof.Abstractions
+namespace NventX.xProof.Abstractions.TestProofForTestRunner
 {
     /// <summary>
     /// Represents a failure encountered during test probing.

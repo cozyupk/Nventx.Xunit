@@ -1,5 +1,5 @@
 ﻿using System;
-using NventX.xProof.Abstractions;
+using NventX.xProof.Abstractions.TestProofForTestRunner;
 
 namespace NventX.xProof.Utils
 {
