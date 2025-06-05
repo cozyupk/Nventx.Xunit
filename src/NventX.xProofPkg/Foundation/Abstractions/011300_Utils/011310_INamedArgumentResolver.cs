@@ -8,6 +8,6 @@
         /// <summary>
         /// Resolves a named argument of type T.
         /// </summary>
-        T Resolve<T>(string name);
+        T Resolve<T>(string name) where T : notnull;
     }
 }

@@ -15,7 +15,12 @@ namespace NventX.xProof.BaseProofLibrary.BaseImpl
         /// <summary>
         /// The kind of proof invocation, indicating whether it is a single case, parameterized, or unknown.
         /// </summary>
-        protected internal ProofInvocationKind ProofInvocationKind { get; private set; }
+        protected internal ProofInvocationKind? ProofInvocationKind { get; private set; }
+
+        /// <summary>
+        /// Lock object to ensure thread-safe access to the proof invocation kind.
+        /// </summary>
+        private object SetupLock { get; } = new object();
 
         /// <summary>
         /// A collection to store probing failures that occur during the test execution.
@@ -27,17 +32,25 @@ namespace NventX.xProof.BaseProofLibrary.BaseImpl
         /// </summary>
         public void Setup(ProofInvocationKind proofInvocationKind)
         {
-            // Validate the proof invocation kind and set it
-            if (proofInvocationKind != ProofInvocationKind.SingleCase
-                && proofInvocationKind != ProofInvocationKind.Parameterized
-                && proofInvocationKind != ProofInvocationKind.Unknown)
+            lock (SetupLock)
             {
-                throw new System.ArgumentException(
-                    $"Invalid proof invocation kind: {proofInvocationKind}. " +
-                    "Must be one of SingleCase, Parameterized, or Unknown.",
-                    nameof(proofInvocationKind));
+                // If the proof invocation kind is already set, throw an exception
+                if (ProofInvocationKind.HasValue)
+                {
+                    throw new System.InvalidOperationException(
+                        "Setup has already been called. Cannot change the proof invocation kind after setup.");
+                }
+
+                // Validate the proof invocation kind and set it
+                if (!Enum.IsDefined(typeof(ProofInvocationKind), proofInvocationKind))
+                {
+                    throw new System.ArgumentException(
+                        $"Invalid proof invocation kind: {proofInvocationKind}. " +
+                        "Must be one of SingleCase, Parameterized, or Unknown.",
+                        nameof(proofInvocationKind));
+                }
+                ProofInvocationKind = proofInvocationKind;
             }
-            ProofInvocationKind = proofInvocationKind;
         }
 
         /// <summary>
@@ -45,7 +58,7 @@ namespace NventX.xProof.BaseProofLibrary.BaseImpl
         /// </summary>
         public IEnumerable<IProbingFailure> CollectProbingFailure()
         {
-            // Return a copy of the probing failures to avoid modification during enumeration
+            // Return a copy of the probing failures so that we can avoid modification during enumeration
             return ProbingFailures.ToArray();
         }
 
@@ -54,7 +67,8 @@ namespace NventX.xProof.BaseProofLibrary.BaseImpl
         /// </summary>
         public void RecordProbingFailure(
             string? label, Delegate act, Exception ex,
-            string? callerFilePath, int callerLineNumber, string? callerMemberName
+            string? callerFilePath, int callerLineNumber, string? callerMemberName,
+            int cnt, int totalCnt
         )
         {
             var location = $"{Path.GetFileName(callerFilePath)}:{callerLineNumber}";

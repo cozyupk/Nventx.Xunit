@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace NventX.xProof.Abstractions.TestProofForTestMethods
 {
@@ -7,9 +8,9 @@ namespace NventX.xProof.Abstractions.TestProofForTestMethods
         void Probe(
             Action act,
             string? label,
-            string? callerFilePath,
-            int callerLineNumber,
-            string? callerMemberName
+            [CallerFilePath] string? callerFilePath = null,
+            [CallerLineNumber] int callerLineNumber = 0,
+            [CallerMemberName] string? callerMemberName = null
         );
     }
 }

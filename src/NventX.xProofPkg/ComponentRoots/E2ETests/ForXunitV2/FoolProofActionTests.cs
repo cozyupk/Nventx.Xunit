@@ -1,5 +1,157 @@
-﻿namespace NventX.xProof.Xunit.E2ETests.ForXunitV2
+﻿using NventX.xProof.BaseProofLibrary.Proofs;
+using NventX.xProof.Xunit.SupportingBaseProofLibrary;
+using Xunit;
+
+namespace NventX.xProof.Xunit.E2ETests.ForXunitV2
 {
+    public class MyTestProof : FoolProof
+    {
+        public MyTestProof() : base()
+        {
+            // No additional initialization needed.
+        }
+
+#pragma warning disable CA1822 // Make member static
+        public void ThrowException()
+#pragma warning restore CA1822 // メンバーを static に設定します
+        {
+            throw new InvalidOperationException("This is a test exception from MyTestProof.");
+        }
+    }
+
+
+    public class FoolProofActionTests
+    {
+        /*
+        [ProofFact(typeof(MyTestProof))]
+        public void TestMyProof(MyTestProof mtf)
+        {
+            mtf.ThrowException();
+        }
+
+        [ProofFact]
+        public void FoolProof_CapturesExceptionFromActionWithLabel(FoolProof fp)
+        {
+            // Arrange
+            bool actionExecuted = false;
+            void throwingAction()
+            {
+                actionExecuted = true;
+                throw new InvalidOperationException("Labeled failure");
+            }
+
+            // Act
+            Exception immediateEx = Record.Exception(() => fp.Probe(throwingAction, "Custom Label"));
+
+            // Assert (no exception thrown immediately, action did execute)
+            Assert.Null(immediateEx);
+            Assert.True(actionExecuted);
+
+            // Assert that the failure is recorded with the label
+            var failures = fp.CollectProbingFailure();
+            Assert.Single(failures);
+            Assert.Equal("Custom Label", failures.First().Message);
+            Assert.IsType<InvalidOperationException>(failures.First().Exception);
+        }
+
+        [ProofTheory]
+        public void SUCCESS_DoNothing(FoolProof fp)
+        {
+        }
+
+        [ProofTheory(Skip="hoge")]
+        public void SUCCESS_DoNothing2(FoolProof fp, int x)
+        {
+        }
+
+        */
+
+        /*
+        [ProofTheory,
+        InlineData(1, 2),
+        InlineData(2),
+        InlineData(3)]
+        */
+        [ProofFact]
+        public void Fail_DoNothingInFact(FoolProof fp)
+        {
+            fp.Probe(() => throw new Exception($"(1) Failing with value in FoolProof."));
+            throw new Exception($"(2) Failing with value in FoolProof.");
+        }
+
+        [ProofTheory,
+            InlineData(345)]
+        public void Fail_DoNothingInTheory(FoolProof fp, int x)
+        {
+            fp.Probe(() => throw new Exception($"(1) Failing with value {x} in FoolProof."));
+            throw new Exception($"(2) Failing with value {x} in FoolProof.");
+        }
+
+        /*
+        [Fact]
+        public void FoolProo_CapturesExceptionFromSingleAction()
+        {
+            // Arrange
+            bool actionExecuted = false;
+            void throwingAction()
+            {
+                actionExecuted = true;
+                throw new InvalidOperationException("Failing action");
+            }
+            var proof = new FoolProof();
+
+            // Act
+            Exception immediateEx = Record.Exception(() => proof.Probe(throwingAction));
+
+            // Assert (no exception thrown immediately, action did execute)
+            Assert.Null(immediateEx);
+            Assert.True(actionExecuted);
+
+            // Assert that the failure is recorded
+            var failures = proof.CollectProbingFailure();
+            Assert.Single(failures);
+            Assert.IsType<InvalidOperationException>(failures.First().Exception);
+            Assert.Contains("Failing action", failures.First().Exception.Message);
+        }
+
+        [Fact]
+        public void FoolProof_CapturesExceptionsFromCombinedActions()
+        {
+            // Arrange
+            bool firstActionExecuted = false;
+            bool secondActionExecuted = false;
+            void firstThrowingAction()
+            {
+                firstActionExecuted = true;
+                throw new InvalidOperationException("First failure");
+            }
+            void secondThrowingAction()
+            {
+                secondActionExecuted = true;
+                throw new ArgumentException("Second failure");
+            }
+
+            // Combine the two actions into one multicast delegate
+            var proof = new FoolProof();
+            var combinedAction = proof.Combine([firstThrowingAction, secondThrowingAction]);
+
+            // Act
+            Exception immediateEx = Record.Exception(() => combinedAction.Probe());
+
+            // Assert (no exception thrown immediately, both actions executed)
+            Assert.Null(immediateEx);
+            Assert.True(firstActionExecuted);
+            Assert.True(secondActionExecuted);
+
+            // Assert that both failures are recorded
+            var failures = proof.CollectProbingFailure();
+            Assert.Equal(2, failures.Count());
+            Assert.Contains("First failure", failures.First().Exception.Message);
+            Assert.Contains("Second failure", failures.Last().Exception.Message);
+        }
+        */
+    }
+
     /*
     public class FailLateProofTests
     {

@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using Xunit.Abstractions;
+using Xunit.Sdk;
+
+namespace NventX.xProof.Xunit.SupportingBaseProofLibrary
+{
+    internal class ProofTheoryAttributeDiscoverer : TheoryDiscoverer
+    {
+        internal IProofAttributeDiscovererCore Core { get; } = new ProofAttributeDiscovererCore();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProofTheoryAttributeDiscoverer"/> class.
+        /// </summary>
+        public ProofTheoryAttributeDiscoverer(IMessageSink diagnosticMessageSink) : base(diagnosticMessageSink)
+        {
+            // Validate the diagnostic message sink and set it to the discoverer's core
+            Core.DiagnosticMessageSink = diagnosticMessageSink
+                                            ?? throw new ArgumentNullException(nameof(diagnosticMessageSink));
+        }
+
+        /// <summary>
+        /// Creates test cases for a data row in a theory test method, which is a specific set of data that the theory can be executed with.
+        /// </summary>
+        protected override IEnumerable<IXunitTestCase> CreateTestCasesForDataRow(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo theoryAttribute, object[] dataRow)
+        {
+            // Discover test cases using the core functionality
+            return Core.Discover(
+                discoveryOptions,
+                testMethod,
+                theoryAttribute,
+                dataRow
+            );
+        }
+    }
+}

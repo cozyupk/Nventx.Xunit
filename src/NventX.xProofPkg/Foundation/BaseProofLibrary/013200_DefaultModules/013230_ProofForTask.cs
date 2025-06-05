@@ -5,8 +5,8 @@ using NventX.xProof.Abstractions.TestProofForTestMethods;
 using NventX.xProof.Abstractions.TestProofForTestRunner;
 
 namespace NventX.xProof.BaseProofLibrary.DefaultModules
-
 {
+    /*
     internal class ProofForTask : IProofForTask
     {
         /// <summary>
@@ -50,4 +50,5 @@ namespace NventX.xProof.BaseProofLibrary.DefaultModules
             }
         }
     }
+    */
 }

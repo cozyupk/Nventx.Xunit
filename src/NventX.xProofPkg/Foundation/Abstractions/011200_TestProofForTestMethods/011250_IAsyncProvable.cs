@@ -1,14 +1,11 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace NventX.xProof.Abstractions.TestProofForTestMethods
 {
-    public interface IProofForFunc
+    public interface IAsyncProvable
     {
-        T? Probe<T>
-        (
-            Func<T> func,
-            string? label,
+        Task ProbeAsync(
             [CallerFilePath] string? callerFilePath = null,
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null

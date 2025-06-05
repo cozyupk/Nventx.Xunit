@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using NventX.xProof.Utils;
-
-/*
-namespace NventX.xProof.BaseProofLibrary
+﻿namespace NventX.xProof.BaseProofLibrary
 {
+    // TODO: remove this code when the new proof system is fully implemented.
+
+    /*
     /// <summary>
     /// Interface for provable elements that can be probed for failures.
     /// </summary>
@@ -197,5 +191,5 @@ namespace NventX.xProof.BaseProofLibrary
             }
         }
     }
+    */
 }
-*/

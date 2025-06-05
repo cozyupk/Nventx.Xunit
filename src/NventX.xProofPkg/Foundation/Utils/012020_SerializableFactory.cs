@@ -211,6 +211,7 @@ namespace NventX.xProof.Utils
         /// Resolves a named argument of type T from the dictionary.
         /// </summary>
         public T Resolve<T>(string name)
+            where T : notnull
         {
             if (_dict.TryGetValue(name, out var value))
             {

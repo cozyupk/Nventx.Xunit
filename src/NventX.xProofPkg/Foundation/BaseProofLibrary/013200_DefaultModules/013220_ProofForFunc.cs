@@ -36,19 +36,26 @@ namespace NventX.xProof.BaseProofLibrary.DefaultModules
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null
         ) {
-            try
+            var delegates = func.GetInvocationList();
+            T? retval = default;
+            var i = 0;
+            foreach (var del in delegates)
             {
-                // Execute the action that may throw an exception
-                return func();
+                try
+                {
+                    // Execute the action that may throw an exception
+                    retval = ((Func<T>)del)();
+                }
+                catch (Exception ex)
+                {
+                    // Record the probing failure with the label and exception
+                    InvokableProof.RecordProbingFailure(
+                        label, func, ex, callerFilePath, callerLineNumber, callerMemberName, i, delegates.Length
+                    );
+                }
+                ++i;
             }
-            catch (Exception ex)
-            {
-                // Record the probing failure with the label and exception
-                InvokableProof.RecordProbingFailure(
-                    label, func, ex, callerFilePath, callerLineNumber, callerMemberName
-                );
-            }
-            return default;
+            return retval;
         }
     }
 }

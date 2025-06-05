@@ -62,6 +62,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_092100_ForXunitV2", "Nv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_023000_SupportingBaseProofLibrary", "NventX.xProofPkg\ForXunitV2\SupportingBaseProofLibrary\010_023000_SupportingBaseProofLibrary.csproj", "{F187DB78-4148-414D-B990-5299474435AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_021000_Abstractions", "NventX.xProofPkg\ForXunitV2\Abstractions\010_021000_Abstractions.csproj", "{F31B5DE3-1B8D-4863-90FB-AD7D6E51F47E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +94,10 @@ Global
 		{F187DB78-4148-414D-B990-5299474435AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F187DB78-4148-414D-B990-5299474435AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F187DB78-4148-414D-B990-5299474435AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F31B5DE3-1B8D-4863-90FB-AD7D6E51F47E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F31B5DE3-1B8D-4863-90FB-AD7D6E51F47E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F31B5DE3-1B8D-4863-90FB-AD7D6E51F47E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F31B5DE3-1B8D-4863-90FB-AD7D6E51F47E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,6 +120,7 @@ Global
 		{9B628CDE-6E38-41A8-8393-3F58586BBD68} = {F3BB55EA-EF3F-43ED-95D3-6FBA47FE632C}
 		{396A03A6-5568-F39F-9858-36F81413C0F7} = {2EE9CBB4-53F9-4BE2-8E3F-7E74E7281F60}
 		{F187DB78-4148-414D-B990-5299474435AA} = {162FC9CD-B19D-49C0-B736-9E3582E034E6}
+		{F31B5DE3-1B8D-4863-90FB-AD7D6E51F47E} = {162FC9CD-B19D-49C0-B736-9E3582E034E6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F01E5B92-8BC7-4A77-A34E-79C72F78E4AE}

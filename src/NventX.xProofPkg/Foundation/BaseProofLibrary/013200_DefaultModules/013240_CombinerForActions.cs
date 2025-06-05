@@ -61,6 +61,7 @@ namespace NventX.xProof.BaseProofLibrary.DefaultModules
             /// Probes each action in the collection for failures, executing them and collecting any exceptions that occur.
             /// </summary>
             public virtual void Probe(
+                string? label = null,
                 [CallerFilePath] string? callerFilePath = null,
                 [CallerLineNumber] int callerLineNumber = 0,
                 [CallerMemberName] string? callerMemberName = null
@@ -70,7 +71,7 @@ namespace NventX.xProof.BaseProofLibrary.DefaultModules
                 foreach (var action in Actions)
                 {
                     TestProof.Probe
-                        (action, null, callerFilePath, callerLineNumber, callerMemberName);
+                         (action, label, callerFilePath, callerLineNumber, callerMemberName);
                 }
             }
         }

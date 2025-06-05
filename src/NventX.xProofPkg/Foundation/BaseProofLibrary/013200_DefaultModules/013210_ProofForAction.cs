@@ -36,17 +36,22 @@ namespace NventX.xProof.BaseProofLibrary.DefaultModules
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null
         ) {
-            try
-            {
-                // Execute the action that may throw an exception
-                act();
-            }
-            catch (Exception ex)
-            {
-                // Record the probing failure with the label and exception
-                InvokableProof.RecordProbingFailure(
-                    label, act, ex, callerFilePath, callerLineNumber, callerMemberName
-                );
+            var delegates = act.GetInvocationList();
+            var i = 0;
+            foreach (var del in delegates) {
+                try
+                {
+                    // Execute the action that may throw an exception
+                    ((Action)del)();
+                }
+                catch (Exception ex)
+                {
+                    // Record the probing failure with the label and exception
+                    InvokableProof.RecordProbingFailure(
+                        label, act, ex, callerFilePath, callerLineNumber, callerMemberName, i, delegates.Length
+                    );
+                }
+                ++i;
             }
         }
     }

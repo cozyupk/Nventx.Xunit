@@ -6,6 +6,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Include="013300_Proofs\013310_AssembledProof.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\Utils\010_012000_Utils.csproj" />
 	</ItemGroup>
 

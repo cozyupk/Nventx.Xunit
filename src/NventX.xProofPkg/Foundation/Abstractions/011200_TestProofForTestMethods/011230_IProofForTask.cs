@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace NventX.xProof.Abstractions.TestProofForTestMethods
@@ -7,10 +8,10 @@ namespace NventX.xProof.Abstractions.TestProofForTestMethods
     {
         Task ProbeAsync(
             Func<Task> task,
-            string? label = null,
-            string? callerFilePath = null,
-            int callerLineNumber = 0,
-            string? callerMemberName = null
+            string? label,
+            [CallerFilePath] string? callerFilePath = null,
+            [CallerLineNumber] int callerLineNumber = 0,
+            [CallerMemberName] string? callerMemberName = null
         );
     }
 }

@@ -13,7 +13,7 @@ namespace NventX.xProof.Xunit
     /// Represents a test case that expects a proof to be verified during its execution.
     /// </summary>
     [Serializable]
-    internal class TestCaseForProof<TTestProof, TSerializableTestProofFactory> : XunitTestCase, ITestCaseForProof
+    public class TestCaseForProof<TTestProof, TSerializableTestProofFactory> : XunitTestCase, ITestCaseForProof
         where TTestProof : IInvokableProof
         where TSerializableTestProofFactory : ISerializableTestProofFactory<TTestProof>, new()
     {
@@ -57,10 +57,7 @@ namespace NventX.xProof.Xunit
         {
             // Validate the arguments and initialize the properties
             TestProofFactory = testProofFactory ?? throw new ArgumentNullException(nameof(testProofFactory));
-            ProofInvocationKind = 
-                proofInvocationKind == ProofInvocationKind.SingleCase
-                || proofInvocationKind == ProofInvocationKind.Parameterized
-                || proofInvocationKind == ProofInvocationKind.Unknown
+            ProofInvocationKind = Enum.IsDefined(typeof(ProofInvocationKind), proofInvocationKind)
                 ? proofInvocationKind
                 : throw new ArgumentOutOfRangeException(nameof(proofInvocationKind), "Invalid proof invocation kind.");
         }

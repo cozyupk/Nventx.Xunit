@@ -2,8 +2,6 @@
 
 	<PropertyGroup>
 		<IsUnitTest>true</IsUnitTest>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
 	<ItemGroup>

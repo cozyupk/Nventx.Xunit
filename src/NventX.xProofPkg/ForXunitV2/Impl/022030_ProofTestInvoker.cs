@@ -70,9 +70,9 @@ namespace NventX.xProof.Xunit
         /// </summary>
         enum ExecutionPhase
         {
-            Starting,
+            SettingUp,
             InvokingTestMethod,
-            ValidatingAfterProbing
+            CollectProbingFailure
         }
 
         /// <summary>
@@ -93,29 +93,33 @@ namespace NventX.xProof.Xunit
 
                 // Invoke the test method with the recorder as the first argument
                 IEnumerable<IProbingFailure>? collectedExceptions = null;
-                ExecutionPhase phase = ExecutionPhase.Starting;
+                ExecutionPhase phase = ExecutionPhase.SettingUp;
                 try
                 {
                     proof.Setup(ProofTestCase.ProofInvocationKind);
                     phase = ExecutionPhase.InvokingTestMethod;
                     TestMethod.Invoke(testClassInstance, testMethodArguments);
-                    phase = ExecutionPhase.ValidatingAfterProbing;
-                    collectedExceptions = proof.CollectProbingFailure();
                 }
                 catch (Exception ex)
                 {
+                    // If the exception is a TargetInvocationException, we want to check the InnerException
+                    if (ex is TargetInvocationException tie && tie.InnerException != null)
+                    {
+                        // If the exception is a TargetInvocationException, we want to check the InnerException
+                        ex = tie.InnerException;
+                    }
                     // If an exception occurs during the test method execution, capture it and add it to the exceptions list
                     var strPhase = "unknown phase";
                     switch (phase)
                     {
-                        case ExecutionPhase.Starting:
-                            strPhase = "OnTestMethodStarting()";
+                        case ExecutionPhase.SettingUp:
+                            strPhase = "Setup()";
                             break;
                         case ExecutionPhase.InvokingTestMethod:
                             strPhase = $"{TestMethod.Name}()";
                             break;
-                        case ExecutionPhase.ValidatingAfterProbing:
-                            strPhase = "collectedExceptions()";
+                        case ExecutionPhase.CollectProbingFailure:
+                            strPhase = "CollectProbingFailure()";
                             break;
                     }
                     Aggregator.Add(
@@ -129,26 +133,34 @@ namespace NventX.xProof.Xunit
                 {
                     // Stop the stopwatch after the test method execution
                     StopwatchToMeasureExecutionTime.Stop();
+
                 }
 
-                // ValidateAfterProbing() should not return null but we handle it gracefully
-                if (collectedExceptions == null)
+                // If the test setup was successful, we proceed to collect probing failures
+                if (phase != ExecutionPhase.SettingUp)
                 {
-                    // If no exceptions were collected, add an exception indicating that the proof did not validate correctly
-                    Aggregator.Add(
-                    new XunitException(
-                            $"ValidateAfterProbing() of {proof.GetType().FullName} returned null.This violates the contract of ValidateAfterProbing(), which must always return a non - null IEnumerable<Exception>."
-                        )
-                    );
-                }
-                else
-                {
-                    // If exceptions were collected, add them to the list of exceptions
-                    foreach(var pf in collectedExceptions)
+                    // Collect probing failures if the proof supports it
+                    collectedExceptions = proof.CollectProbingFailure();
+
+                    // CollectProbingFailure() should not return null but we handle it gracefully
+                    if (collectedExceptions == null)
                     {
+                        // If no exceptions were collected, add an exception indicating that the proof did not validate correctly
                         Aggregator.Add(
-                            new XunitException(pf.Message, pf.Exception)
+                        new XunitException(
+                                $"CollectProbingFailure() of {proof.GetType().FullName} returned null.This violates the contract of CollectProbingFailure(), which must always return a non - null IEnumerable<Exception>."
+                            )
                         );
+                    }
+                    else
+                    {
+                        // If exceptions were collected, add them to the list of exceptions
+                        foreach (var pf in collectedExceptions)
+                        {
+                            Aggregator.Add(
+                                new XunitException(pf.Message, pf.Exception)
+                            );
+                        }
                     }
                 }
 

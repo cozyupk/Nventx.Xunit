@@ -24,7 +24,8 @@ namespace NventX.xProof.Abstractions.TestProofForTestRunner
         /// </summary>
         void RecordProbingFailure(
             string? label, Delegate act, Exception ex,
-            string? callerFilePath, int callerLineNumber, string? callerMemberName
+            string? callerFilePath, int callerLineNumber, string? callerMemberName,
+            int cnt, int totalCnt
         );
     }
 }
