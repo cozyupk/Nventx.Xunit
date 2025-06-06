@@ -13,7 +13,7 @@ namespace NventX.xProof.Xunit
     /// Represents a test case that expects a proof to be verified during its execution.
     /// </summary>
     [Serializable]
-    public class TestCaseForProof<TTestProof, TSerializableTestProofFactory> : XunitTestCase, ITestCaseForProof
+    public class ProofTestCase<TTestProof, TSerializableTestProofFactory> : XunitTestCase, IProofTestCase
         where TTestProof : IInvokableProof
         where TSerializableTestProofFactory : ISerializableTestProofFactory<TTestProof>, new()
     {
@@ -28,7 +28,7 @@ namespace NventX.xProof.Xunit
         public ProofInvocationKind ProofInvocationKind { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestCaseForProof"/> class.
+        /// Initializes a new instance of the <see cref="ProofTestCase"/> class.
         /// </summary>
         /// <remarks>
         /// This constructor is used by the de-serializer and should not be called directly.
@@ -36,17 +36,17 @@ namespace NventX.xProof.Xunit
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Called by the de-serializer", false)]
 #pragma warning disable CS8618 // Not nullable field must contain a non-null value when the constructor exits. In this case, Deserializer will set it.
-        public TestCaseForProof() { }
+        public ProofTestCase() { }
 #pragma warning restore CS8618 //  // Not nullable field must contain a non-null value when the constructor exits.  In this case, Deserializer will set it.
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestCaseForProof"/> class with the specified parameters.
+        /// Initializes a new instance of the <see cref="ProofTestCase"/> class with the specified parameters.
         /// </summary>
         /// <remarks>
         /// The unique paramsters are the expected exception type and message, which are used to verify that the test method throws the expected exception.
         /// Other parameters are inherited from the base class <see cref="XunitTestCase"/>.
         /// </remarks>
-        public TestCaseForProof(
+        public ProofTestCase(
             IMessageSink diagnosticMessageSink, TestMethodDisplay defaultMethodDisplay,
             ITestMethod testMethod, ProofInvocationKind proofInvocationKind,
             TSerializableTestProofFactory testProofFactory,
@@ -66,7 +66,7 @@ namespace NventX.xProof.Xunit
         /// Runs the test case asynchronously, executing the test method and verifying that the expected exception is thrown.
         /// </summary>
         /// <remarks>
-        /// All parameters are need to be passed to the <see cref="TestCaseRunnerForProof"/> for execution,
+        /// All parameters are need to be passed to the <see cref="ProofTestCaseRunner"/> for execution,
         /// and the base class is not holding.
         /// </remarks>
         public override Task<RunSummary> RunAsync(
@@ -77,7 +77,7 @@ namespace NventX.xProof.Xunit
             CancellationTokenSource cancellationTokenSource)
         {
             // Create a new instance of the ExceptionTestCaseRunner with the current test case and parameters
-            var runner = new TestCaseRunnerForProof(
+            var runner = new ProofTestCaseRunner(
                   this, DisplayName, messageBus, constructorArguments,
                   TestMethodArguments, SkipReason, aggregator, cancellationTokenSource
                 );

@@ -6,7 +6,7 @@ namespace NventX.xProof.Xunit
     /// <summary>
     /// Represents a test case that expects a proof to be verified during its execution.
     /// </summary>
-    internal interface ITestCaseForProof : IXunitTestCase
+    internal interface IProofTestCase : IXunitTestCase
     {
         /// <summary>
         /// Creates an instance of the test proof associated with this test case.

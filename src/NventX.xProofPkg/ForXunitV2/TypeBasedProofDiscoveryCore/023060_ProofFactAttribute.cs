@@ -2,11 +2,11 @@
 using NventX.xProof.Abstractions.TestProofForTestRunner;
 using Xunit.Sdk;
 
-namespace NventX.xProof.Xunit.SupportingBaseProofLibrary
+namespace NventX.xProof.Xunit.TypeBasedProofDiscoveryCore
 {
     [XunitTestCaseDiscoverer(
-        "NventX.xProof.Xunit.SupportingBaseProofLibrary.ProofFactAttributeDiscoverer",
-        "NventX.xProof.ForXunitV2.SupportingBaseProofLibrary"
+        "NventX.xProof.Xunit.TypeBasedProofDiscoveryCore.ProofFactTestCaseDiscoverer",
+        "NventX.xProof.ForXunitV2.TypeBasedProofDiscoveryCore"
     )]
     public class ProofFactAttribute : ProofAttributeBase
     {

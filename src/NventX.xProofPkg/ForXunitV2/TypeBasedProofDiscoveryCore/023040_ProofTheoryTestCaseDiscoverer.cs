@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace NventX.xProof.Xunit.SupportingBaseProofLibrary
+namespace NventX.xProof.Xunit.TypeBasedProofDiscoveryCore
 {
-    internal class ProofTheoryAttributeDiscoverer : TheoryDiscoverer
+    internal class ProofTheoryTestCaseDiscoverer : TheoryDiscoverer
     {
-        internal IProofAttributeDiscovererCore Core { get; } = new ProofAttributeDiscovererCore();
+        internal IProofTestCaseDiscovererCore Core { get; } = new ProofTestCaseDiscovererCore();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProofTheoryAttributeDiscoverer"/> class.
+        /// Initializes a new instance of the <see cref="ProofTheoryTestCaseDiscoverer"/> class.
         /// </summary>
-        public ProofTheoryAttributeDiscoverer(IMessageSink diagnosticMessageSink) : base(diagnosticMessageSink)
+        public ProofTheoryTestCaseDiscoverer(IMessageSink diagnosticMessageSink) : base(diagnosticMessageSink)
         {
             // Validate the diagnostic message sink and set it to the discoverer's core
             Core.DiagnosticMessageSink = diagnosticMessageSink

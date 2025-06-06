@@ -8,12 +8,12 @@ using NventX.xProof.Utils;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace NventX.xProof.Xunit.SupportingBaseProofLibrary
+namespace NventX.xProof.Xunit.TypeBasedProofDiscoveryCore
 {
     /// <summary>
     /// Provides core functionality for discovering test cases that are decorated with proof attributes.
     /// </summary>
-    internal class ProofAttributeDiscovererCore : IProofAttributeDiscovererCore
+    internal class ProofTestCaseDiscovererCore : IProofTestCaseDiscovererCore
     {
         /// <summary>
         /// The message sink used to be passed to TestCase instances to output diagnostic messages during test execution.
@@ -131,7 +131,7 @@ namespace NventX.xProof.Xunit.SupportingBaseProofLibrary
                 );
 
                 // Create a new test case for the proof with the provided parameters
-                var testCaseGenericType = typeof(TestCaseForProof<,>);
+                var testCaseGenericType = typeof(ProofTestCase<,>);
 
                 // The proof type is known at runtime
                 Type factoryType = typeof(SerializableTestProofFactory<>).MakeGenericType(proofType);

@@ -2,12 +2,12 @@
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace NventX.xProof.Xunit.SupportingBaseProofLibrary
+namespace NventX.xProof.Xunit.TypeBasedProofDiscoveryCore
 {
     /// <summary>
     /// Defines the core functionality for discovering test cases that are decorated with proof attributes.
     /// </summary>
-    internal interface IProofAttributeDiscovererCore
+    internal interface IProofTestCaseDiscovererCore
     {
         /// <summary>
         /// The message sink used to be passed to TestCase instances to output diagnostic messages during test execution.

@@ -11,12 +11,12 @@ namespace NventX.xProof.Xunit
     /// <summary>
     /// Runs a test case that expects an exception to be thrown.
     /// </summary>
-    internal class TestCaseRunnerForProof : XunitTestCaseRunner
+    internal class ProofTestCaseRunner : XunitTestCaseRunner
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionFactTestCaseRunner"/> class.
         /// </summary>
-        public TestCaseRunnerForProof(ITestCaseForProof testCase, string displayName, IMessageBus messageBus, object[] constructorArguments,
+        public ProofTestCaseRunner(IProofTestCase testCase, string displayName, IMessageBus messageBus, object[] constructorArguments,
                                object[] testMethodArguments, string skipReason,
                                ExceptionAggregator aggregator,
                                CancellationTokenSource cancellationTokenSource

@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\ForXunitV2\SupportingBaseProofLibrary\010_023000_SupportingBaseProofLibrary.csproj" />
+	  <ProjectReference Include="..\..\..\ForXunitV2\TypeBasedProofDiscoveryCore\010_023000_TypeBasedProofDiscoveryCore.csproj" />
 	</ItemGroup>
 
 

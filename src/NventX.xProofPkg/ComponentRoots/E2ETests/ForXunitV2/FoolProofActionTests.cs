@@ -1,5 +1,5 @@
 ﻿using NventX.xProof.BaseProofLibrary.Proofs;
-using NventX.xProof.Xunit.SupportingBaseProofLibrary;
+using NventX.xProof.Xunit.TypeBasedProofDiscoveryCore;
 using Xunit;
 
 namespace NventX.xProof.Xunit.E2ETests.ForXunitV2
@@ -13,7 +13,6 @@ namespace NventX.xProof.Xunit.E2ETests.ForXunitV2
 
 #pragma warning disable CA1822 // Make member static
         public void ThrowException()
-#pragma warning restore CA1822 // メンバーを static に設定します
         {
             throw new InvalidOperationException("This is a test exception from MyTestProof.");
         }

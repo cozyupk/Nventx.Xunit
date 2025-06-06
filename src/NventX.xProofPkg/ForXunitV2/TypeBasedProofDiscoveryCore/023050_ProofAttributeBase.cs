@@ -5,7 +5,7 @@ using NventX.xProof.Utils;
 using Xunit;
 using Xunit.Sdk;
 
-namespace NventX.xProof.Xunit.SupportingBaseProofLibrary
+namespace NventX.xProof.Xunit.TypeBasedProofDiscoveryCore
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited =true)]
     public abstract class ProofAttributeBase : FactAttribute

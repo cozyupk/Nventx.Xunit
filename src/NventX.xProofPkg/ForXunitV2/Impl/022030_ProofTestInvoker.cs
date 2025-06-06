@@ -18,7 +18,7 @@ namespace NventX.xProof.Xunit
         /// <summary>
         /// The test case that contains the proof to be verified.
         /// </summary>
-        private ITestCaseForProof ProofTestCase { get; }
+        private IProofTestCase ProofTestCase { get; }
 
         /// <summary>
         /// Stopwatch to measure the execution time of the test method.
@@ -48,9 +48,9 @@ namespace NventX.xProof.Xunit
             testMethodArguments, beforeAfterAttributes, aggregator, cancellationTokenSource
         )
         {
-            if (Test.TestCase is not ITestCaseForProof proofTestCase)
+            if (Test.TestCase is not IProofTestCase proofTestCase)
             {
-                throw new InvalidOperationException($"Test case is not of type ITestCaseForProof<ITestProof>: {Test.GetType()}");
+                throw new InvalidOperationException($"Test case is not of type IProofTestCase<ITestProof>: {Test.GetType()}");
             }
             ProofTestCase = proofTestCase;
         }
