@@ -11,7 +11,7 @@ namespace NventX.xProof.Xunit.TypeBasedProofDiscoveryCore
     public abstract class ProofAttributeBase : FactAttribute
     {
         public abstract ProofInvocationKind ProofInvocationKind { get; }
-        public virtual Type DefaultTestProofType { get; } = typeof(FoolProof);
+        public virtual Type DefaultTestProofType { get; } = typeof(XProof);
 
         public virtual Type DefaultSerializableTestProofFactoryType { get; } = typeof(SerializableTestProofFactory<>);
         public Type TestProofType { get; set; }

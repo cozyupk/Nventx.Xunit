@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Include="013300_Proofs\013310_AssembledProof.cs" />
+	  <None Include="013100_BaseImpl\013140_DeclarativeCustomizableProof.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

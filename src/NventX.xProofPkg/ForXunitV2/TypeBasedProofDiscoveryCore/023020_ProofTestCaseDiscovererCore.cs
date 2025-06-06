@@ -68,7 +68,7 @@ namespace NventX.xProof.Xunit.TypeBasedProofDiscoveryCore
                 string methodName = testMethod.Method.Name;
 
                 // Ensure that the test method is not null and has a valid name
-                var proofType = attributeInfo.GetNamedArgument<Type>("TestProofType") ?? typeof(FoolProof);
+                var proofType = attributeInfo.GetNamedArgument<Type>("TestProofType") ?? typeof(XProof);
 
                 var keyForProofInvocationKind = "ProofInvocationKind";
                 var proofInvocationKind = attributeInfo.GetNamedArgument<ProofInvocationKind>(keyForProofInvocationKind);
