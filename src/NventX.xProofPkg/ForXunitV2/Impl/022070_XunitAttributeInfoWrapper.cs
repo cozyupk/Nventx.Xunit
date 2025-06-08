@@ -2,7 +2,7 @@
 using NventX.xProof.Abstractions.Utils;
 using Xunit.Abstractions;
 
-namespace NventX.xProof.Xunit
+namespace NventX.xProof.ForXunit
 {
     /// <summary>
     /// A wrapper for <see cref="IAttributeInfo"/> that implements <see cref="INamedArgumentResolver"/>.

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace NventX.xProof.Xunit.TypeBasedProofDiscoveryCore
+namespace NventX.xProof.ForXunit.TypeBasedProofDiscoveryCore
 {
     internal class ProofTheoryTestCaseDiscoverer : TheoryDiscoverer
     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace NventX.xProof.Xunit
+namespace NventX.xProof.ForXunit
 {
     /// <summary>
     /// Runs a test case that expects an exception to be thrown.

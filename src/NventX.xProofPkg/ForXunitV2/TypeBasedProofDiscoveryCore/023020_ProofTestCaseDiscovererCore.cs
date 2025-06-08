@@ -8,7 +8,7 @@ using NventX.xProof.Utils;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace NventX.xProof.Xunit.TypeBasedProofDiscoveryCore
+namespace NventX.xProof.ForXunit.TypeBasedProofDiscoveryCore
 {
     /// <summary>
     /// Provides core functionality for discovering test cases that are decorated with proof attributes.

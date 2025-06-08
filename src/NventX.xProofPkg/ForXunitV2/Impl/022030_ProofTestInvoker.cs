@@ -8,7 +8,7 @@ using NventX.xProof.Abstractions.TestProofForTestRunner;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace NventX.xProof.Xunit
+namespace NventX.xProof.ForXunit
 {
     /// <summary>
     /// A test invoker for tests that expect a proof to be verified during their execution.

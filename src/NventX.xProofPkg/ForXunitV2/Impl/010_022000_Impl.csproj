@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<RootNameSpace>NventX.xProof.Xunit</RootNameSpace>
+		<RootNameSpace>NventX.xProof.ForXunit</RootNameSpace>
 		<AssemblyName>NventX.xProof.ForXunitV2</AssemblyName>
 	</PropertyGroup>
 

@@ -1,13 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<RootNameSpace>NventX.xProof.Xunit.E2ETests.ForXunitV2</RootNameSpace>
+		<RootNameSpace>NventX.xProof.ForXunit.E2ETests.ForXunitV2</RootNameSpace>
 		<AssemblyName>NventX.xProof.ForXunitV2.E2ETests.ForXunitV2</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\ForXunitV2\TypeBasedProofDiscoveryCore\010_023000_TypeBasedProofDiscoveryCore.csproj" />
+	  <PackageReference Include="xunit.runner.utility" Version="2.9.3" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\ForXunitV2\TypeBasedProofDiscoveryCore\010_023000_TypeBasedProofDiscoveryCore.csproj" />
+	</ItemGroup>
 
 </Project>

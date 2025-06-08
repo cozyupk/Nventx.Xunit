@@ -220,19 +220,19 @@ var assemblies = [
       { "name": "NventX.xProof.BaseProofLibrary.DefaultModules.ProofForAction", "rp": "NventX.xProof.BaseProofLibrary_ProofForAction.html", "cl": 17, "ucl": 1, "cal": 18, "tl": 58, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "NventX.xProof.BaseProofLibrary.DefaultModules.ProofForFunc", "rp": "NventX.xProof.BaseProofLibrary_ProofForFunc.html", "cl": 0, "ucl": 18, "cal": 18, "tl": 61, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "NventX.xProof.BaseProofLibrary.DefaultModules.ProofForTask", "rp": "NventX.xProof.BaseProofLibrary_ProofForTask.html", "cl": 0, "ucl": 18, "cal": 18, "tl": 54, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.xProof.BaseProofLibrary.Proofs.AssembledProof", "rp": "NventX.xProof.BaseProofLibrary_AssembledProof.html", "cl": 20, "ucl": 2, "cal": 22, "tl": 121, "cb": 5, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.BaseProofLibrary.Proofs.AssembledProof", "rp": "NventX.xProof.BaseProofLibrary_AssembledProof.html", "cl": 20, "ucl": 2, "cal": 22, "tl": 49, "cb": 5, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "NventX.xProof.BaseProofLibrary.Proofs.DefaultProof", "rp": "NventX.xProof.BaseProofLibrary_DefaultProof.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
   {
     "name": "NventX.xProof.ForXunitV2",
     "classes": [
       { "name": "NventX.xProof.Xunit.FactTestCaseDiscoverer<T>", "rp": "NventX.xProof.ForXunitV2_FactTestCaseDiscoverer_1.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.xProof.Xunit.ProofTestInvoker", "rp": "NventX.xProof.ForXunitV2_ProofTestInvoker.html", "cl": 0, "ucl": 98, "cal": 98, "tl": 165, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Xunit.ProofTestInvoker", "rp": "NventX.xProof.ForXunitV2_ProofTestInvoker.html", "cl": 0, "ucl": 98, "cal": 98, "tl": 172, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "NventX.xProof.Xunit.ProofTestRunner", "rp": "NventX.xProof.ForXunitV2_ProofTestRunner.html", "cl": 0, "ucl": 15, "cal": 15, "tl": 56, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.xProof.Xunit.TestCaseForProof<T1, T2>", "rp": "NventX.xProof.ForXunitV2_TestCaseForProof_2.html", "cl": 0, "ucl": 34, "cal": 34, "tl": 118, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Xunit.TestCaseForProof<T1, T2>", "rp": "NventX.xProof.ForXunitV2_TestCaseForProof_2.html", "cl": 0, "ucl": 34, "cal": 34, "tl": 120, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "NventX.xProof.Xunit.TestCaseForProofDiscoverer<T>", "rp": "NventX.xProof.ForXunitV2_TestCaseForProofDiscoverer_1.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 58, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "NventX.xProof.Xunit.TestCaseForProofDiscoverer<T1, T2>", "rp": "NventX.xProof.ForXunitV2_TestCaseForProofDiscoverer_2.html", "cl": 0, "ucl": 78, "cal": 78, "tl": 194, "cb": 0, "tb": 36, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.xProof.Xunit.TestCaseRunnerForProof", "rp": "NventX.xProof.ForXunitV2_TestCaseRunnerForProof.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 54, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Xunit.TestCaseRunnerForProof", "rp": "NventX.xProof.ForXunitV2_TestCaseRunnerForProof.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 53, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "NventX.xProof.Xunit.TheoryTestCaseDiscoverer<T>", "rp": "NventX.xProof.ForXunitV2_TheoryTestCaseDiscoverer_1.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 19, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "NventX.xProof.Xunit.XunitAttributeInfoWrapper", "rp": "NventX.xProof.ForXunitV2_XunitAttributeInfoWrapper.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 39, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
@@ -245,9 +245,9 @@ var assemblies = [
   {
     "name": "NventX.xProof.Utils",
     "classes": [
-      { "name": "NventX.xProof.Utils.DictionaryBasedResolver", "rp": "NventX.xProof.Utils_DictionaryBasedResolver.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 226, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.xProof.Utils.ProbingFailure", "rp": "NventX.xProof.Utils_ProbingFailure.html", "cl": 6, "ucl": 1, "cal": 7, "tl": 30, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "NventX.xProof.Utils.SerializableFactory<T>", "rp": "NventX.xProof.Utils_SerializableFactory_1.html", "cl": 0, "ucl": 94, "cal": 94, "tl": 226, "cb": 0, "tb": 65, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Utils.DictionaryBasedResolver", "rp": "NventX.xProof.Utils_DictionaryBasedResolver.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 224, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Utils.ProbingFailure", "rp": "NventX.xProof.Utils_ProbingFailure.html", "cl": 6, "ucl": 1, "cal": 7, "tl": 29, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "NventX.xProof.Utils.SerializableFactory<T>", "rp": "NventX.xProof.Utils_SerializableFactory_1.html", "cl": 0, "ucl": 94, "cal": 94, "tl": 189, "cb": 0, "tb": 65, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 

@@ -1,7 +1,7 @@
 ﻿using NventX.xProof.Abstractions.TestProofForTestRunner;
 using Xunit.Sdk;
 
-namespace NventX.xProof.Xunit
+namespace NventX.xProof.ForXunit
 {
     /// <summary>
     /// Represents a test case that expects a proof to be verified during its execution.

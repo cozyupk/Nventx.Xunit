@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<RootNameSpace>NventX.xProof.Xunit.TypeBasedProofDiscoveryCore</RootNameSpace>
+		<RootNameSpace>NventX.xProof.ForXunit.TypeBasedProofDiscoveryCore</RootNameSpace>
 		<AssemblyName>NventX.xProof.ForXunitV2.TypeBasedProofDiscoveryCore</AssemblyName>
 	</PropertyGroup>
 

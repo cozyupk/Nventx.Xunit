@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<RootNameSpace>NventX.xProof.Xunit.Abstractions</RootNameSpace>
+		<RootNameSpace>NventX.xProof.ForXunit.Abstractions</RootNameSpace>
 		<AssemblyName>NventX.xProof.ForXunitV2.Abstractions</AssemblyName>
 	</PropertyGroup>
 
