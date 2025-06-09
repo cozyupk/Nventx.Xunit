@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>NventX.xProof.SupportingXunit</RootNameSpace>
+		<AssemblyName>NventX.xProof.SupportingXunitV2.Attributes</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Foundation\BaseProofLibrary\010_013000_BaseProofLibrary.csproj" />
+	</ItemGroup>
+
+</Project>

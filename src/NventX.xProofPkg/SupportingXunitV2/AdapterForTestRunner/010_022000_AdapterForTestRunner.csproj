@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>NventX.xProof.SupportingXunit.AdapterForTestRunner</RootNameSpace>
+		<AssemblyName>NventX.xProof.SupportingXunitV2.AdapterForTestRunner</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Foundation\Utils\010_012000_Utils.csproj" />
+	  <ProjectReference Include="..\Attributes\010_021000_Attributes.csproj" />
+	</ItemGroup>
+
+</Project>

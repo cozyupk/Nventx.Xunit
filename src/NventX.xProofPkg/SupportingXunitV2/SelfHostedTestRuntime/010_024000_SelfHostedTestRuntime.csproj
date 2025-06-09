@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>NventX.xProof.SupportingXunit.SelfHostedTestRuntime</RootNameSpace>
+		<AssemblyName>NventX.xProof.SupportingXunitV2.SelfHostedTestRuntime</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Attributes\010_021000_Attributes.csproj" />
+	  <ProjectReference Include="..\TypeBasedProofDiscovery\010_023000_TypeBasedProofDiscoverer.csproj" />
+	</ItemGroup>
+
+</Project>

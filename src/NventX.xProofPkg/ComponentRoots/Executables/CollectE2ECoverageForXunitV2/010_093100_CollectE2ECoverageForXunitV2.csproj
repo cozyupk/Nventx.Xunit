@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SupportingXunitV2\SelfHostedTestRuntime\010_024000_SelfHostedTestRuntime.csproj" />
+    <ProjectReference Include="..\..\E2ETests\SupportingXunitV2\010_092100_XunitV2.csproj" />
+  </ItemGroup>
+
+</Project>
