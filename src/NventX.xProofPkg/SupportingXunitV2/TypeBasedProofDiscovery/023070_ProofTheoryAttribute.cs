@@ -2,7 +2,7 @@
 using NventX.xProof.Abstractions.TestProofForTestRunner;
 using Xunit.Sdk;
 
-namespace NventX.xProof.SupportingXunit
+namespace NventX.xProof.SupportingXunit.TypeBasedProofDiscoverer
 {
     [XunitTestCaseDiscoverer(
         "NventX.xProof.SupportingXunit.TypeBasedProofDiscoverer.ProofTheoryTestCaseDiscoverer",

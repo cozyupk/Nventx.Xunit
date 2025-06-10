@@ -148,7 +148,7 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
                         // If no exceptions were collected, add an exception indicating that the proof did not validate correctly
                         Aggregator.Add(
                         new XunitException(
-                                $"CollectProbingFailure() of {proof.GetType().FullName} returned null.This violates the contract of CollectProbingFailure(), which must always return a non - null IEnumerable<Exception>."
+                                $"CollectProbingFailure() of {proof.GetType().FullName} returned null. This violates the contract of CollectProbingFailure(), which must always return a non - null IEnumerable<Exception>."
                             )
                         );
                     }
@@ -158,7 +158,8 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
                         foreach (var pf in collectedExceptions)
                         {
                             Aggregator.Add(
-                                new XunitException(pf.Message, pf.Exception)
+                                // new XunitException(pf.Message, pf.Exception)
+                                pf.Exception
                             );
                         }
                     }

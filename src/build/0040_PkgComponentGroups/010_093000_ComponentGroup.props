@@ -10,7 +10,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Reference Include="xunit.runner.utility.netstandard15">
+			<HintPath>$(UserProfile)\.nuget\packages\xunit.runner.utility\2.9.3\lib\netstandard1.5\xunit.runner.utility.netstandard15.dll</HintPath>
+			<Private>True</Private>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
 		<PropsImported Include="$(MSBuildThisFileFullPath)" />
 	</ItemGroup>
-	
+
 </Project>

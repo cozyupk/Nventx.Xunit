@@ -6,7 +6,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Attributes\010_021000_Attributes.csproj" />
 	  <ProjectReference Include="..\TypeBasedProofDiscovery\010_023000_TypeBasedProofDiscoverer.csproj" />
 	</ItemGroup>
 

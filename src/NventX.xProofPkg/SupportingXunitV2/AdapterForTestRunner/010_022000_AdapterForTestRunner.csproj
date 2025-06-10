@@ -7,7 +7,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Foundation\Utils\010_012000_Utils.csproj" />
-	  <ProjectReference Include="..\Attributes\010_021000_Attributes.csproj" />
 	</ItemGroup>
 
 </Project>

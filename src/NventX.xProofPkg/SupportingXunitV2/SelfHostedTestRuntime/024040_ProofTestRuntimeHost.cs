@@ -24,7 +24,7 @@ namespace NventX.xProof.SupportingXunit.SelfHostedTestRuntime
         {
             DiscoveryOptions = discoveryOptions ?? TestFrameworkOptions.ForDiscovery();
             Reporter = new DefaultRunnerReporterWithTypesMessageHandler(
-                logger ?? throw new ArgumentNullException(nameof(logger))
+                logger ?? new ConsoleAndDebugLogger()
             );
             MessageBus = messageBus ?? new SpyBusWithSink(Reporter);
         }

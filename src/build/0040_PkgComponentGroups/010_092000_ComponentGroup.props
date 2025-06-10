@@ -3,6 +3,8 @@
 	<PropertyGroup>
 		<IsUnitTest>true</IsUnitTest>
 		<NoWarn>$(NoWarn);CA1859;IDE0079</NoWarn>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
 	</PropertyGroup>
 
 	<ItemGroup>
