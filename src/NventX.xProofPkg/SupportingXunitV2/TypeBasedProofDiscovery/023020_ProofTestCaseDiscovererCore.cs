@@ -53,7 +53,7 @@ namespace NventX.xProof.SupportingXunit.TypeBasedProofDiscoverer
                     ITestFrameworkDiscoveryOptions discoveryOptions,
                     ITestMethod testMethod,
                     IAttributeInfo attributeInfo,
-                    object[]? dataRow = null
+                    object?[]? dataRow = null
         ) {
             List<IXunitTestCase>? testCases = new();
             List<string> messages = new();
@@ -140,6 +140,10 @@ namespace NventX.xProof.SupportingXunit.TypeBasedProofDiscoverer
                 // Make the test case type generic with the proof type and factory type
                 var closedTestCaseType = testCaseGenericType.MakeGenericType(proofType, factoryType);
 
+                // Insert null value for the proof into the test method arguments at the front
+                dataRow ??= Array.Empty<object>();
+                dataRow = new object?[] { $"Place_For_{proofType.Name}" }.Concat(dataRow).ToArray();
+
                 // Prepare the constructor arguments for the test case instance
                 var constructorArgs = new object?[]
                 {
@@ -148,17 +152,20 @@ namespace NventX.xProof.SupportingXunit.TypeBasedProofDiscoverer
                     testMethod,
                     proofInvocationKind,
                     testProofFactory,
+                    dataRow
                 };
 
                 // Create an instance of the test case using reflection
-                var testCase = (IXunitTestCase?)Activator.CreateInstance(closedTestCaseType, constructorArgs.Concat(new object?[] { dataRow }).ToArray())
+                var testCase = (IXunitTestCase?)Activator.CreateInstance(closedTestCaseType, constructorArgs)
                                     ?? throw new InvalidOperationException("Failed to create test case instance.");
                 testCases.Add(testCase);
             }
             catch (Exception ex)
             {
                 // If an exception occurs, add the error message to the messages list
-                messages.Add($"Error while discovering test case for method {testMethod.Method.Name}: {ex.Message}");
+                var message = $"Error while discovering test case for method {testMethod.Method.Name}: {ex.Message}";
+                messages.Add(message);
+                DiagnosticMessageSink?.OnMessage(new DiagnosticMessage(message));
             }
 
             // If there are any messages, return them as ExecutionErrorTestCase instances

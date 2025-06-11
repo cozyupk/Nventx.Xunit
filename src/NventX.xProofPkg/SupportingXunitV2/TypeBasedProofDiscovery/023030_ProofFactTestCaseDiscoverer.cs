@@ -17,9 +17,8 @@ namespace NventX.xProof.SupportingXunit.TypeBasedProofDiscoverer
         /// </summary>
         public ProofFactTestCaseDiscoverer(IMessageSink diagnosticMessageSink)
         {
-            // Validate the diagnostic message sink and set it to the discoverer's core
-            Core.DiagnosticMessageSink = diagnosticMessageSink
-                                            ?? throw new ArgumentNullException(nameof(diagnosticMessageSink));
+            // Set the diagnostic message sink for the core discoverer
+            Core.DiagnosticMessageSink = diagnosticMessageSink;
         }
 
         /// <summary>

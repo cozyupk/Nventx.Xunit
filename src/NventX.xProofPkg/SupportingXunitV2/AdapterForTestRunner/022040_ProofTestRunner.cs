@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using NventX.xProof.Abstractions.TestProofForTestRunner;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
@@ -13,7 +14,6 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
     /// </summary>
     internal class ProofTestRunner : XunitTestRunner
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ProofTestRunner"/> class.
         /// </summary>
@@ -25,7 +25,7 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
                 test, messageBus, testClass, constructorArguments, testMethod, testMethodArguments,
                 skipReason, beforeAfterAttributes, aggregator, cancellationTokenSource)
         {
-            // no additional initialization required
+            // No additional initialization is needed here,
         }
 
         /// <summary>

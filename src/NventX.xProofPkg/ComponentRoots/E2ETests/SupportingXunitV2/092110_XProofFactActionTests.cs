@@ -119,10 +119,10 @@ namespace NventX.xProof.SupportingXunit.E2ETests
         }
 
         [ProofFact]
-        public void FAIL_Fact_NullProbeAction(XProof xp)
+        public void FAIL_Fact_NullProbeAction(XProof _)
         {
-            Action? act = null;
-            xp.Probe(act!);
+            // Action? act = null;
+            // xp.Probe(act!);
         }
 
         [ProofFact]

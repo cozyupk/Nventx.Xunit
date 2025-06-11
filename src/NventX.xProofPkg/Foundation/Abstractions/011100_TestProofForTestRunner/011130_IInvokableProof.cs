@@ -19,6 +19,8 @@ namespace NventX.xProof.Abstractions.TestProofForTestRunner
         /// <returns></returns>
         IEnumerable<IProbingFailure> CollectProbingFailure();
 
+        int ProbingSuccessCount { get; }
+
         /// <summary>
         /// Records a probing failure with a label, exception and caller details.
         /// </summary>
@@ -27,5 +29,7 @@ namespace NventX.xProof.Abstractions.TestProofForTestRunner
             string? callerFilePath, int callerLineNumber, string? callerMemberName,
             int cnt, int totalCnt
         );
+
+        void RecordProobingSuccess();
     }
 }

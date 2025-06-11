@@ -23,9 +23,19 @@ namespace NventX.xProof.BaseProofLibrary.BaseImpl
         private object SetupLock { get; } = new object();
 
         /// <summary>
+        /// Lock object to ensure thread-safe incrementing of the success count.
+        /// </summary>
+        private object IncrementSuccessCountLock { get; } = new object();
+
+        /// <summary>
         /// A collection to store probing failures that occur during the test execution.
         /// </summary>
         protected ConcurrentQueue<IProbingFailure> ProbingFailures { get; } = new();
+
+        /// <summary>
+        /// The count of successful probing attempts during the test execution.
+        /// </summary>
+        public int ProbingSuccessCount { get; private set; } = 0;
 
         /// <summary>
         /// Sets up the test proof environment with the specified proof invocation kind.
@@ -82,6 +92,18 @@ namespace NventX.xProof.BaseProofLibrary.BaseImpl
 
             // Record the probing failure with the label and exception
             ProbingFailures.Enqueue(new ProbingFailure(effectiveLabel, ex));
+        }
+
+        /// <summary>
+        /// Records a successful probing attempt, incrementing the success count in a thread-safe manner.
+        /// </summary>
+        public void RecordProobingSuccess()
+        {
+            // Increment the success count in a thread-safe manner
+            lock (IncrementSuccessCountLock)
+            {
+                ++ProbingSuccessCount;
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,17 +27,6 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
         private Stopwatch StopwatchToMeasureExecutionTime { get; } = new Stopwatch();
 
         /// <summary>
-        /// Adds a new object to the front of an existing array of objects.
-        /// </summary>
-        private static object[] AddProofToFront(object[] original, IInvokableProof proof)
-        {
-            object[] result = new object[original.Length + 1];
-            result[0] = proof;
-            Array.Copy(original, 0, result, 1, original.Length);
-            return result;
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ProofTestInvoker"/> class.
         /// </summary>
         public ProofTestInvoker(
@@ -48,6 +38,7 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
             testMethodArguments, beforeAfterAttributes, aggregator, cancellationTokenSource
         )
         {
+            // Validate the proof parameter and store it
             if (Test.TestCase is not IProofTestCase proofTestCase)
             {
                 throw new InvalidOperationException($"Test case is not of type IProofTestCase<ITestProof>: {Test.GetType()}");
@@ -82,23 +73,20 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
         {
             return Task.Run(() =>
             {
-                // Create an instance of ExceptionRecorder to capture exceptions
-                var proof = ProofTestCase.CreateTestProof();
-
-                // Add the recorder as the first argument to the test method
-                object[] testMethodArguments = AddProofToFront(TestMethodArguments, proof);
-
                 // Reset the stopwatch for the test method
                 StopwatchToMeasureExecutionTime.Restart();
 
                 // Invoke the test method with the recorder as the first argument
-                IEnumerable<IProbingFailure>? collectedExceptions = null;
                 ExecutionPhase phase = ExecutionPhase.SettingUp;
                 try
                 {
+                    var proof = TestMethodArguments.First() as IInvokableProof
+                    ?? throw new InvalidOperationException(
+                            $"The first argument of the test method {TestMethod.Name} must be of type IInvokableProof, but it is {TestMethodArguments.First()?.GetType()}."
+                       );
                     proof.Setup(ProofTestCase.ProofInvocationKind);
                     phase = ExecutionPhase.InvokingTestMethod;
-                    TestMethod.Invoke(testClassInstance, testMethodArguments);
+                    TestMethod.Invoke(testClassInstance, TestMethodArguments);
                 }
                 catch (Exception ex)
                 {
@@ -133,36 +121,6 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
                 {
                     // Stop the stopwatch after the test method execution
                     StopwatchToMeasureExecutionTime.Stop();
-
-                }
-
-                // If the test setup was successful, we proceed to collect probing failures
-                if (phase != ExecutionPhase.SettingUp)
-                {
-                    // Collect probing failures if the proof supports it
-                    collectedExceptions = proof.CollectProbingFailure();
-
-                    // CollectProbingFailure() should not return null but we handle it gracefully
-                    if (collectedExceptions == null)
-                    {
-                        // If no exceptions were collected, add an exception indicating that the proof did not validate correctly
-                        Aggregator.Add(
-                        new XunitException(
-                                $"CollectProbingFailure() of {proof.GetType().FullName} returned null. This violates the contract of CollectProbingFailure(), which must always return a non - null IEnumerable<Exception>."
-                            )
-                        );
-                    }
-                    else
-                    {
-                        // If exceptions were collected, add them to the list of exceptions
-                        foreach (var pf in collectedExceptions)
-                        {
-                            Aggregator.Add(
-                                // new XunitException(pf.Message, pf.Exception)
-                                pf.Exception
-                            );
-                        }
-                    }
                 }
 
                 // Return the elapsed time of the test method execution

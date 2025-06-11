@@ -36,7 +36,8 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Called by the de-serializer", false)]
 #pragma warning disable CS8618 // Not nullable field must contain a non-null value when the constructor exits. In this case, Deserializer will set it.
-        public ProofTestCase() { }
+        public ProofTestCase() {
+        }
 #pragma warning restore CS8618 //  // Not nullable field must contain a non-null value when the constructor exits.  In this case, Deserializer will set it.
 
         /// <summary>
@@ -56,10 +57,9 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
 #pragma warning restore CS0618 // The constructor is marked as obsolete, but we need to support it for being called by the de-serializer.
         {
             // Validate the arguments and initialize the properties
-            TestProofFactory = testProofFactory ?? throw new ArgumentNullException(nameof(testProofFactory));
+            TestProofFactory = testProofFactory;
             ProofInvocationKind = Enum.IsDefined(typeof(ProofInvocationKind), proofInvocationKind)
-                ? proofInvocationKind
-                : throw new ArgumentOutOfRangeException(nameof(proofInvocationKind), "Invalid proof invocation kind.");
+                ? proofInvocationKind : ProofInvocationKind.Unknown;
         }
 
         /// <summary>
@@ -76,14 +76,24 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
             ExceptionAggregator aggregator,
             CancellationTokenSource cancellationTokenSource)
         {
-            // Create a new instance of the ExceptionTestCaseRunner with the current test case and parameters
-            var runner = new ProofTestCaseRunner(
-                  this, DisplayName, messageBus, constructorArguments,
-                  TestMethodArguments, SkipReason, aggregator, cancellationTokenSource
-                );
+            return aggregator.RunAsync(
+                () => {
+                    // Check if the test method arguments contains more than one argument, so we can update the first argument with the proof instance.
+                    if (0 < TestMethodArguments.Length)
+                    {
+                        TestMethodArguments[0] = TestProofFactory.Create();
+                    }
 
-            // Run the test case asynchronously and return the result
-            return runner.RunAsync();
+                    // Create a new instance of the ExceptionTestCaseRunner with the current test case and parameters
+                    var runner = new ProofTestCaseRunner(
+                          this, DisplayName, messageBus, constructorArguments,
+                          TestMethodArguments, SkipReason, aggregator, cancellationTokenSource
+                        );
+
+                    // Run the test case asynchronously and return the result
+                    return runner.RunAsync();
+                }
+            );
         }
 
         /// <summary>
@@ -105,14 +115,6 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
             TestProofFactory = new TSerializableTestProofFactory();
             ProofInvocationKind = data.GetValue<ProofInvocationKind>(nameof(ProofInvocationKind));
             TestProofFactory.DeserializeFromString(data.GetValue<string>(nameof(TestProofFactory)));
-        }
-
-        /// <summary>
-        /// Creates a test proof instance typed as ITestProof using the factory.
-        /// </summary>
-        public IInvokableProof CreateTestProof()
-        {
-            return TestProofFactory.Create();
         }
     }
 }
