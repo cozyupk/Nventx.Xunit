@@ -1,31 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
-using NventX.xProof.Abstractions.TestProofForTestRunner;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
 namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
 {
     /// <summary>
-    /// Runs a test case that expects an exception to be thrown.
+    /// Represents a test case runner for tests that expect a proof to be verified during their execution.
     /// </summary>
     internal class ProofTestCaseRunner : XunitTestCaseRunner
     {
-        private IProofTestCase ProofTestCase { get; }
-
-        private IMessageBus? RealMessageBus { get; set; }
-        private ProxyExceptPassedMessageBus? ProxyMessageBus { get; set; }
-
-        private ExceptionAggregator PrivateAggregator { get; } = new ExceptionAggregator();
-
-        private ITest? Test { get; set; }
-
-        private CancellationTokenSource? Cts { get; set; }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionFactTestCaseRunner"/> class.
         /// </summary>
@@ -33,10 +19,10 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
                                object[] testMethodArguments, string skipReason,
                                ExceptionAggregator aggregator,
                                CancellationTokenSource cancellationTokenSource
-        ) : base(testCase, displayName, skipReason, constructorArguments, testMethodArguments, messageBus, aggregator, cancellationTokenSource)
+        ) : base(testCase, displayName, skipReason, constructorArguments, 
+                 testMethodArguments, /* new ProofCoordinatorBus(messageBus, cancellationTokenSource) */ messageBus, aggregator, cancellationTokenSource)
         {
-            // Store the test case for later use
-            ProofTestCase = testCase ?? throw new ArgumentNullException(nameof(testCase));
+            // No additional initialization is needed here,
         }
 
         /// <summary>
@@ -47,43 +33,21 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
             object[] testMethodArguments, string skipReason, IReadOnlyList<BeforeAfterTestAttribute> beforeAfterAttributes,
             ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
         {
-            // keep the message bus for later use
-            RealMessageBus = messageBus ?? throw new ArgumentNullException(nameof(messageBus), "Message bus cannot be null.");
-
-            // create a proxy message bus that ignores TestPassed messages
-            ProxyMessageBus = new ProxyExceptPassedMessageBus(RealMessageBus, cancellationTokenSource);
-
-            // keep the test for later use
-            Test = test ?? throw new ArgumentNullException(nameof(test), "Test cannot be null. " +
-                "Ensure that the test case implements IProofTestCase and provides a valid test instance.");
-
-            // keep the CancellationTokenSource for later use
-            Cts = cancellationTokenSource ?? throw new ArgumentNullException(nameof(cancellationTokenSource), "Cancellation token source cannot be null.");
-
             // create a ProofTestInvoker with the proof instance
             var runner = new ProofTestRunner(
-                test, ProxyMessageBus, testClass, constructorArguments, testMethod, testMethodArguments,
-                skipReason, beforeAfterAttributes, PrivateAggregator, cancellationTokenSource
+                test, messageBus, testClass, constructorArguments, testMethod, testMethodArguments,
+                skipReason, beforeAfterAttributes, aggregator, cancellationTokenSource
             );
 
             // return the runner
             return runner;
         }
 
-        /// <summary>
-        /// Runs the test case asynchronously and returns a summary of the run.
-        /// </summary>
-        protected override async Task<RunSummary> RunTestAsync()
+        /*
+        protected override async Task BeforeTestCaseFinishedAsync()
         {
-            // execute the test method and verify that the expected exception is thrown
-            var summary = await base.RunTestAsync();
-
-            // Check if the RealMessageBus is initialized
-            if (RealMessageBus == null)
-            {
-                throw new InvalidOperationException("RealMessageBus is not initialized. " +
-                     "Ensure that CreateTestRunner is called before RunTestAsync.");
-            }
+            // Call the base method to ensure any necessary pre-finalization logic is executed
+            await base.BeforeTestCaseFinishedAsync();
 
             // Check if the ProxyMessageBus is initialized
             if (ProxyMessageBus == null)
@@ -92,149 +56,142 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
                     "Ensure that CreateTestRunner is called before RunTestAsync.");
             }
 
-            // If the test has failed or was skipped, finalize the test run if it hasn't been finished yet,
-            // and return the summary.
-            if (ProxyMessageBus.IsFailed || ProxyMessageBus.IsSkipped)
+            // return if the test case has already finished
+            if (ProxyMessageBus.IsTestCaseFinished)
             {
-                if (!ProxyMessageBus.IsFinished)
-                {
-                    RealMessageBus.QueueMessage(
-                        new TestFinished(Test, summary.Time, ProxyMessageBus.Output)
-                    );
-                }
-                return summary;
+                Console.WriteLine($"test case already finished: {TestMethod.Name}");
+                return;
             }
 
-            // Check if the Proof is initialized
-            var proof = TestMethodArguments.First()  as IInvokableProof ?? throw new InvalidOperationException("Proof is not initialized. " +
-                    "Ensure that CreateTestRunner is called before RunTestAsync.");
-
-            // Check if the CancellationTokenSource is initialized
-            if (Cts == null)
+            // Check if the RealMessageBus is initialized
+            if (RealMessageBus == null)
             {
-                throw new InvalidOperationException("CancellationTokenSource is not initialized. " +
-                    "Ensure that CreateTestRunner is called before RunTestAsync.");
+                throw new InvalidOperationException("RealMessageBus is not initialized. " +
+                     "Ensure that CreateTestRunner is called before RunTestAsync.");
             }
 
-            // Collect probing failures from the proof and report them as test failures
-            var output = string.Empty;
-            var failures = proof.CollectProbingFailure() ?? throw new InvalidOperationException($"CollectProbingFailure() of {proof.GetType().FullName} returned null. " +
-                    "This violates the contract of CollectProbingFailure(), which must always return a non - null IEnumerable<Exception>.");
-
-            // If there are no probing failures, we report the exceptions as failures
-            foreach (var f in failures)
+            RealSummary = new RunSummary()
             {
-                // TODO: mesure the time of the probing failure
-                var isSuccessQueing = RealMessageBus.QueueMessage(new TestFailed(Test, 0m, f.Exception.Message, f.Exception));
-                if (!isSuccessQueing)
-                {
-                    Cts.Cancel();
-                }
-            }
-            var cntFailures = failures.Count();
-            if (cntFailures == 1)
-            {
-                // If there is only one probing failure, we report it as a single failure
-                output = failures.First().Exception.Message;
-            }
-            else if (1 < cntFailures)
-            {
-                output = "Multiple probing failures occurred: " +
-                         string.Join(" / ", failures.Select(f => f.Exception.Message));
-            }
-
-            // If there are no probing failures, we report the test as passed
-            if (cntFailures == 0)
-            {
-                var isSuccessQueing = RealMessageBus.QueueMessage(
-                    new TestPassed(Test, summary.Time, output)
-                );
-                if (!isSuccessQueing)
-                {
-                    Cts.Cancel();
-                }
-            }
-
-            // re-calculate the summary to include the probing failures and successes
-            summary = new RunSummary
-            {
-                Total = cntFailures + proof.ProbingSuccessCount,
-                Failed = cntFailures,
-                Time = summary.Time
+                Total = 1,
+                Failed = 0,
+                Skipped = ProxyMessageBus.IsTestSkipped ? 1 : 0,
+                Time = 0m
             };
 
-            // return the summary of the test run
-            return summary;
+            try
+            {
+                // Check if the Proof is initialized
+                var proof = TestMethodArguments.First() as IInvokableProof ?? throw new InvalidOperationException("Proof is not initialized. " +
+                        "Ensure that CreateTestRunner is called before RunTestAsync.");
+
+                // Check if the CancellationTokenSource is initialized
+                if (Cts == null)
+                {
+                    throw new InvalidOperationException("CancellationTokenSource is not initialized. " +
+                        "Ensure that CreateTestRunner is called before RunTestAsync.");
+                }
+
+                // Collect probing failures from the proof and report them as test failures
+                var output = string.Empty;
+                var failures = proof.CollectProbingFailure() ?? throw new InvalidOperationException($"CollectProbingFailure() of {proof.GetType().FullName} returned null. " +
+                        "This violates the contract of CollectProbingFailure(), which must always return a non - null IEnumerable<Exception>.");
+
+                // If there are no probing failures, we report the exceptions as failures
+                foreach (var f in failures)
+                {
+                    // TODO: mesure the time of the probing failure
+                    ProxyMessageBus.IsTestFailed = true;
+                    var isSuccessQueuing = RealMessageBus.QueueMessage(new TestFailed(Test, 0m, f.Exception.Message + $": {failures.Count()}", f.Exception));
+                    if (!isSuccessQueuing)
+                    {
+                        Cts.Cancel();
+                    }
+                }
+                var cntFailures = failures.Count();
+                if (cntFailures == 1)
+                {
+                    // If there is only one probing failure, we report it as a single failure
+                    output = failures.First().Exception.Message;
+                }
+                else if (1 < cntFailures)
+                {
+                    output = "Multiple probing failures occurred: " +
+                             string.Join(" / ", failures.Select(f => f.Exception.Message));
+                }
+                else if (cntFailures == 0)
+                {
+                    // Ntothing to report, we assume the proof was successful, and will be reported as a passed case later.
+                }
+                else
+                {
+                    throw new InvalidOperationException(
+                        $"Unexpected number of probing failures: {cntFailures}. " +
+                        "This should not happen, as the proof should always return at least one failure or success."
+                    );
+                }
+                // Store the output for later use
+                Console.WriteLine($"setting Runsummary.Failed = {cntFailures} ({TestCase.Method.Name})");
+                RealSummary.Total = cntFailures + proof.ProbingSuccessCount;
+                RealSummary.Failed = cntFailures;
+            }
+            catch (Exception ex)
+            {
+                // If an exception occurs, we finalize the test case with a failure
+                RealSummary.Failed = 1;
+                RealSummary.Time = 0m;
+                throw new XunitException(
+                    $"An error occurred while finalizing the test case: {ex.Message}", ex
+                );
+            } 
         }
 
         /// <summary>
-        /// A silent message bus that ignores all messages sent to it.
+        /// Runs the test case asynchronously and returns a summary of the run.
         /// </summary>
-        private class ProxyExceptPassedMessageBus : IMessageBus
+        protected override async Task<RunSummary> RunTestAsync()
         {
-            IMessageBus OriginalBus { get; }
-            CancellationTokenSource Cts { get; }
-            public bool IsFailed { get; private set; } = false;
-            public bool IsSkipped { get; private set; } = false;
-            public bool IsFinished { get; private set; } = false;
-            public string Output { get; private set; } = string.Empty;
-            public ProxyExceptPassedMessageBus(IMessageBus originalBus, CancellationTokenSource cts)
-            {
-                // Validate the original message bus and store it
-                OriginalBus = originalBus ?? throw new ArgumentNullException(nameof(originalBus), "Original message bus cannot be null.");
+            // Ensure that RealSummary is null before running the test
+            RealSummary = null;
 
-                // Validate the cancellation token source and store it
-                Cts = cts ?? throw new ArgumentNullException(nameof(cts), "Cancellation token source cannot be null.");
-            }
-            public void Dispose()
-            {
-                // No resources to dispose of in this implementation
-            }
+            // Running the test case
+            var summary = await base.RunTestAsync();
 
-            public bool QueueMessage(IMessageSinkMessage message)
-            {
-                // Queue the message internally, but ignore TestPassed messages
-                if (InternalQueueMessage(message))
+            Aggregator.Run(() => {
+                // RealSummary was created by the BeforeTestCaseFinishedAsync(), return it as the result.
+                if (RealSummary != null)
                 {
-                    // If the message was successfully queued, we return true
-                    return true;
+                    Console.WriteLine($"getting RealSummary: {TestCase.TestMethod.Method.Name}");
+                    // If RealSummary is not null, we return it as the result of the test run
+                    RealSummary.Time = summary.Time; // Update the time from the summary
+                    summary = RealSummary;
                 }
-                // If the message was not queued, cancel the operation and return false
-                Cts.Cancel();
-                return false;
-            }
+                if (!(ProxyMessageBus!.IsTestFailed || ProxyMessageBus.IsTestSkipped))
+                {
+                    if (0 < summary.Failed)
+                    {
+                        // If the test has failed, we finalize the test run with the failure
+                        RealMessageBus!.QueueMessage(
+                            new TestFailed(Test, summary.Time, "Test failed while finalizing the test case.", null)
+                        );
+                    }
+                    else
+                    {
+                        // If the test has passed, we finalize the test run with a success
+                        RealMessageBus!.QueueMessage(
+                            new TestPassed(Test, summary.Time, ProxyMessageBus.Output + $"** {summary.Failed}")
+                        );
+                    }
+                }
+                if(!ProxyMessageBus.IsTestCaseFinished)
+                {
+                    RealMessageBus!.QueueMessage(
+                        new TestCaseFinished(TestCase, summary.Time, summary.Total, summary.Failed, summary.Skipped)
+                    );
+                }
+            });
 
-            private bool InternalQueueMessage(IMessageSinkMessage message)
-            {
-                // Proxy messages by condition except TestPassed
-                if (message is TestPassed)
-                {
-                    return true; // Just Ignore the message and return true
-                }
-                if (message is TestFinished && (IsFailed || IsSkipped))
-                {
-                    // If the message is a TestFinished and we have failed,
-                    // we mark it as finished and proxy the message to the original bus
-                    IsFinished = true;
-                    return OriginalBus.QueueMessage(message);
-                }
-                if (message is TestFailed tf)
-                {
-                    // If the message is a TestFailed, we mark it as failed
-                    IsFailed = true;
-                    Output = tf.Output ?? string.Empty;
-                    return OriginalBus.QueueMessage(message);
-                }
-                if (message is TestSkipped)
-                {
-                    // If the message is a TestSkipped, we mark it as skipped
-                    IsSkipped = true;
-                    return OriginalBus.QueueMessage(message);
-                }
-
-                // otherwise, just proxy the message to the original bus
-                return OriginalBus.QueueMessage(message);
-            }
+            return summary;
         }
+        */
     }
 }

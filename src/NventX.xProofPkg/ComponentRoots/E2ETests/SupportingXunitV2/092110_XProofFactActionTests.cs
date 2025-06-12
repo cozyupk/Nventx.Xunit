@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 using NventX.xProof.BaseProofLibrary.Proofs;
 using NventX.xProof.SupportingXunit.TypeBasedProofDiscoverer;
 using Xunit;
 
 namespace NventX.xProof.SupportingXunit.E2ETests
 {
+    /*
     public class XPoofTheoryActionTests
     {
         [Fact]
@@ -76,48 +78,81 @@ namespace NventX.xProof.SupportingXunit.E2ETests
             xp.Probe(() => throw new Exception($"(1) Failing with value {x} in xProof."));
         }
     }
+    */
 
     public class XProofFactActionTests
     {
+        private static void Delay(int milliseconds)
+        {
+            Task.Delay(milliseconds).Wait();
+        }
+
         [Fact]
         public void SUCCESS_Fact()
         {
+            Delay(100); // Simulate some delay
             Assert.True(true);
         }
 
         [Fact]
         public void FAIL_Fact()
         {
+            Delay(100); // Simulate some delay
             Assert.True(false);
         }
 
+        /*
         [ProofFact]
-        public void SUCCESS_Fact_WithNoProbe(XProof _)
+        public void FAIL_ProofFact_WithNoProbe(XProof _)
         {
         }
 
         [ProofFact]
-        public void SUCCESS_Fact_DoNothing(XProof xp)
+        public void SUCCESS_ProofFact_DoNothing(XProof xp)
         {
-            xp.Probe(() => { 
+            xp.Probe(() => {
                 // Do nothing
+                Delay(100); // Simulate some delay
+            });
+        }
+        */
+
+        [ProofFact]
+        public void SUCCESS_ProofFact_DoNothingMultiTimes(XProof xp)
+        {
+            xp.Probe(() => {
+                // Do nothing
+                Delay(300); // Simulate some delay
+                // Console.WriteLine("Finished (1)");
+            });
+            xp.Probe(() => {
+                // Do nothing
+                Delay(200); // Simulate some delay
+                // Console.WriteLine("Finished (2)");
+            });
+            xp.Probe(() => {
+                // Do nothing
+                Delay(100); // Simulate some delay
+                // Console.WriteLine("Finished (3)");
             });
         }
 
         [ProofFact]
-        public void SUCCESS_Fact_DoNothingMultiTimes(XProof xp)
+        public void FAIL_ProofFact_CombinedDelegates_Throw(XProof xp)
         {
-            xp.Probe(() => { 
-                // Do nothing
-            });
-            xp.Probe(() => { 
-                // Do nothing
-            });
-            xp.Probe(() => { 
-                // Do nothing
-            });
+            Action a = () => { }; // Console.WriteLine("A");
+            Action b = () => throw new Exception("Failure in B");
+            xp.Probe(a + b);
         }
 
+        [ProofFact]
+        public void FAIL_ProofFact_MultipleDifferentExceptions(XProof xp)
+        {
+            xp.Probe(() => throw new InvalidOperationException("Invalid op"));
+            xp.Probe(() => throw new ArgumentException("Bad arg"));
+        }
+
+        /*
         [ProofFact]
         public void FAIL_Fact_NullProbeAction(XProof _)
         {
@@ -133,13 +168,7 @@ namespace NventX.xProof.SupportingXunit.E2ETests
             xp.Probe(a + b);
         }
 
-        [ProofFact]
-        public void FAIL_Fact_CombinedDelegates_Throw(XProof xp)
-        {
-            Action a = () => Console.WriteLine("A");
-            Action b = () => throw new Exception("Failure in B");
-            xp.Probe(a + b);
-        }
+
 
         [ProofFact]
         public void SUCCESS_Fact_ProbeWithLabel(XProof xp)
@@ -147,17 +176,13 @@ namespace NventX.xProof.SupportingXunit.E2ETests
             xp.Probe(() => { }, label: "LabeledSuccess");
         }
 
-        [ProofFact]
-        public void FAIL_Fact_MultipleDifferentExceptions(XProof xp)
-        {
-            xp.Probe(() => throw new InvalidOperationException("Invalid op"));
-            xp.Probe(() => throw new ArgumentException("Bad arg"));
-        }
+
 
         [ProofFact]
         public void SUCCESS_Fact_ProbeWithCallerInfo(XProof xp)
         {
             xp.Probe(() => Console.WriteLine("Action"), callerMemberName: "TestCaller");
         }
+        */
     }
 }

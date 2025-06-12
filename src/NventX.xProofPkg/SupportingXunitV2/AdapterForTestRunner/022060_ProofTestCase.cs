@@ -84,6 +84,12 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
                         TestMethodArguments[0] = TestProofFactory.Create();
                     }
 
+                    diagnosticMessageSink.OnMessage(
+                        new TestCaseMessage(
+                            this
+                        )
+                    );
+
                     // Create a new instance of the ExceptionTestCaseRunner with the current test case and parameters
                     var runner = new ProofTestCaseRunner(
                           this, DisplayName, messageBus, constructorArguments,

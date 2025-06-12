@@ -43,6 +43,7 @@ namespace NventX.xProof.BaseProofLibrary.DefaultModules
                 {
                     // Execute the action that may throw an exception
                     ((Action)del)();
+                    InvokableProof.RecordProobingSuccess();
                 }
                 catch (Exception ex)
                 {

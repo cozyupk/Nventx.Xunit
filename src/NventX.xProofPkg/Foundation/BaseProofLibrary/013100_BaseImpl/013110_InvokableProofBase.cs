@@ -69,6 +69,15 @@ namespace NventX.xProof.BaseProofLibrary.BaseImpl
         public IEnumerable<IProbingFailure> CollectProbingFailure()
         {
             // Return a copy of the probing failures so that we can avoid modification during enumeration
+            lock (IncrementSuccessCountLock)
+            {
+                if (ProbingSuccessCount == 0 && ProbingFailures.Count == 0)
+                {
+                    var ex = new InvalidOperationException("No Probe() calls were detected. " +
+                                            $"If probing is not required, consider using a plain [Fact] instead.: {ProbingSuccessCount}");
+                    ProbingFailures.Enqueue(new ProbingFailure("No probing failures recorded.", ex));
+                }
+            }
             return ProbingFailures.ToArray();
         }
 

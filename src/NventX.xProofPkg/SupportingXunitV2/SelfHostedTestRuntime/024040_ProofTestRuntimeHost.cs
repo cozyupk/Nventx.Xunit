@@ -73,8 +73,7 @@ namespace NventX.xProof.SupportingXunit.SelfHostedTestRuntime
                         new TestMethod(testClass, reflectionMethodInfo),
                         attribute
                     ).FirstOrDefault();
-
-                    // var bus = new SpyBusWithSink(reporterSink);
+                    Reporter.OnMessage(new Xunit.DiagnosticMessage($"Running test case: {testCase.DisplayName}"));
 
                     var aggregator = new ExceptionAggregator();
                     var result = testCase!.RunAsync(
