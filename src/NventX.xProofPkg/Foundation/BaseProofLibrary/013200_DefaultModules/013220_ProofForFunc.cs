@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using NventX.xProof.Abstractions.TestProofForTestMethods;
 using NventX.xProof.Abstractions.TestProofForTestRunner;
+using NventX.xProof.BaseProofLibrary.BaseImpl;
 
 namespace NventX.xProof.BaseProofLibrary.DefaultModules
 {
@@ -41,17 +42,17 @@ namespace NventX.xProof.BaseProofLibrary.DefaultModules
             var i = 0;
             foreach (var del in delegates)
             {
+                using var scope = new ProbeScope(InvokableProof, func, label, callerFilePath, callerLineNumber, callerMemberName, i, delegates.Length);
                 try
                 {
                     // Execute the action that may throw an exception
                     retval = ((Func<T>)del)();
+                    scope.Success();
                 }
                 catch (Exception ex)
                 {
                     // Record the probing failure with the label and exception
-                    InvokableProof.RecordProbingFailure(
-                        label, func, ex, callerFilePath, callerLineNumber, callerMemberName, i, delegates.Length
-                    );
+                    scope.Failure(ex);
                 }
                 ++i;
             }

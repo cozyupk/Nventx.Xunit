@@ -55,15 +55,24 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
         /// </summary>
         protected override Task<decimal> InvokeTestMethodAsync(object testClassInstance)
         {
-            Aggregator.Run(() =>
+            // Note: To avoid confusion, we do not use a setup and test method integrated virtual method here.
+
+            // Measure the setup time for the proof.
+            Timer.Aggregate(() =>
             {
-                var proof = TestMethodArguments.First() as IInvokableProof
-                ?? throw new InvalidOperationException(
-                        $"The first argument of the test method {TestMethod.Name} must be of type IInvokableProof, but it is {TestMethodArguments.First()?.GetType()}."
-                   );
-                proof.Setup(ProofTestCase.ProofInvocationKind);
+                // Any exception thrown during the setup will be caught by the aggregator.
+                Aggregator.Run(() =>
+                {
+                    var proof = TestMethodArguments.First() as IInvokableProof
+                    ?? throw new InvalidOperationException(
+                            $"The first argument of the test method {TestMethod.Name} must be of type IInvokableProof, but it is {TestMethodArguments.First()?.GetType()}."
+                       );
+                    proof.Setup(ProofTestCase.ProofInvocationKind);
+                });
             });
 
+            // Invoke the test method and measure its execution time,
+            // and return total execution time, including setup time, in seconds.
             return base.InvokeTestMethodAsync(testClassInstance);
         }
     }

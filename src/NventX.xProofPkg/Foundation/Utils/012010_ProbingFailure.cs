@@ -18,6 +18,9 @@ namespace NventX.xProof.Utils
         /// </summary>
         public Exception Exception { get; }
 
+
+        public TimeSpan ProbeDuration { get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ProbingFailure"/> class with a message and an exception.
         /// </summary>

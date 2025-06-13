@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
@@ -10,7 +11,7 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
     /// <summary>
     /// Represents a test case runner for tests that expect a proof to be verified during their execution.
     /// </summary>
-    internal class ProofTestCaseRunner : XunitTestCaseRunner
+    public class ProofTestCaseRunner : XunitTestCaseRunner
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionFactTestCaseRunner"/> class.
@@ -19,8 +20,9 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
                                object[] testMethodArguments, string skipReason,
                                ExceptionAggregator aggregator,
                                CancellationTokenSource cancellationTokenSource
-        ) : base(testCase, displayName, skipReason, constructorArguments, 
-                 testMethodArguments, /* new ProofCoordinatorBus(messageBus, cancellationTokenSource) */ messageBus, aggregator, cancellationTokenSource)
+        ) : base(testCase, displayName, skipReason, constructorArguments, testMethodArguments,
+                 new ProofCoordinatorBus(testMethodArguments[0], testCase, messageBus, cancellationTokenSource),
+                 aggregator, cancellationTokenSource)
         {
             // No additional initialization is needed here,
         }
@@ -33,14 +35,70 @@ namespace NventX.xProof.SupportingXunit.AdapterForTestRunner
             object[] testMethodArguments, string skipReason, IReadOnlyList<BeforeAfterTestAttribute> beforeAfterAttributes,
             ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
         {
+            Console.WriteLine($"Creating ProofTestInvoker for {messageBus.GetType().Name} arguments.");
             // create a ProofTestInvoker with the proof instance
             var runner = new ProofTestRunner(
                 test, messageBus, testClass, constructorArguments, testMethod, testMethodArguments,
-                skipReason, beforeAfterAttributes, aggregator, cancellationTokenSource
+                skipReason, beforeAfterAttributes, new ExceptionAggregator(aggregator), cancellationTokenSource
             );
 
             // return the runner
             return runner;
+        }
+
+        /// <summary>
+        /// Runs the test case asynchronously and returns a summary of the run.
+        /// </summary>
+        protected override Task<RunSummary> RunTestAsync()
+        {
+            // Run the base test case runner to execute the test method and aggregate the results with ProofCoordinatorBus.
+            return base.RunTestAsync()
+                       .ContinueWith(task =>
+                       {
+                           if (MessageBus is not ProofCoordinatorBus proxyMessageBus)
+                           {
+                               throw new InvalidOperationException("MessageBus is not of type ProofCoordinatorBus.");
+                           }
+                           return proxyMessageBus.FinalizeCoordinationAsync(task.Result).Result;
+                       });
+
+            /*
+            Aggregator.Run(() => {
+                // RealSummary was created by the BeforeTestCaseFinishedAsync(), return it as the result.
+                if (RealSummary != null)
+                {
+                    Console.WriteLine($"getting RealSummary: {TestCase.TestMethod.Method.Name}");
+                    // If RealSummary is not null, we return it as the result of the test run
+                    RealSummary.Time = summary.Time; // Update the time from the summary
+                    summary = RealSummary;
+                }
+                if (!(ProxyMessageBus!.IsTestFailed || ProxyMessageBus.IsTestSkipped))
+                {
+                    if (0 < summary.Failed)
+                    {
+                        // If the test has failed, we finalize the test run with the failure
+                        RealMessageBus!.QueueMessage(
+                            new TestFailed(Test, summary.Time, "Test failed while finalizing the test case.", null)
+                        );
+                    }
+                    else
+                    {
+                        // If the test has passed, we finalize the test run with a success
+                        RealMessageBus!.QueueMessage(
+                            new TestPassed(Test, summary.Time, ProxyMessageBus.Output + $"** {summary.Failed}")
+                        );
+                    }
+                }
+                if (!ProxyMessageBus.IsTestCaseFinished)
+                {
+                    RealMessageBus!.QueueMessage(
+                        new TestCaseFinished(TestCase, summary.Time, summary.Total, summary.Failed, summary.Skipped)
+                    );
+                }
+            });
+
+            return summary;
+            */
         }
 
         /*

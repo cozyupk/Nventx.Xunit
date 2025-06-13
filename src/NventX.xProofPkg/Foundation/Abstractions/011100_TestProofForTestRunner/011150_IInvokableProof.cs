@@ -25,11 +25,15 @@ namespace NventX.xProof.Abstractions.TestProofForTestRunner
         /// Records a probing failure with a label, exception and caller details.
         /// </summary>
         void RecordProbingFailure(
-            string? label, Delegate act, Exception ex,
-            string? callerFilePath, int callerLineNumber, string? callerMemberName,
-            int cnt, int totalCnt
+            Exception ex,
+            TimeSpan elapsed,
+            Delegate act,
+            string? label,
+            string? callerFilePath, int? callerLineNumber, string? callerMemberName,
+            int? cnt, int? totalCnt
         );
 
-        void RecordProobingSuccess();
+
+        void RecordProobingSuccess(TimeSpan elapsed);
     }
 }

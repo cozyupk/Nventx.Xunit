@@ -6,7 +6,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Include="013100_BaseImpl\013140_DeclarativeCustomizableProof.cs" />
+	  <None Include="013100_BaseImpl\013150_DeclarativeCustomizableProof.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.6" />
 	</ItemGroup>
 
 	<ItemGroup>

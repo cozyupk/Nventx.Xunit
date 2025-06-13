@@ -81,14 +81,7 @@ namespace NventX.xProof.BaseProofLibrary.BaseImpl
             return ProbingFailures.ToArray();
         }
 
-        /// <summary>
-        /// Records a probing failure with a label, exception and caller details.
-        /// </summary>
-        public void RecordProbingFailure(
-            string? label, Delegate act, Exception ex,
-            string? callerFilePath, int callerLineNumber, string? callerMemberName,
-            int cnt, int totalCnt
-        )
+        public void RecordProbingFailure(Exception ex, TimeSpan elapsed, Delegate act, string? label, string? callerFilePath, int? callerLineNumber, string? callerMemberName, int? cnt, int? totalCnt)
         {
             var location = $"{Path.GetFileName(callerFilePath)}:{callerLineNumber}";
             var method = act.Method;
@@ -103,10 +96,7 @@ namespace NventX.xProof.BaseProofLibrary.BaseImpl
             ProbingFailures.Enqueue(new ProbingFailure(effectiveLabel, ex));
         }
 
-        /// <summary>
-        /// Records a successful probing attempt, incrementing the success count in a thread-safe manner.
-        /// </summary>
-        public void RecordProobingSuccess()
+        public void RecordProobingSuccess(TimeSpan elapsed)
         {
             // Increment the success count in a thread-safe manner
             lock (IncrementSuccessCountLock)
