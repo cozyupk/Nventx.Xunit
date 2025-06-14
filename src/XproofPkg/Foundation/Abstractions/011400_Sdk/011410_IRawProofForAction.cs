@@ -12,7 +12,8 @@ namespace Xproof.Abstractions.Sdk
             int callerLineNumber,
             string callerMemberName,
             MethodInfo invokedMethodInfo,
-            object?[] invokedParameters
+            object?[] invokedParameters,
+            (int Index, int TotalCount)? combinedPosition
         );
     }
 }

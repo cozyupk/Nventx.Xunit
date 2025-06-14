@@ -29,7 +29,7 @@ namespace Xproof.BaseProofLibrary.DefaultModules
         /// <summary>
         /// Combines multiple actions into a single provable element that can be probed for failures.
         /// </summary>
-        public IProvable Combine(params Action[] actions)
+        public ICombinedProvable Combine(params Action[] actions)
         {
             return new ProvableActions(ProofForAction, actions);
         }
@@ -37,7 +37,7 @@ namespace Xproof.BaseProofLibrary.DefaultModules
         /// <summary>
         /// A class that encapsulates a collection of actions to be probed for failures.
         /// </summary>
-        internal class ProvableActions : IProvable, IRawProvable
+        internal class ProvableActions : ICombinedProvable, IRawCombinedProvable
         {
             /// <summary>
             /// The method info for the invoked method that will be used to record probings.
@@ -85,6 +85,9 @@ namespace Xproof.BaseProofLibrary.DefaultModules
                 // Use the provided invokedMethodInfo or fall back to the default one
                 invokedMethodInfo ??= InvokedMethodInfo;
 
+                // Declare a combined position to track the index and total count
+                (int Index, int TotalCount) combinedPosition = (1, Actions.Length);
+
                 // Iterate through each action and execute FailLate for each
                 foreach (var action in Actions)
                 {
@@ -92,7 +95,8 @@ namespace Xproof.BaseProofLibrary.DefaultModules
                         = invokedParameters
                            ?? new object?[] { action, axes, callerFilePath, callerLineNumber, callerMemberName };
                     TestProof.Probe
-                         (action, axes, callerFilePath, callerLineNumber, callerMemberName, invokedMethodInfo, parameters);
+                         (action, axes, callerFilePath, callerLineNumber, callerMemberName, invokedMethodInfo, parameters, combinedPosition);
+                    ++combinedPosition.Index;
                 }
             }
         }

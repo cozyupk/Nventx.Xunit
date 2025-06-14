@@ -6,7 +6,7 @@ namespace Xproof.BaseProofLibrary.DefaultModules
 {
     internal class CombinerForTasks : ICombinerForTasks
     {
-        public Abstractions.TestProofForTestMethods.IProvable Combine(params Func<Task>[] tasks)
+        public Abstractions.TestProofForTestMethods.ICombinedProvable Combine(params Func<Task>[] tasks)
         {
             throw new NotImplementedException();
         }

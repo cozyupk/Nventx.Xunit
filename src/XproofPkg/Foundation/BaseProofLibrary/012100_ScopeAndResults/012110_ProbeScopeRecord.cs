@@ -42,9 +42,14 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
         public object? Axes { get; }
 
         /// <summary>
-        /// The position of the probe in a sequence, if applicable.
+        /// The position of the probe in a combined sequence, if applicable.
         /// </summary>
-        public (int Index, int TotalCount)? Position { get; }
+        public (int Index, int TotalCount)? CombinedPosition { get; }
+
+        /// <summary>
+        /// The position of the probe in a delegate sequence, if applicable.
+        /// </summary>
+        public (int Index, int TotalCount)? DelegatePosition { get; }
 
         public ProbeScopeRecord(
             ProofInvocationKind invocationKind,
@@ -54,7 +59,8 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
             int callerLineNumber,
             string callerMemberName,
             object? axes,
-            (int Index, int TotalCount)? position = null
+            (int Index, int TotalCount)? combinedPosition,
+            (int Index, int TotalCount)? delegatePosition
         )
         {
             InvokedProbeMethod = invokedProbeMethod ?? throw new ArgumentNullException(nameof(invokedProbeMethod));
@@ -64,7 +70,8 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
             CallerLineNumber = callerLineNumber;
             CallerMemberName = callerMemberName ?? throw new ArgumentNullException(nameof(callerMemberName));
             Axes = axes;
-            Position = position;
+            CombinedPosition = combinedPosition;
+            DelegatePosition = delegatePosition;
         }
     }
 }

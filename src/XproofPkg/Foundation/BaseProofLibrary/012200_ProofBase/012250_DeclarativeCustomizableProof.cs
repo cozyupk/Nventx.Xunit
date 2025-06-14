@@ -53,7 +53,8 @@ namespace Xproof.BaseProofLibrary.ProofBase
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null,
             MethodInfo? invokedMethodInfo = null,
-            object?[]? invokedParameters = null
+            object?[]? invokedParameters = null,
+            (int Index, int TotalCount)? combinedPosition = null
         ) {
             if (ProofForAction == null)
             {
@@ -64,10 +65,10 @@ namespace Xproof.BaseProofLibrary.ProofBase
 
             invokedMethodInfo ??= InvokedMethodInfoForAction;
             invokedParameters ??= new object?[] { act, axes, callerFilePath, callerLineNumber, callerMemberName };
-            ProofForAction.Probe(act, axes, callerFilePath, callerLineNumber, callerMemberName, invokedMethodInfo, invokedParameters);
+            ProofForAction.Probe(act, axes, callerFilePath, callerLineNumber, callerMemberName, invokedMethodInfo, invokedParameters, combinedPosition);
         }
 
-        public IProvable Combine(Action[] actions)
+        public ICombinedProvable Combine(Action[] actions)
         {
             return CombinerForActions?.Combine(actions)
                    ?? throw new NotImplementedException($"{nameof(CombinerForActions)} is not implemented {this.GetType().FullName}.");
@@ -80,7 +81,8 @@ namespace Xproof.BaseProofLibrary.ProofBase
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null,
             MethodInfo? invokedMethodInfo = null,
-            object?[]? invokedParameters = null
+            object?[]? invokedParameters = null,
+            (int Index, int TotalCount)? combinedPosition = null
         ) {
             if (ProofForFunc == null)
             {
@@ -91,18 +93,13 @@ namespace Xproof.BaseProofLibrary.ProofBase
 
             invokedMethodInfo ??= InvokedMethodInfoForFunc;
             invokedParameters ??= new object?[] { func, axes, callerFilePath, callerLineNumber, callerMemberName };
-            return ProofForFunc.Probe(func, axes, callerFilePath, callerLineNumber, callerMemberName, invokedMethodInfo, invokedParameters);
+            return ProofForFunc.Probe(func, axes, callerFilePath, callerLineNumber, callerMemberName, invokedMethodInfo, invokedParameters, combinedPosition);
         }
 
         public IProvable<T> Combine<T>(params Func<T>[] functions)
         {
             return CombinerForFuncs?.Combine(functions)
                    ?? throw new NotImplementedException($"{nameof(CombinerForFuncs)} is not implemented {this.GetType().FullName}.");
-        }
-
-        public void Probe(Action act, object? axes, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0, [CallerMemberName] string? callerMemberName = null)
-        {
-            throw new NotImplementedException();
         }
     }
 }

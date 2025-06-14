@@ -13,7 +13,8 @@ namespace Xproof.Abstractions.TestProofForTestMethods
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null,
             MethodInfo? invokedMethodInfo = null,
-            object?[]? invokedParameters = null
+            object?[]? invokedParameters = null,
+            (int Index, int TotalCount)? combinedPosition = null
         );
     }
 }

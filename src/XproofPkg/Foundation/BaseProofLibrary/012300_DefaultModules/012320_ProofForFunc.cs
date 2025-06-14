@@ -46,7 +46,8 @@ namespace Xproof.BaseProofLibrary.DefaultModules
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null,
             MethodInfo? invokedMethodInfo = null,
-            object?[]? invokedParameters = null
+            object?[]? invokedParameters = null,
+            (int Index, int TotalCount) ? combinedPosition = null
         )
         {
             // Validate the parameters (CallerXXX also must not be null.)
@@ -67,7 +68,7 @@ namespace Xproof.BaseProofLibrary.DefaultModules
             foreach (var del in delegates)
             {
                 // If there are multiple delegates, set the position to indicate the current index and total count
-                (int Index, int TotalCount)? position = (1 < delegates.Length) ? (i + 1, delegates.Length) : null;
+                (int Index, int TotalCount)? delegatePosition = (1 < delegates.Length) ? (i + 1, delegates.Length) : null;
 
                 // Get the parameters for the probe scope
                 // Note: Parameters are shared across all delegate invocations for this probe.
@@ -80,7 +81,8 @@ namespace Xproof.BaseProofLibrary.DefaultModules
                     = new ProbeScope(
                         InvokableProof, InvokableProof.ProofInvocationKind,
                         invokedMethodInfo ?? InvokedMethodInfo, parameters,
-                        callerFilePath, callerLineNumber, callerMemberName, axes, position
+                        callerFilePath, callerLineNumber, callerMemberName, axes,
+                        combinedPosition, delegatePosition
                       );
                 try
                 {

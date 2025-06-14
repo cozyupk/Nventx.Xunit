@@ -7,7 +7,7 @@ namespace Xproof.Abstractions.TestProofForTestMethods
     /// <summary>
     /// An interface that defines a provable element that can be probed for failures.
     /// </summary>
-    public interface IProvable
+    public interface ICombinedProvable
     {
         /// <summary>
         /// Probes the provable element for failures, optionally with a label and caller information.

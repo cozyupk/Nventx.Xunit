@@ -5,6 +5,6 @@ namespace Xproof.Abstractions.TestProofForTestMethods
 {
     public interface ICombinerForTasks
     {
-        IProvable Combine(params Func<Task>[] tasks);
+        ICombinedProvable Combine(params Func<Task>[] tasks);
     }
 }

@@ -48,7 +48,8 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
             int callerLineNumber,
             string callerMemberName,
             object? axes,
-            (int Index, int TotalCount)? position = null
+            (int Index, int TotalCount)? combinedPosition,
+            (int Index, int TotalCount)? delegatePosition
         ) {
             // Validate parameters
             _ = invokableProof ?? throw new ArgumentNullException(nameof(invokableProof));
@@ -62,7 +63,8 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
             // Create the ProbeScope instance, for internal use at this time, and goint to be exposed later.
             ScopeRecord = new ProbeScopeRecord(
                 invocationKind, invokedProbeMethod, invocationParameters,
-                callerFilePath, callerLineNumber, callerMemberName, axes, position
+                callerFilePath, callerLineNumber, callerMemberName, axes,
+                combinedPosition, delegatePosition
             );
 
             // Start the stopwatch

@@ -48,8 +48,13 @@ namespace Xproof.Abstractions.TestProofForTestRunner
         object? Axes { get; }
 
         /// <summary>
-        /// The position of the probe in a sequence, if applicable.
+        /// The position of the probe in a combined sequence, if applicable.
         /// </summary>
-        (int Index, int TotalCount)? Position { get; }
+        (int Index, int TotalCount)? CombinedPosition { get; }
+
+        /// <summary>
+        /// The position of the probe in a delegate sequence, if applicable.
+        /// </summary>
+        (int Index, int TotalCount)? DelegatePosition { get; }
     }
 }

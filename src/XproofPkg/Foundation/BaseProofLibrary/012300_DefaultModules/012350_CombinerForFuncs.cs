@@ -33,7 +33,7 @@ namespace Xproof.BaseProofLibrary.DefaultModules
         }
     }
 
-    internal class ProvableFuncs<T> : IProvable<T>, IRawProvable<T>
+    internal class ProvableFuncs<T> : IProvable<T>, IRawCombinedProvable<T>
     {
         /// <summary>
         /// The method info for the invoked method that will be used to record probings.
@@ -82,14 +82,20 @@ namespace Xproof.BaseProofLibrary.DefaultModules
 
             // Iterate through each action and execute FailLate for each
             List<T?> results = new(Funcs.Length);
+
+            // Declare a combined position to track the index and total count
+            (int Index, int TotalCount) combinedPosition = (1, Funcs.Length);
+
+            // Probe each function and collect the results
             foreach (var func in Funcs)
             {
                 object?[] parameters
                             = invokedParameters
                                 ?? new object?[] { func, axes, callerFilePath, callerLineNumber, callerMemberName };
                 var retval = TestProof.Probe
-                     (func, axes, callerFilePath, callerLineNumber, callerMemberName, invokedMethodInfo, parameters);
+                     (func, axes, callerFilePath, callerLineNumber, callerMemberName, invokedMethodInfo, parameters, combinedPosition);
                 results.Add(retval);
+                ++combinedPosition.Index;
             }
             return results;
         }

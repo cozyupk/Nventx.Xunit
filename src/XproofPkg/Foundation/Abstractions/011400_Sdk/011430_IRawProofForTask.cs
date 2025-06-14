@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Xproof.Abstractions.Sdk
@@ -10,7 +11,10 @@ namespace Xproof.Abstractions.Sdk
             object? axes,
             string callerFilePath,
             int callerLineNumber,
-            string callerMemberName
+            string callerMemberName,
+            MethodInfo invokedMethodInfo,
+            object?[] invokedParameters,
+            (int Index, int TotalCount)? combinedPosition
         );
     }
 }
