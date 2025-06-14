@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>Xproof.Abstractions</RootNameSpace>
+		<AssemblyName>Xproof.Abstractions</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="011100_TestProofForTestRunner\011120_IProbeScopeRecord.cs" />
+	  <None Include="011100_TestProofForTestRunner\011150_IInvokableProof.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.6" />
+	</ItemGroup>
+
+</Project>

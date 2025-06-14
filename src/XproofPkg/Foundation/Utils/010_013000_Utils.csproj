@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>Xproof.Utils</RootNameSpace>
+		<AssemblyName>Xproof.Utils</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="System.Text.Json" Version="9.0.6" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Abstractions\010_011000_Abstractions.csproj" />
+	</ItemGroup>
+
+</Project>

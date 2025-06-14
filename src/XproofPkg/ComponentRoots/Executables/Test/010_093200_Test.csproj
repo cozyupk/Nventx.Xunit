@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>Xproof.SupportingXunit.Test</RootNameSpace>
+		<AssemblyName>Xproof.ComponentRoots.Executables.XunitV2.Test</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="xunit.assert" Version="2.9.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Foundation\BaseProofLibrary\010_013000_BaseProofLibrary.csproj" />
+	</ItemGroup>
+
+</Project>

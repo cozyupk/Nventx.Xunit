@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>Xproof.SupportingXunit.E2ETests</RootNameSpace>
+		<AssemblyName>Xproof.ComponentRoots.E2ETests.XunitV2</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\SupportingXunitV2\TypeBasedProofDiscovery\010_023000_TypeBasedProofDiscoverer.csproj" />
+	</ItemGroup>
+
+</Project>
