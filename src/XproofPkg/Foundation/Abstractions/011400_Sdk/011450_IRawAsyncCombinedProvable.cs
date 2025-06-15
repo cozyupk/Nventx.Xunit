@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 
 namespace Xproof.Abstractions.Sdk
 {
-    public interface IAsyncCombinedProvable
+    public interface IAsyncCombinedProvable<in TAxes>
     {
         Task ProbeAsync(
-            object? axes,
+            TAxes? axes,
             string callerFilePath,
             int callerLineNumber,
             string callerMemberName,

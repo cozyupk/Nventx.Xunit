@@ -13,7 +13,7 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
     /// <summary>
     /// A test invoker for tests that expect a proof to be verified during their execution.
     /// </summary>
-    internal class ProofTestInvoker : XunitTestInvoker
+    internal class ProofTestInvoker<TAxes> : XunitTestInvoker
     {
         /// <summary>
         /// The test case that contains the proof to be verified.
@@ -63,7 +63,7 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
                 // Any exception thrown during the setup will be caught by the aggregator.
                 Aggregator.Run(() =>
                 {
-                    var proof = TestMethodArguments.First() as IInvokableProof
+                    var proof = TestMethodArguments.First() as IInvokableProof<TAxes>
                     ?? throw new InvalidOperationException(
                             $"The first argument of the test method {TestMethod.Name} must be of type IInvokableProof, but it is {TestMethodArguments.First()?.GetType()}."
                        );

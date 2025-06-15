@@ -9,17 +9,17 @@ using Xproof.BaseProofLibrary.ScopeAndResults;
 
 namespace Xproof.BaseProofLibrary.DefaultModules
 {
-    internal class CombinerForFuncs : ICombinerForFuncs
+    internal class CombinerForFuncs<TAxes> : ICombinerForFuncs<TAxes>
     {
         /// <summary>
         /// The proof for function that this collection belongs to.
         /// </summary>
-        IRawProofForFunc ProofForFunc { get; }
+        IRawProofForFunc<TAxes> ProofForFunc { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CombinerForFuncs"/> class with the specified proof for function.
         /// </summary>
-        public CombinerForFuncs(IRawProofForFunc proofForFunc)
+        public CombinerForFuncs(IRawProofForFunc<TAxes> proofForFunc)
         {
             // Validate and assign the proof for action
             ProofForFunc = proofForFunc
@@ -29,25 +29,25 @@ namespace Xproof.BaseProofLibrary.DefaultModules
         /// <summary>
         /// Combines multiple functions into a single provable instance.
         /// </summary>
-        public IProvable<T> Combine<T>(params Func<T>[] functions)
+        public IProvable<T, TAxes> Combine<T>(params Func<T>[] functions)
         {
-            return new ProvableFuncs<T>(ProofForFunc, functions);
+            return new ProvableFuncs<T, TAxes>(ProofForFunc, functions);
         }
     }
 
-    internal class ProvableFuncs<T> : IProvable<T>, IRawCombinedProvable<T>
+    internal class ProvableFuncs<T, TAxes> : IProvable<T, TAxes>, IRawCombinedProvable<T, TAxes>
     {
         /// <summary>
         /// The method info for the invoked method that will be used to record probings.
         /// </summary>
         static MethodInfo InvokedMethodInfo { get; }
-            = typeof(CombinerForActions).GetMethod(nameof(Probe), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+            = typeof(CombinerForActions<TAxes>).GetMethod(nameof(Probe), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
               ?? throw new InvalidOperationException("Method 'Probe' not found in ProofForAction class.");
 
         /// <summary>
         /// The test proof instance that this collection belongs to.
         /// </summary>
-        IRawProofForFunc TestProof { get; }
+        IRawProofForFunc<TAxes> TestProof { get; }
 
         /// <summary>
         /// An array of functions that will be probed for failures.
@@ -57,7 +57,7 @@ namespace Xproof.BaseProofLibrary.DefaultModules
         /// <summary>
         /// Represents a collection of functions that can be probed for results and failures.
         /// </summary>
-        public ProvableFuncs(IRawProofForFunc testProof, Func<T>[] functions)
+        public ProvableFuncs(IRawProofForFunc<TAxes> testProof, Func<T>[] functions)
         {
             // Validate and assign the test proof and actions
             TestProof = testProof ?? throw new ArgumentNullException(nameof(testProof), "TestProof cannot be null.");
@@ -68,7 +68,7 @@ namespace Xproof.BaseProofLibrary.DefaultModules
         /// Probes the functions for failures and returns the results.
         /// </summary>
         public IEnumerable<T?> Probe(
-            object? axes = null,
+            TAxes? axes = default,
             [CallerFilePath] string? callerFilePath = null,
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null,

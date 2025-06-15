@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Xproof.Abstractions.TestProofForTestRunner;
 using Xproof.Abstractions.Utils;
-using Xproof.BaseProofLibrary.Proofs;
 using Xproof.SupportingXunit.AdapterForTestRunner;
 using Xproof.Utils;
 using Xunit.Abstractions;
@@ -22,7 +21,41 @@ namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
         public IMessageSink? DiagnosticMessageSink { get; set; }
 
         /// <summary>
-        /// Creates an instance of a serializable test proof factory based on the provided type and test proof type.
+        /// A が IInvokableProof&lt;TAxes&gt; を実装している前提で、
+        /// その TAxes の実際の <see cref="Type"/> を返す。
+        /// </summary>
+        private static Type GetAxesType(Type candidate)
+        {
+            if (candidate is null)
+                throw new ArgumentNullException(nameof(candidate));
+
+            // ① candidate 自身が IInvokableProof<...> そのものか？
+            if (candidate.IsGenericType &&
+                candidate.GetGenericTypeDefinition() == typeof(IInvokableProof<>))
+            {
+                return candidate.GetGenericArguments()[0];
+            }
+
+            // ② 実装インタフェースをスキャン
+            var iface = candidate
+                .GetInterfaces()                              // <- 継承階層もぜんぶ含む
+                .FirstOrDefault(i =>
+                     i.IsGenericType &&
+                     i.GetGenericTypeDefinition() == typeof(IInvokableProof<>));
+
+            if (iface is null)
+            {
+                throw new InvalidOperationException(
+                    $"{candidate.FullName} doesn't implement IInvokableProof<>.");
+            }
+
+            // 第一型引数 (= TAxes) を返す
+            return iface.GetGenericArguments()[0];
+        }
+
+        /// <summary>
+        /// Creates an instance of a serializable test p
+        /// roof factory based on the provided type and test proof type.
         /// </summary>
         private static object CreateSerializableTestProofFactory(Type serializableTestProofFactoryType, Type testProofType)
         {
@@ -33,15 +66,16 @@ namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
                        ?? throw new InvalidOperationException($"Failed to create instance of {serializableTestProofFactoryType}");
             }
             var numGenericArgs = serializableTestProofFactoryType.GetGenericArguments().Length;
-            if (numGenericArgs != 1)
+            if (numGenericArgs != 2)
             {
+
                 throw new ArgumentException(nameof(
                     serializableTestProofFactoryType),
-                    $"{serializableTestProofFactoryType} must have exactly one generic argument, but found {numGenericArgs}."
+                    $"{serializableTestProofFactoryType} must have exactly two generic arguments, but found {numGenericArgs}."
                 );
             }
 
-            var closedType = serializableTestProofFactoryType.MakeGenericType(testProofType);
+            var closedType = serializableTestProofFactoryType.MakeGenericType(testProofType, GetAxesType(testProofType));
             return Activator.CreateInstance(closedType)
                    ?? throw new InvalidOperationException($"Failed to create instance of {closedType}");
         }
@@ -69,7 +103,7 @@ namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
                 string methodName = testMethod.Method.Name;
 
                 // Ensure that the test method is not null and has a valid name
-                var proofType = attributeInfo.GetNamedArgument<Type>("TestProofType") ?? typeof(BaseProofLibrary.Proofs.Xproof);
+                var proofType = attributeInfo.GetNamedArgument<Type>("TestProofType") ?? typeof(Xproof.BaseProofLibrary.Proofs.Xproof);
 
                 var keyForProofInvocationKind = "ProofInvocationKind";
                 var proofInvocationKind = attributeInfo.GetNamedArgument<ProofInvocationKind>(keyForProofInvocationKind);
@@ -132,17 +166,18 @@ namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
                 );
 
                 // Create a new test case for the proof with the provided parameters
-                var testCaseGenericType = typeof(ProofTestCase<,>);
+                var testCaseGenericType = typeof(ProofTestCase<,,>);
 
                 // The proof type is known at runtime
-                Type factoryType = typeof(SerializableTestProofFactory<>).MakeGenericType(proofType);
+                Type factoryType = typeof(SerializableTestProofFactory<,>).MakeGenericType(proofType, GetAxesType(proofType));
 
                 // Make the test case type generic with the proof type and factory type
-                var closedTestCaseType = testCaseGenericType.MakeGenericType(proofType, factoryType);
+                var closedTestCaseType = testCaseGenericType.MakeGenericType(proofType, GetAxesType(proofType), factoryType);
 
                 // Insert null value for the proof into the test method arguments at the front
                 dataRow ??= Array.Empty<object>();
-                dataRow = new object?[] { $"Place_For_{proofType.Name}" }.Concat(dataRow).ToArray();
+                // Register the proof type as the first element in the data row as a placeholder
+                dataRow = new object?[] { $"[{proofType.Name}]" }.Concat(dataRow).ToArray();
 
                 // Prepare the constructor arguments for the test case instance
                 var constructorArgs = new object?[]
@@ -163,7 +198,7 @@ namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
             catch (Exception ex)
             {
                 // If an exception occurs, add the error message to the messages list
-                var message = $"Error while discovering test case for method {testMethod.Method.Name}: {ex.Message}";
+                var message = $"Error while discovering test case for method {testMethod.Method.Name}:{Environment.NewLine}{ex}";
                 messages.Add(message);
                 DiagnosticMessageSink?.OnMessage(new DiagnosticMessage(message));
             }

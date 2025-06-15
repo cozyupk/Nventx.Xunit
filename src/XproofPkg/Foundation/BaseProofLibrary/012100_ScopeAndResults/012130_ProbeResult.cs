@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using Xproof.Abstractions.TestProofForTestRunner;
 
 namespace Xproof.BaseProofLibrary.ScopeAndResults
@@ -6,12 +7,12 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
     /// <summary>
     /// Represents the result of a probing operation in the context of test proofs.
     /// </summary>
-    public record ProbeResult : IProbeResult
+    public record ProbeResult<TAxes> : IProbeResult<TAxes>
     {
         /// <summary>
         /// The record of the invocation that was used to perform the probing.
         /// </summary>
-        public IProbeScopeRecord ProbeScopeRecord { get; }
+        public IProbeScopeRecord<TAxes> ProbeScopeRecord { get; }
 
         /// <summary>
         /// The time elapsed during the probing operation.
@@ -27,7 +28,7 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
         /// Initializes a new instance of the <see cref="ProbeResult"/> class with the specified parameters.
         /// </summary>
         public ProbeResult(
-            IProbeScopeRecord invocationRecord,
+            IProbeScopeRecord<TAxes> invocationRecord,
             TimeSpan elapsed,
             Exception? exception = null
         )

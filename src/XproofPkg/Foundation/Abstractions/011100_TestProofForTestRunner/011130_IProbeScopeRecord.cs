@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Xproof.Abstractions.TestProofForTestRunner
 {
@@ -10,7 +9,7 @@ namespace Xproof.Abstractions.TestProofForTestRunner
     /// Note: Expected / Actual values from assertions are not included here yet.
     /// These may be added in the future once a reliable way to extract them from xUnit's Assert results is established.
     /// </remarks>
-    public interface IProbeScopeRecord
+    public interface IProbeScopeRecord<out TAxes>
     {
         /// <summary>
         /// Invoked probe method that was used to perform the probing.
@@ -45,7 +44,7 @@ namespace Xproof.Abstractions.TestProofForTestRunner
         /// <summary>
         /// The axes associated with the probe, if any.
         /// </summary>
-        object? Axes { get; }
+        TAxes? Axes { get; }
 
         /// <summary>
         /// The position of the probe in a combined sequence, if applicable.

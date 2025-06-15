@@ -2,8 +2,8 @@
 
 namespace Xproof.Abstractions.TestProofForTestMethods
 {
-    public interface ICombinerForFuncs
+    public interface ICombinerForFuncs<in TAxes>
     {
-        IProvable<T> Combine<T>(params Func<T>[] functions);
+        IProvable<T, TAxes> Combine<T>(params Func<T>[] functions);
     }
 }

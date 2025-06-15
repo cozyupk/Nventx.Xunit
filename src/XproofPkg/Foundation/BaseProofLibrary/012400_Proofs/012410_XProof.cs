@@ -1,12 +1,12 @@
-﻿using Xproof.BaseProofLibrary.ProofBase;
-using Xproof.BaseProofLibrary.DefaultModules;
+﻿using Xproof.BaseProofLibrary.DefaultModules;
+using Xproof.BaseProofLibrary.ProofBase;
 
 namespace Xproof.BaseProofLibrary.Proofs
 {
     /// <summary>
     /// A proof implementation that allows for late failure collection during test execution.
     /// </summary>
-    public class Xproof : DeclarativeCustomizableProof 
+    public class Xproof<TAxes> : DeclarativeCustomizableProof<TAxes>
     {
         /// <summary>
         /// The default proof used by [ProofFact] when no other is specified.
@@ -20,10 +20,15 @@ namespace Xproof.BaseProofLibrary.Proofs
             // base.InitializeProofComponent(config); 
 
             // Override the proof components with specific implementations
-            config.SetProofForAction(new ProofForAction(this));
-            config.SetCombinerForActions(new CombinerForActions(this));
-            config.SetProofForFunc(new ProofForFunc(this));
-            config.SetCombinerForFuncs(new CombinerForFuncs(this));
+            config.SetProofForAction(new ProofForAction<TAxes>(this));
+            config.SetCombinerForActions(new CombinerForActions<TAxes>(this));
+            config.SetProofForFunc(new ProofForFunc<TAxes>(this));
+            config.SetCombinerForFuncs(new CombinerForFuncs<TAxes>(this));
         }
+    }
+
+    public class Xproof : Xproof<string>
+    {
+        // Including this empty class allows the use of Xproof without specifying axes.
     }
 }

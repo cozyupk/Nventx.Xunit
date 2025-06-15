@@ -4,11 +4,11 @@ using Xproof.Abstractions.TestProofForTestRunner;
 
 namespace Xproof.Abstractions.Sdk
 {
-    public interface IRawProofForFunc
+    public interface IRawProofForFunc<in TAxes>
     {
         T? Probe<T> (
             Func<T> func,
-            object? axes,
+            TAxes? axes,
             string callerFilePath,
             int callerLineNumber,
             string callerMemberName,

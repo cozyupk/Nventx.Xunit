@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Xproof.Abstractions.TestProofForTestRunner;
@@ -10,9 +11,9 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
     /// <summary>
     /// A silent message bus that ignores all messages sent to it.
     /// </summary>
-    internal class ProofCoordinatorBus : IMessageBus
+    internal class ProofCoordinatorBus<TAxes> : IMessageBus
     {
-        private IInvokableProof Proof { get; }
+        private IInvokableProof<TAxes> Proof { get; }
         private ITestCase TestCase { get; }
         private CancellationTokenSource Cts { get; }
         private IMessageBus OriginalBus { get; }
@@ -25,7 +26,7 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
         public ProofCoordinatorBus(object? proofCand, ITestCase testCase, IMessageBus originalBus, CancellationTokenSource cts)
         {
             // validate the proof candidate and store it
-            Proof = proofCand as IInvokableProof ?? throw new ArgumentException(
+            Proof = proofCand as IInvokableProof<TAxes> ?? throw new ArgumentException(
                       "The proof candidate must implement IInvokableProof.", nameof(proofCand)
                     );
 

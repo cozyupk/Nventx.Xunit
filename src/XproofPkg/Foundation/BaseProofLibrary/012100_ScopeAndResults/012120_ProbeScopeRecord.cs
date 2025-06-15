@@ -12,7 +12,7 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
     /// <summary>
     /// Immutable record of a single probe execution, enriched with caller information and positions.
     /// </summary>
-    public sealed class ProbeScopeRecord : IProbeScopeRecord
+    public sealed class ProbeScopeRecord<TAxes> : IProbeScopeRecord<TAxes>
     {
         private static readonly JsonSerializerOptions _jsonOptions = new()
         {
@@ -42,7 +42,7 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
         public string CallerFilePath { get; }
         public int CallerLineNumber { get; }
         public string CallerMemberName { get; }
-        public object? Axes { get; }
+        public TAxes? Axes { get; }
         public IPositionInArray? CombinedPosition { get; }
         public IPositionInArray? DelegatePosition { get; }
 
@@ -56,7 +56,7 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
             string callerFilePath,
             int callerLineNumber,
             string callerMemberName,
-            object? axes,
+            TAxes? axes,
             IPositionInArray? combinedPosition,
             IPositionInArray? delegatePosition)
         {

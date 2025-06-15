@@ -9,12 +9,11 @@ using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
-using Xproof.BaseProofLibrary.Proofs;
 using Xunit;
 
 namespace Xproof.SupportingXunit.Test
 {
-    public class AssertProof : BaseProofLibrary.Proofs.Xproof
+    public class AssertProof<TAxes> : BaseProofLibrary.Proofs.Xproof<TAxes>
     {
         public void All<T>(IAsyncEnumerable<T> arg_collection, Action<T> arg_action)
         {

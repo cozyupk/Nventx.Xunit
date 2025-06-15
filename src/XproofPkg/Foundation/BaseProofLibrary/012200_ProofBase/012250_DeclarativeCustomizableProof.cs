@@ -8,13 +8,13 @@ using Xproof.Abstractions.TestProofForTestRunner;
 
 namespace Xproof.BaseProofLibrary.ProofBase
 {
-    public abstract partial class DeclarativeCustomizableProof 
-        : InvokableProofBase,
-          IProofForAction, IRawProofForAction, ICombinerForActions,
-          IProofForFunc, IRawProofForFunc, ICombinerForFuncs
+    public abstract partial class DeclarativeCustomizableProof<TAxes>
+        : InvokableProofBase<TAxes>,
+          IProofForAction<TAxes>, IRawProofForAction<TAxes>, ICombinerForActions<TAxes>,
+          IProofForFunc<TAxes>, IRawProofForFunc<TAxes>, ICombinerForFuncs<TAxes>
     {
         private static MethodInfo InvokedMethodInfoForAction { get; } =
-            typeof(DeclarativeCustomizableProof)
+            typeof(DeclarativeCustomizableProof<TAxes>)
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 .Single(m =>
                     m.Name == nameof(Probe) &&
@@ -23,7 +23,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
                 );
 
         private static MethodInfo InvokedMethodInfoForFunc { get; } =
-            typeof(DeclarativeCustomizableProof)
+            typeof(DeclarativeCustomizableProof<TAxes>)
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 .Single(m =>
                     m.Name == nameof(Probe) &&
@@ -31,12 +31,12 @@ namespace Xproof.BaseProofLibrary.ProofBase
                     m.GetParameters()[0].ParameterType.IsGenericType &&
                     m.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(Func<>) // 先頭引数が Func<T>
                 );
-        private IRawProofForAction? ProofForAction { get; set; }
+        private IRawProofForAction<TAxes>? ProofForAction { get; set; }
 
-        private ICombinerForActions? CombinerForActions { get; set; }
+        private ICombinerForActions<TAxes>? CombinerForActions { get; set; }
 
-        private IRawProofForFunc? ProofForFunc { get; set; }
-        private ICombinerForFuncs? CombinerForFuncs { get; set; }
+        private IRawProofForFunc<TAxes>? ProofForFunc { get; set; }
+        private ICombinerForFuncs<TAxes>? CombinerForFuncs { get; set; }
 
         public DeclarativeCustomizableProof ()
         {
@@ -49,7 +49,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
 
         public void Probe(
             Action act,
-            object? axes = null,
+            TAxes? axes = default,
             [CallerFilePath] string? callerFilePath = null,
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null,
@@ -69,7 +69,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
             ProofForAction.Probe(act, axes, callerFilePath, callerLineNumber, callerMemberName, invokedMethodInfo, invokedParameters, combinedPosition);
         }
 
-        public ICombinedProvable Combine(Action[] actions)
+        public ICombinedProvable<TAxes> Combine(Action[] actions)
         {
             return CombinerForActions?.Combine(actions)
                    ?? throw new NotImplementedException($"{nameof(CombinerForActions)} is not implemented {this.GetType().FullName}.");
@@ -77,7 +77,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
 
         public T? Probe<T>(
             Func<T> func,
-            object? axes = null,
+            TAxes? axes = default,
             [CallerFilePath] string? callerFilePath = null,
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null,
@@ -97,7 +97,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
             return ProofForFunc.Probe(func, axes, callerFilePath, callerLineNumber, callerMemberName, invokedMethodInfo, invokedParameters, combinedPosition);
         }
 
-        public IProvable<T> Combine<T>(params Func<T>[] functions)
+        public IProvable<T, TAxes> Combine<T>(params Func<T>[] functions)
         {
             return CombinerForFuncs?.Combine(functions)
                    ?? throw new NotImplementedException($"{nameof(CombinerForFuncs)} is not implemented {this.GetType().FullName}.");

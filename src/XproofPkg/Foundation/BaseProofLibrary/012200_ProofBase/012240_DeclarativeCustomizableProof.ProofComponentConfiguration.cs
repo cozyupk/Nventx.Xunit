@@ -4,7 +4,7 @@ using Xproof.Abstractions.TestProofForTestMethods;
 
 namespace Xproof.BaseProofLibrary.ProofBase
 {
-    partial class DeclarativeCustomizableProof
+    partial class DeclarativeCustomizableProof<TAxes>
     {
         private class ProofComponentConfiguration : IProofComponentConfiguration
         {
@@ -12,14 +12,14 @@ namespace Xproof.BaseProofLibrary.ProofBase
 
             private object LockObject { get; } = new object();
 
-            private DeclarativeCustomizableProof Proof { get; }
+            private DeclarativeCustomizableProof<TAxes> Proof { get; }
 
-            public ProofComponentConfiguration(DeclarativeCustomizableProof proof)
+            public ProofComponentConfiguration(DeclarativeCustomizableProof<TAxes> proof)
             {
-                Proof = proof ?? throw new ArgumentNullException(nameof(proof), $"{nameof(DeclarativeCustomizableProof)} cannot be null.");
+                Proof = proof ?? throw new ArgumentNullException(nameof(proof), $"{nameof(DeclarativeCustomizableProof<TAxes>)} cannot be null.");
             }
 
-            public void SetProofForAction(IRawProofForAction proofForAction)
+            public void SetProofForAction(IRawProofForAction<TAxes> proofForAction)
             {
                 lock (LockObject)
                 {
@@ -32,7 +32,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
                 }
             }
 
-            public void SetCombinerForActions(ICombinerForActions combinerForActions)
+            public void SetCombinerForActions(ICombinerForActions<TAxes> combinerForActions)
             {
                 lock (LockObject)
                 {
@@ -45,7 +45,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
                 }
             }
 
-            public void SetProofForFunc(IRawProofForFunc proofForFunc)
+            public void SetProofForFunc(IRawProofForFunc<TAxes> proofForFunc)
             {
                 lock (LockObject)
                 {
@@ -58,7 +58,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
                 }
             }
 
-            public void SetCombinerForFuncs(ICombinerForFuncs combinerForFuncs)
+            public void SetCombinerForFuncs(ICombinerForFuncs<TAxes> combinerForFuncs)
             {
                 lock (LockObject)
                 {

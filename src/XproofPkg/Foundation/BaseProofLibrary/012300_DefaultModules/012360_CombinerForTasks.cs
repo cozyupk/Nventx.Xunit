@@ -4,9 +4,9 @@ using Xproof.Abstractions.TestProofForTestMethods;
 
 namespace Xproof.BaseProofLibrary.DefaultModules
 {
-    internal class CombinerForTasks : ICombinerForTasks
+    internal class CombinerForTasks<TAxes> : ICombinerForTasks<TAxes>
     {
-        public Abstractions.TestProofForTestMethods.ICombinedProvable Combine(params Func<Task>[] tasks)
+        public Abstractions.TestProofForTestMethods.ICombinedProvable<TAxes> Combine(params Func<Task>[] tasks)
         {
             throw new NotImplementedException();
         }

@@ -11,17 +11,17 @@ namespace Xproof.BaseProofLibrary.DefaultModules
     /// <summary>
     /// A combiner for actions that allows for late failure collection during test execution.
     /// </summary>
-    internal class CombinerForActions : ICombinerForActions
+    internal class CombinerForActions<TAxes> : ICombinerForActions<TAxes>
     {
         /// <summary>
         /// The proof for action that will be used to record probing failures.
         /// </summary>
-        IRawProofForAction ProofForAction { get; }
+        IRawProofForAction<TAxes> ProofForAction { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CombinerForActions"/> class with the specified proof for action.
         /// </summary>
-        public CombinerForActions(IRawProofForAction proofForAction)
+        public CombinerForActions(IRawProofForAction<TAxes> proofForAction)
         {
             // Validate and assign the proof for action
             ProofForAction = proofForAction
@@ -31,7 +31,7 @@ namespace Xproof.BaseProofLibrary.DefaultModules
         /// <summary>
         /// Combines multiple actions into a single provable element that can be probed for failures.
         /// </summary>
-        public ICombinedProvable Combine(params Action[] actions)
+        public ICombinedProvable<TAxes> Combine(params Action[] actions)
         {
             return new ProvableActions(ProofForAction, actions);
         }
@@ -39,19 +39,19 @@ namespace Xproof.BaseProofLibrary.DefaultModules
         /// <summary>
         /// A class that encapsulates a collection of actions to be probed for failures.
         /// </summary>
-        internal class ProvableActions : ICombinedProvable, IRawCombinedProvable
+        internal class ProvableActions : ICombinedProvable<TAxes>, IRawCombinedProvable<TAxes>
         {
             /// <summary>
             /// The method info for the invoked method that will be used to record probings.
             /// </summary>
             static MethodInfo InvokedMethodInfo { get; }
-                = typeof(CombinerForActions).GetMethod(nameof(Probe), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                = typeof(CombinerForActions<TAxes>).GetMethod(nameof(Probe), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                   ?? throw new InvalidOperationException("Method 'Probe' not found in ProofForAction class.");
 
             /// <summary>
             /// The test proof instance that this collection belongs to.
             /// </summary>
-            IRawProofForAction TestProof { get; }
+            IRawProofForAction<TAxes> TestProof { get; }
 
             /// <summary>
             /// An array of actions that will be probed for failures.
@@ -61,7 +61,7 @@ namespace Xproof.BaseProofLibrary.DefaultModules
             /// <summary>
             /// Initializes a new instance of the <see cref="ProvableActions"/> class with the specified test proof and actions.
             /// </summary>
-            public ProvableActions(IRawProofForAction testProof, Action[] actions)
+            public ProvableActions(IRawProofForAction<TAxes> testProof, Action[] actions)
             {
                 // Validate and assign the test proof and actions
                 TestProof = testProof ?? throw new ArgumentNullException(nameof(testProof), "TestProof cannot be null.");
@@ -72,7 +72,7 @@ namespace Xproof.BaseProofLibrary.DefaultModules
             /// Probes each action in the collection for failures, executing them and collecting any exceptions that occur.
             /// </summary>
             public virtual void Probe(
-                object? axes = null,
+                TAxes? axes = default,
                 [CallerFilePath] string? callerFilePath = null,
                 [CallerLineNumber] int callerLineNumber = 0,
                 [CallerMemberName] string? callerMemberName = null,

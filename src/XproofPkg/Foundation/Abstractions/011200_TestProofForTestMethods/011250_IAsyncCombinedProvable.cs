@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 
 namespace Xproof.Abstractions.TestProofForTestMethods
 {
-    public interface IAsyncCombinedProvable
+    public interface IAsyncCombinedProvable<in TAxes>
     {
         Task ProbeAsync(
-            object? axes = null,
+            TAxes? axes = default,
             [CallerFilePath] string? callerFilePath = null,
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null,

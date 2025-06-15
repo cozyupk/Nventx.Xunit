@@ -8,7 +8,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
     /// <summary>
     /// Base class for invokable proofs, providing setup and failure collection functionality.
     /// </summary>
-    public abstract class InvokableProofBase : IInvokableProof
+    public abstract class InvokableProofBase<TAxes> : IInvokableProof<TAxes>
     {
         /// <summary>
         /// The kind of proof invocation, indicating whether it is a single case, parameterized, or unknown.
@@ -28,7 +28,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
         /// <summary>
         /// A collection to store probing failures that occur during the test execution.
         /// </summary>
-        protected ConcurrentQueue<IProbeResult> ProbeResult { get; } = new();
+        protected ConcurrentQueue<IProbeResult<TAxes>> ProbeResult { get; } = new();
 
         /// <summary>
         /// Sets up the test proof environment with the specified proof invocation kind.
@@ -60,13 +60,13 @@ namespace Xproof.BaseProofLibrary.ProofBase
         /// <summary>
         /// Collects probing failures encountered during the test execution.
         /// </summary>
-        public IEnumerable<IProbeResult> GetResults()
+        public IEnumerable<IProbeResult<TAxes>> GetResults()
         {
             // Return a copy of the probe results as an array
             return ProbeResult.ToArray();
         }
 
-        public void RecordProbeResult(IProbeResult probeResult)
+        public void RecordProbeResult(IProbeResult<TAxes> probeResult)
         {
             // Validate the probe result before adding it to the collection
             if (probeResult == null)

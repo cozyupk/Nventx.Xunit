@@ -2,9 +2,12 @@
 
 namespace Xproof.Abstractions.TestProofForTestRunner
 {
-    public interface IProbeResult
+    public interface IProbeResult<out TAxes>
     {
-        IProbeScopeRecord ProbeScopeRecord { get; }
+        /// <summary>
+        /// The probe scope record associated with this result.
+        /// </summary>
+        IProbeScopeRecord<TAxes> ProbeScopeRecord { get; }
 
         TimeSpan Elapsed { get; }
 

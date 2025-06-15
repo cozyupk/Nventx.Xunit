@@ -6,11 +6,11 @@ using Xproof.Abstractions.TestProofForTestRunner;
 
 namespace Xproof.Abstractions.TestProofForTestMethods
 {
-    public interface IProofForTask
+    public interface IProofForTask<in TAxes>
     {
         Task ProbeAsync(
             Func<Task> task,
-            object? axes = null,
+            TAxes? axes = default,
             [CallerFilePath] string? callerFilePath = null,
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null,

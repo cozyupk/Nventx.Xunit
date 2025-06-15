@@ -5,11 +5,11 @@ using Xproof.Abstractions.TestProofForTestRunner;
 
 namespace Xproof.Abstractions.Sdk
 {
-    public interface IRawProofForTask
+    public interface IRawProofForTask<in TAxes>
     {
         Task ProbeAsync(
             Func<Task> task,
-            object? axes,
+            TAxes? axes,
             string callerFilePath,
             int callerLineNumber,
             string callerMemberName,

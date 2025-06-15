@@ -11,24 +11,24 @@ namespace Xproof.BaseProofLibrary.DefaultModules
     /// <summary>
     /// A proof implementation that allows for probing actions for failures, recording any exceptions that occur during execution.
     /// </summary>
-    internal class ProofForAction : IProofForAction, IRawProofForAction
+    internal class ProofForAction<TAxes> : IProofForAction<TAxes>, IRawProofForAction<TAxes>
     {
         /// <summary>
         /// The MethodInfo for the Probe method, used to invoke the probing logic.
         /// </summary>
         static MethodInfo InvokedMethodInfo { get; }
-            = typeof(ProofForAction).GetMethod(nameof(Probe), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+            = typeof(ProofForAction<TAxes>).GetMethod(nameof(Probe), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
               ?? throw new InvalidOperationException("Method 'Probe' not found in ProofForAction class.");
 
         /// <summary>
         /// The invokable proof that will be used to record probing failures.
         /// </summary>
-        IInvokableProof InvokableProof { get; }
+        IInvokableProof<TAxes> InvokableProof { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProofForAction"/> class with the specified invokable proof.
         /// </summary>
-        public ProofForAction(IInvokableProof invokableProof)
+        public ProofForAction(IInvokableProof<TAxes> invokableProof)
         {
             // Validate and assign the invokable proof
             InvokableProof
@@ -41,7 +41,7 @@ namespace Xproof.BaseProofLibrary.DefaultModules
         /// </summary>
         public void Probe(
             Action act,
-            object? axes = null,
+            TAxes? axes = default,
             [CallerFilePath] string? callerFilePath = null,
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null,
@@ -73,7 +73,7 @@ namespace Xproof.BaseProofLibrary.DefaultModules
                 };
                 // Create a probe scope for the current delegate invocation
                 using IProbeScope scope
-                    = new ProbeScope(
+                    = new ProbeScope<TAxes>(
                         InvokableProof, InvokableProof.ProofInvocationKind,
                         invokedMethodInfo ?? InvokedMethodInfo, parameters,
                         callerFilePath, callerLineNumber, callerMemberName, axes,

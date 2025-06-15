@@ -9,12 +9,12 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
     /// <summary>
     /// Represents a scope for probing within a test proof, allowing for recording success or failure of the probe.
     /// </summary>
-    public sealed class ProbeScope : IProbeScope
+    public sealed class ProbeScope<TAxes> : IProbeScope
     {
         /// <summary>
         /// The invokable proof instance that this scope belongs to, used for recording results.
         /// </summary>
-        private IInvokableProof InvokableProof { get; }
+        private IInvokableProof<TAxes> InvokableProof { get; }
 
         /// <summary>
         /// A stopwatch to measure the duration of the probe scope execution.
@@ -34,20 +34,20 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
         /// <summary>
         /// The record of the probe scope, containing details about the invocation and parameters.
         /// </summary>
-        private IProbeScopeRecord ScopeRecord { get; }
+        private IProbeScopeRecord<TAxes> ScopeRecord { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProbeScope"/> class, representing a scope for probing within a test proof.
         /// </summary>
         public ProbeScope(
-            IInvokableProof invokableProof,
+            IInvokableProof<TAxes> invokableProof,
             ProofInvocationKind invocationKind,
             MethodInfo invokedProbeMethod,
             object?[] invocationParameters,
             string callerFilePath,
             int callerLineNumber,
             string callerMemberName,
-            object? axes,
+            TAxes? axes,
             IPositionInArray? combinedPosition,
             IPositionInArray? delegatePosition
         ) {
@@ -61,7 +61,7 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
             InvokableProof = invokableProof;
 
             // Create the ProbeScope instance, for internal use at this time, and goint to be exposed later.
-            ScopeRecord = new ProbeScopeRecord(
+            ScopeRecord = new ProbeScopeRecord<TAxes>(
                 invocationKind, invokedProbeMethod, invocationParameters,
                 callerFilePath, callerLineNumber, callerMemberName, axes,
                 combinedPosition, delegatePosition
@@ -81,7 +81,7 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
                 IsCompleted = true;
                 Stopwatch.Stop();
                 InvokableProof.RecordProbeResult(
-                    new ProbeResult(ScopeRecord, Stopwatch.Elapsed, ex)
+                    new ProbeResult<TAxes>(ScopeRecord, Stopwatch.Elapsed, ex)
                 );
             }
         }
