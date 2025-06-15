@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xproof.Abstractions.TestProofForTestMethods;
 using Xproof.Abstractions.TestProofForTestRunner;
-using Xproof.BaseProofLibrary.Proofs;
 using Xproof.SupportingXunit.TypeBasedProofDiscoverer;
 using Xunit;
 
@@ -102,22 +102,21 @@ namespace Xproof.SupportingXunit.E2ETests
                 throw new Exception("An exception occured for testing purpose.");
             }
 
-            public int ProbingSuccessCount => 0;
+            public ProofInvocationKind ProofInvocationKind { get; private set; }
 
-            public IEnumerable<IProbingFailure> CollectProbingFailure()
+            public IEnumerable<IProbeResult> GetResults()
             {
-                // just return an empty enumerable for this test
-                return [];
+                return []; // just return an empty enumerable for this test
             }
 
-            public void RecordProbingFailure(Exception ex, TimeSpan elapsed, Delegate act, string? label, string? callerFilePath, int? callerLineNumber, string? callerMemberName, int? cnt, int? totalCnt)
+            public void RecordProbeResult(IProbeResult probeResult)
             {
                 // nothing to do here for this test
             }
 
-            public void RecordProobingSuccess(TimeSpan elapsed)
+            public void Commit()
             {
-                // nothing to do here for this test            }
+                // nothing to do here for this test
             }
         }
 
@@ -128,21 +127,19 @@ namespace Xproof.SupportingXunit.E2ETests
                 Utils.Delay(50); // Simulate some delay before throwing the exception
                 throw new Exception("An exception occured for testing purpose.");
             }
+            public ProofInvocationKind ProofInvocationKind { get; private set; }
 
-            public int ProbingSuccessCount => 0;
-
-            public IEnumerable<IProbingFailure> CollectProbingFailure()
+            public IEnumerable<IProbeResult> GetResults()
             {
-                // just return an empty enumerable for this test
-                return [];
+                return []; // just return an empty enumerable for this test
             }
 
-            public void RecordProbingFailure(Exception ex, TimeSpan elapsed, Delegate act, string? label, string? callerFilePath, int? callerLineNumber, string? callerMemberName, int? cnt, int? totalCnt)
+            public void RecordProbeResult(IProbeResult probeResult)
             {
                 // nothing to do here for this test
             }
 
-            public void RecordProobingSuccess(TimeSpan elapsed)
+            public void Commit()
             {
                 // nothing to do here for this test
             }
@@ -152,28 +149,28 @@ namespace Xproof.SupportingXunit.E2ETests
         {
             public void Setup(ProofInvocationKind proofInvocationKind)
             {
-                // Setup is not throwing an exception
+                ProofInvocationKind = proofInvocationKind;
             }
-            public int ProbingSuccessCount => 0;
-            public IEnumerable<IProbingFailure> CollectProbingFailure()
+            public ProofInvocationKind ProofInvocationKind { get; private set; }
+
+            public IEnumerable<IProbeResult> GetResults()
             {
-                // just return an empty enumerable for this test
-                return [];
+                return []; // just return an empty enumerable for this test
             }
 
-            public void Probe(Action act, string? label = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0, [CallerMemberName] string? callerMemberName = null)
+            public void RecordProbeResult(IProbeResult probeResult)
+            {
+                // nothing to do here for this test
+            }
+
+            public void Commit()
+            {
+                // nothing to do here for this tes
+            }
+
+            public void Probe(Action act, object? axes = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0, [CallerMemberName] string? callerMemberName = null, MethodInfo? invokedMethodInfo = null, object?[]? invokedParameters = null, IPositionInArray? combinedPosition = null)
             {
                 throw new Exception("An exception occured for testing purpose.");
-            }
-
-            public void RecordProbingFailure(Exception ex, TimeSpan elapsed, Delegate act, string? label, string? callerFilePath, int? callerLineNumber, string? callerMemberName, int? cnt, int? totalCnt)
-            {
-                // nothing to do here for this test
-            }
-
-            public void RecordProobingSuccess(TimeSpan elapsed)
-            {
-                // nothing to do here for this test
             }
         }
 
@@ -181,29 +178,29 @@ namespace Xproof.SupportingXunit.E2ETests
         {
             public void Setup(ProofInvocationKind proofInvocationKind)
             {
-                // Setup is not throwing an exception
+                ProofInvocationKind = proofInvocationKind;
             }
-            public int ProbingSuccessCount => 0;
-            public IEnumerable<IProbingFailure> CollectProbingFailure()
+            public ProofInvocationKind ProofInvocationKind { get; private set; }
+
+            public IEnumerable<IProbeResult> GetResults()
             {
-                // just return an empty enumerable for this test
-                return [];
+                return []; // just return an empty enumerable for this test
             }
 
-            public void Probe(Action act, string? label = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0, [CallerMemberName] string? callerMemberName = null)
+            public void RecordProbeResult(IProbeResult probeResult)
+            {
+                // nothing to do here for this test
+            }
+
+            public void Commit()
+            {
+                // nothing to do here for this tes
+            }
+
+            public void Probe(Action act, object? axes = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0, [CallerMemberName] string? callerMemberName = null, MethodInfo? invokedMethodInfo = null, object?[]? invokedParameters = null, IPositionInArray? combinedPosition = null)
             {
                 Utils.Delay(50); // Simulate some delay before throwing the exception
                 throw new Exception("An exception occured for testing purpose.");
-            }
-
-            public void RecordProbingFailure(Exception ex, TimeSpan elapsed, Delegate act, string? label, string? callerFilePath, int? callerLineNumber, string? callerMemberName, int? cnt, int? totalCnt)
-            {
-                // nothing to do here for this test
-            }
-
-            public void RecordProobingSuccess(TimeSpan elapsed)
-            {
-                // nothing to do here for this test
             }
         }
 

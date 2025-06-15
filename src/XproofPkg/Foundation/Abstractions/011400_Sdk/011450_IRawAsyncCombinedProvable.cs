@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Xproof.Abstractions.Sdk
 {
-    public interface IAsyncProvable
+    public interface IAsyncCombinedProvable
     {
         Task ProbeAsync(
             object? axes,

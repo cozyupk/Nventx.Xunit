@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Xproof.Abstractions.TestProofForTestMethods
 {
-    public interface IAsyncProvable
+    public interface IAsyncCombinedProvable
     {
         Task ProbeAsync(
             object? axes = null,

@@ -47,7 +47,7 @@ namespace Xproof.BaseProofLibrary.DefaultModules
             [CallerMemberName] string? callerMemberName = null,
             MethodInfo? invokedMethodInfo = null,
             object?[]? invokedParameters = null,
-            (int Index, int TotalCount)? combinedPosition = null
+            IPositionInArray? combinedPosition = null
         )
         {
             // Validate the parameters (CallerXXX also must not be null.)
@@ -63,13 +63,13 @@ namespace Xproof.BaseProofLibrary.DefaultModules
 
             foreach (var del in delegates) {
                 // If there are multiple delegates, set the position to indicate the current index and total count
-                (int Index, int TotalCount)? delegatePosition = (1 < delegates.Length) ? (i + 1, delegates.Length) : null;
+                IPositionInArray? delegatePosition = (1 < delegates.Length) ? new PositionInArray(i + 1, delegates.Length) : null;
 
                 // Get the parameters for the probe scope
                 // Note: Parameters are shared across all delegate invocations for this probe.
                 //       If per-delegate parameters are needed, this logic should be refactored accordingly.
                 object?[] parameters = invokedParameters ?? new object?[] {
-                    act, axes, callerFilePath, callerLineNumber, callerMemberName
+                    act, axes
                 };
                 // Create a probe scope for the current delegate invocation
                 using IProbeScope scope

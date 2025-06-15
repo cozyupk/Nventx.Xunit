@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Foundation\BaseProofLibrary\010_013000_BaseProofLibrary.csproj" />
+	  <ProjectReference Include="..\..\Foundation\BaseProofLibrary\010_012000_BaseProofLibrary.csproj" />
 	  <ProjectReference Include="..\AdapterForTestRunner\010_022000_AdapterForTestRunner.csproj" />
 	</ItemGroup>
 

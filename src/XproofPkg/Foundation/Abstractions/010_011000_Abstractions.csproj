@@ -6,8 +6,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Include="011100_TestProofForTestRunner\011120_IProbeScopeRecord.cs" />
-	  <None Include="011100_TestProofForTestRunner\011150_IInvokableProof.cs" />
+	  <None Include="011100_TestProofForTestRunner\011130_IProbeScopeRecord.cs" />
+	  <None Include="011100_TestProofForTestRunner\011160_IInvokableProof.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

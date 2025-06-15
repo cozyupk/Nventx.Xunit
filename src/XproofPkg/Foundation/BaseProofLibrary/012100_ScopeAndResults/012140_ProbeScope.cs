@@ -48,8 +48,8 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
             int callerLineNumber,
             string callerMemberName,
             object? axes,
-            (int Index, int TotalCount)? combinedPosition,
-            (int Index, int TotalCount)? delegatePosition
+            IPositionInArray? combinedPosition,
+            IPositionInArray? delegatePosition
         ) {
             // Validate parameters
             _ = invokableProof ?? throw new ArgumentNullException(nameof(invokableProof));

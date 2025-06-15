@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Xproof.Abstractions.TestProofForTestRunner;
 
 namespace Xproof.Abstractions.TestProofForTestMethods
 {
@@ -14,7 +15,7 @@ namespace Xproof.Abstractions.TestProofForTestMethods
             [CallerMemberName] string? callerMemberName = null,
             MethodInfo? invokedMethodInfo = null,
             object?[]? invokedParameters = null,
-            (int Index, int TotalCount)? combinedPosition = null
+            IPositionInArray? combinedPosition = null
         );
     }
 }

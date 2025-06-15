@@ -4,6 +4,8 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Xproof.Abstractions.Sdk;
 using Xproof.Abstractions.TestProofForTestMethods;
+using Xproof.Abstractions.TestProofForTestRunner;
+using Xproof.BaseProofLibrary.ScopeAndResults;
 
 namespace Xproof.BaseProofLibrary.DefaultModules
 {
@@ -84,18 +86,18 @@ namespace Xproof.BaseProofLibrary.DefaultModules
             List<T?> results = new(Funcs.Length);
 
             // Declare a combined position to track the index and total count
-            (int Index, int TotalCount) combinedPosition = (1, Funcs.Length);
+            IPositionInArray combinedPosition = new PositionInArray(1, Funcs.Length);
 
             // Probe each function and collect the results
             foreach (var func in Funcs)
             {
                 object?[] parameters
                             = invokedParameters
-                                ?? new object?[] { func, axes, callerFilePath, callerLineNumber, callerMemberName };
+                                ?? new object?[] { func, axes };
                 var retval = TestProof.Probe
                      (func, axes, callerFilePath, callerLineNumber, callerMemberName, invokedMethodInfo, parameters, combinedPosition);
                 results.Add(retval);
-                ++combinedPosition.Index;
+                combinedPosition.MoveToNext();
             }
             return results;
         }

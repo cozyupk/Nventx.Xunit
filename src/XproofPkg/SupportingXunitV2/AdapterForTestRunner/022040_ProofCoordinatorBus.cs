@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xproof.Abstractions.TestProofForTestRunner;
@@ -93,44 +92,35 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
                 try
                 {
                     summary.Total = 0;
-                    var failures = Proof.CollectProbingFailure();
-                    var cntFailure = failures.Count();
-                    if (cntFailure < 0)
+                    var results = Proof.GetResults();
+                    foreach (var result in results)
                     {
-                        throw new InvalidOperationException("The count of probing failures cannot be negative.");
-                    }
-
-                    summary.Total = cntFailure + Proof.ProbingSuccessCount;
-                    summary.Failed = cntFailure;
-
-                    if (cntFailure == 0)
-                    {
-                        Output = $"Test {CapturedTest?.DisplayName} passed with {Proof.ProbingSuccessCount} successful probes.";
+                        ++summary.Total;
+                        if (result.Exception != null)
+                        {
+                            ++summary.Failed;
+                            Output = $"{result.ProbeScopeRecord}";
+                            // TODO: Mesure the time of the failure
+                            if (!OriginalBus.QueueMessage(new TestFailed(
+                                CapturedTest, (decimal)result.Elapsed.TotalSeconds, Output, result.Exception
+                            )))
+                            {
+                                Cts.Cancel();
+                                break;
+                            }
+                            IsTestFailed = true;
+                            continue;
+                        }
+                        Output = $"{result.ProbeScopeRecord}";
                         // If there are no probing failures, we consider the test passed
                         Console.WriteLine($"**** Sending TestPassed for {CapturedTest?.DisplayName}");
                         Console.WriteLine($"**** Summary: {summary.Total}, {summary.Failed}, {summary.Skipped}");
                         if (!OriginalBus.QueueMessage(new TestPassed(
-                            CapturedTest, summary.Time, Output
+                            CapturedTest, (decimal)result.Elapsed.TotalSeconds, Output
                         )))
                         {
                             Cts.Cancel();
                         }
-                        return;
-                    }
-
-                    // Otherwise, queue each probing failure as a TestFailed message
-                    foreach (var failure in failures)
-                    {
-                        Output = $"Test {CapturedTest?.DisplayName} failed with probing failure: {failure.}";
-                        // TODO: Mesure the time of the failure
-                        if(!OriginalBus.QueueMessage(new TestFailed(
-                            CapturedTest, 0m, Output, failure.Exception
-                        )))
-                        {
-                            Cts.Cancel();
-                            break;
-                        }
-                        IsTestFailed = true;
                     }
                 }
                 finally

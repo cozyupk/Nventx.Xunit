@@ -3,6 +3,8 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Xproof.Abstractions.Sdk;
 using Xproof.Abstractions.TestProofForTestMethods;
+using Xproof.Abstractions.TestProofForTestRunner;
+using Xproof.BaseProofLibrary.ScopeAndResults;
 
 namespace Xproof.BaseProofLibrary.DefaultModules
 {
@@ -74,8 +76,8 @@ namespace Xproof.BaseProofLibrary.DefaultModules
                 [CallerFilePath] string? callerFilePath = null,
                 [CallerLineNumber] int callerLineNumber = 0,
                 [CallerMemberName] string? callerMemberName = null,
-                 MethodInfo? invokedMethodInfo = null,
-                 object?[]? invokedParameters = null
+                MethodInfo? invokedMethodInfo = null,
+                object?[]? invokedParameters = null
             )
             {
                 // Validate the parameters (CallerXXX also must not be null.)
@@ -86,17 +88,17 @@ namespace Xproof.BaseProofLibrary.DefaultModules
                 invokedMethodInfo ??= InvokedMethodInfo;
 
                 // Declare a combined position to track the index and total count
-                (int Index, int TotalCount) combinedPosition = (1, Actions.Length);
+                IPositionInArray combinedPosition = new PositionInArray(1, Actions.Length);
 
                 // Iterate through each action and execute FailLate for each
                 foreach (var action in Actions)
                 {
                     object?[] parameters
                         = invokedParameters
-                           ?? new object?[] { action, axes, callerFilePath, callerLineNumber, callerMemberName };
+                           ?? new object?[] {action, axes };
                     TestProof.Probe
                          (action, axes, callerFilePath, callerLineNumber, callerMemberName, invokedMethodInfo, parameters, combinedPosition);
-                    ++combinedPosition.Index;
+                    combinedPosition.MoveToNext(); // Move to the next position
                 }
             }
         }

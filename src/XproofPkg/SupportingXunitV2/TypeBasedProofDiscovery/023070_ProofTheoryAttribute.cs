@@ -5,8 +5,8 @@ using Xunit.Sdk;
 namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
 {
     [XunitTestCaseDiscoverer(
-        "xProof.SupportingXunit.TypeBasedProofDiscoverer.ProofTheoryTestCaseDiscoverer",
-        "xProof.SupportingXunitV2.TypeBasedProofDiscoverer"
+        "Xproof.SupportingXunit.TypeBasedProofDiscoverer.ProofTheoryTestCaseDiscoverer",
+        "Xproof.SupportingXunitV2.TypeBasedProofDiscoverer"
     )]
     public class ProofTheoryAttribute : ProofAttributeBase
     {

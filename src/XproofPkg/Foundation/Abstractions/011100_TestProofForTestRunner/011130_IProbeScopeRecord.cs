@@ -50,11 +50,11 @@ namespace Xproof.Abstractions.TestProofForTestRunner
         /// <summary>
         /// The position of the probe in a combined sequence, if applicable.
         /// </summary>
-        (int Index, int TotalCount)? CombinedPosition { get; }
+        IPositionInArray? CombinedPosition { get; }
 
         /// <summary>
         /// The position of the probe in a delegate sequence, if applicable.
         /// </summary>
-        (int Index, int TotalCount)? DelegatePosition { get; }
+        IPositionInArray? DelegatePosition { get; }
     }
 }

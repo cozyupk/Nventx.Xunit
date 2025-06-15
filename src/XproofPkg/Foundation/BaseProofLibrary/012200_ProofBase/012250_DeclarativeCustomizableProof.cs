@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Xproof.Abstractions.Sdk;
 using Xproof.Abstractions.TestProofForTestMethods;
+using Xproof.Abstractions.TestProofForTestRunner;
 
 namespace Xproof.BaseProofLibrary.ProofBase
 {
@@ -54,7 +55,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
             [CallerMemberName] string? callerMemberName = null,
             MethodInfo? invokedMethodInfo = null,
             object?[]? invokedParameters = null,
-            (int Index, int TotalCount)? combinedPosition = null
+            IPositionInArray? combinedPosition = null
         ) {
             if (ProofForAction == null)
             {
@@ -64,7 +65,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
             _ = callerMemberName ?? throw new ArgumentNullException(nameof(callerMemberName), "Caller member name cannot be null.");
 
             invokedMethodInfo ??= InvokedMethodInfoForAction;
-            invokedParameters ??= new object?[] { act, axes, callerFilePath, callerLineNumber, callerMemberName };
+            invokedParameters ??= new object?[] { act, axes };
             ProofForAction.Probe(act, axes, callerFilePath, callerLineNumber, callerMemberName, invokedMethodInfo, invokedParameters, combinedPosition);
         }
 
@@ -82,7 +83,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
             [CallerMemberName] string? callerMemberName = null,
             MethodInfo? invokedMethodInfo = null,
             object?[]? invokedParameters = null,
-            (int Index, int TotalCount)? combinedPosition = null
+            IPositionInArray? combinedPosition = null
         ) {
             if (ProofForFunc == null)
             {
@@ -92,7 +93,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
             _ = callerMemberName ?? throw new ArgumentNullException(nameof(callerMemberName), "Caller member name cannot be null.");
 
             invokedMethodInfo ??= InvokedMethodInfoForFunc;
-            invokedParameters ??= new object?[] { func, axes, callerFilePath, callerLineNumber, callerMemberName };
+            invokedParameters ??= new object?[] { func, axes };
             return ProofForFunc.Probe(func, axes, callerFilePath, callerLineNumber, callerMemberName, invokedMethodInfo, invokedParameters, combinedPosition);
         }
 
