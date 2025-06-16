@@ -21,10 +21,10 @@ namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
         public IMessageSink? DiagnosticMessageSink { get; set; }
 
         /// <summary>
-        /// A が IInvokableProof&lt;TAxes&gt; を実装している前提で、
-        /// その TAxes の実際の <see cref="Type"/> を返す。
+        /// A が IInvokableProof&lt;TLabelAxes&gt; を実装している前提で、
+        /// その TLabelAxes の実際の <see cref="Type"/> を返す。
         /// </summary>
-        private static Type GetAxesType(Type candidate)
+        private static Type GetLabelAxesType(Type candidate)
         {
             if (candidate is null)
                 throw new ArgumentNullException(nameof(candidate));
@@ -49,7 +49,7 @@ namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
                     $"{candidate.FullName} doesn't implement IInvokableProof<>.");
             }
 
-            // 第一型引数 (= TAxes) を返す
+            // 第一型引数 (= TLabelAxes) を返す
             return iface.GetGenericArguments()[0];
         }
 
@@ -75,7 +75,7 @@ namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
                 );
             }
 
-            var closedType = serializableTestProofFactoryType.MakeGenericType(testProofType, GetAxesType(testProofType));
+            var closedType = serializableTestProofFactoryType.MakeGenericType(testProofType, GetLabelAxesType(testProofType));
             return Activator.CreateInstance(closedType)
                    ?? throw new InvalidOperationException($"Failed to create instance of {closedType}");
         }
@@ -168,11 +168,14 @@ namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
                 // Create a new test case for the proof with the provided parameters
                 var testCaseGenericType = typeof(ProofTestCase<,,>);
 
+                // Get the type of the label axes for the proof type
+                var labelAxesType = GetLabelAxesType(proofType);
+
                 // The proof type is known at runtime
-                Type factoryType = typeof(SerializableTestProofFactory<,>).MakeGenericType(proofType, GetAxesType(proofType));
+                Type factoryType = typeof(SerializableTestProofFactory<,>).MakeGenericType(proofType, labelAxesType);
 
                 // Make the test case type generic with the proof type and factory type
-                var closedTestCaseType = testCaseGenericType.MakeGenericType(proofType, GetAxesType(proofType), factoryType);
+                var closedTestCaseType = testCaseGenericType.MakeGenericType(proofType, labelAxesType, factoryType);
 
                 // Insert null value for the proof into the test method arguments at the front
                 dataRow ??= Array.Empty<object>();

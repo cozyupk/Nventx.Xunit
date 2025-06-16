@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace Xproof.Abstractions.TestProofForTestMethods
 {
-    public interface ICombinerForTasks<in TAxes>
+    public interface ICombinerForTasks<in TLabelAxes>
     {
-        ICombinedProvable<TAxes> Combine(params Func<Task>[] tasks);
+        ICombinedProvable<TLabelAxes> Combine(params Func<Task>[] tasks);
     }
 }

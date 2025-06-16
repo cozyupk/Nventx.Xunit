@@ -9,7 +9,7 @@ namespace Xproof.Abstractions.TestProofForTestRunner
     /// Note: Expected / Actual values from assertions are not included here yet.
     /// These may be added in the future once a reliable way to extract them from xUnit's Assert results is established.
     /// </remarks>
-    public interface IProbeScopeRecord<out TAxes>
+    public interface IProbeScopeRecord<out TLabelAxes>
     {
         /// <summary>
         /// Invoked probe method that was used to perform the probing.
@@ -42,9 +42,9 @@ namespace Xproof.Abstractions.TestProofForTestRunner
         string CallerMemberName { get; }
 
         /// <summary>
-        /// The axes associated with the probe, if any.
+        /// The label associated with the probe, if any.
         /// </summary>
-        TAxes? Axes { get; }
+        TLabelAxes? label { get; }
 
         /// <summary>
         /// The position of the probe in a combined sequence, if applicable.

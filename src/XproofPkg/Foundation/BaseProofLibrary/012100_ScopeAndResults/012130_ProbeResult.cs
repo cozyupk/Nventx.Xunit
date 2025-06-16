@@ -7,12 +7,12 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
     /// <summary>
     /// Represents the result of a probing operation in the context of test proofs.
     /// </summary>
-    public record ProbeResult<TAxes> : IProbeResult<TAxes>
+    public record ProbeResult<TLabelAxes> : IProbeResult<TLabelAxes>
     {
         /// <summary>
         /// The record of the invocation that was used to perform the probing.
         /// </summary>
-        public IProbeScopeRecord<TAxes> ProbeScopeRecord { get; }
+        public IProbeScopeRecord<TLabelAxes> ProbeScopeRecord { get; }
 
         /// <summary>
         /// The time elapsed during the probing operation.
@@ -28,7 +28,7 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
         /// Initializes a new instance of the <see cref="ProbeResult"/> class with the specified parameters.
         /// </summary>
         public ProbeResult(
-            IProbeScopeRecord<TAxes> invocationRecord,
+            IProbeScopeRecord<TLabelAxes> invocationRecord,
             TimeSpan elapsed,
             Exception? exception = null
         )

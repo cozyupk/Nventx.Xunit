@@ -11,7 +11,7 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
     /// <summary>
     /// Represents a test case runner for tests that expect a proof to be verified during their execution.
     /// </summary>
-    public class ProofTestCaseRunner<TAxes> : XunitTestCaseRunner
+    public class ProofTestCaseRunner<TLabelAxes> : XunitTestCaseRunner
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionFactTestCaseRunner"/> class.
@@ -21,7 +21,7 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
                                ExceptionAggregator aggregator,
                                CancellationTokenSource cancellationTokenSource
         ) : base(testCase, displayName, skipReason, constructorArguments, testMethodArguments,
-                 new ProofCoordinatorBus<TAxes>(testMethodArguments[0], testCase, messageBus, cancellationTokenSource),
+                 new ProofCoordinatorBus<TLabelAxes>(testMethodArguments[0], testCase, messageBus, cancellationTokenSource),
                  aggregator, cancellationTokenSource)
         {
             // No additional initialization is needed here,
@@ -37,7 +37,7 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
         {
             Console.WriteLine($"Creating ProofTestInvoker for {messageBus.GetType().Name} arguments.");
             // create a ProofTestInvoker with the proof instance
-            var runner = new ProofTestRunner<TAxes>(
+            var runner = new ProofTestRunner<TLabelAxes>(
                 test, messageBus, testClass, constructorArguments, testMethod, testMethodArguments,
                 skipReason, beforeAfterAttributes, new ExceptionAggregator(aggregator), cancellationTokenSource
             );
@@ -55,7 +55,7 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
             return base.RunTestAsync()
                        .ContinueWith(task =>
                        {
-                           if (MessageBus is not ProofCoordinatorBus<TAxes> proxyMessageBus)
+                           if (MessageBus is not ProofCoordinatorBus<TLabelAxes> proxyMessageBus)
                            {
                                throw new InvalidOperationException("MessageBus is not of type ProofCoordinatorBus.");
                            }

@@ -12,7 +12,7 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
     /// <summary>
     /// Immutable record of a single probe execution, enriched with caller information and positions.
     /// </summary>
-    public sealed class ProbeScopeRecord<TAxes> : IProbeScopeRecord<TAxes>
+    public sealed class ProbeScopeRecord<TLabelAxes> : IProbeScopeRecord<TLabelAxes>
     {
         private static readonly JsonSerializerOptions _jsonOptions = new()
         {
@@ -42,7 +42,7 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
         public string CallerFilePath { get; }
         public int CallerLineNumber { get; }
         public string CallerMemberName { get; }
-        public TAxes? Axes { get; }
+        public TLabelAxes? label { get; }
         public IPositionInArray? CombinedPosition { get; }
         public IPositionInArray? DelegatePosition { get; }
 
@@ -56,7 +56,7 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
             string callerFilePath,
             int callerLineNumber,
             string callerMemberName,
-            TAxes? axes,
+            TLabelAxes? label,
             IPositionInArray? combinedPosition,
             IPositionInArray? delegatePosition)
         {
@@ -68,7 +68,7 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
             CallerFilePath = callerFilePath ?? throw new ArgumentNullException(nameof(callerFilePath));
             CallerLineNumber = callerLineNumber;
             CallerMemberName = callerMemberName ?? throw new ArgumentNullException(nameof(callerMemberName));
-            Axes = axes;
+            label = label;
             CombinedPosition = combinedPosition;
             DelegatePosition = delegatePosition;
         }
@@ -80,18 +80,19 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
         {
             var sb = new StringBuilder();
 
-            // 1) Headline with location and optional axes
+            // 1) Headline with location and optional label
             var fileName = Path.GetFileName(CallerFilePath);
             if (string.IsNullOrEmpty(fileName)) fileName = "?";
 
-            sb.Append($"{fileName}:{CallerLineNumber}: {CallerMemberName}");
-            if (Axes != null)
+            sb.Append($"{fileName}: {CallerLineNumber}: {CallerMemberName}");
+            if (label != null)
             {
-                sb.Append($" [${JsonSerializer.Serialize(Axes, _jsonOptions)}]");
+                sb.Append($" [${JsonSerializer.Serialize(label, _jsonOptions)}]");
             }
             sb.Append(Environment.NewLine);
 
             // 2) Probe method + parameters + invocation kind
+            // TODO: it would be nice to output the class name as well, but that would require more work
             sb.Append($"{InvokedProbeMethod.Name}({FormatParameters(InvocationParameters)}) / {InvocationKind}");
             sb.Append(Environment.NewLine);
 
@@ -102,7 +103,7 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
                 sb.AppendLine($"Delegate Position: {DelegatePosition}");
 
             // 4) Full path at the end for IDE click‑through
-            sb.Append($"Full caller file path: {CallerFilePath}");
+            sb.Append($"Full path to caller source, line {CallerLineNumber}: {CallerFilePath}");
 
             return sb.ToString();
         }

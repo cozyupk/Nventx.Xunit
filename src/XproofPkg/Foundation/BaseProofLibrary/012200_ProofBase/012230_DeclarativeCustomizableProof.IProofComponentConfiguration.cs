@@ -3,14 +3,14 @@ using Xproof.Abstractions.TestProofForTestMethods;
 
 namespace Xproof.BaseProofLibrary.ProofBase
 {
-    partial class DeclarativeCustomizableProof<TAxes>
+    partial class DeclarativeCustomizableProof<TLabelAxes>
     {
         protected interface IProofComponentConfiguration
         {
-            void SetProofForAction(IRawProofForAction<TAxes> proofForAction);
-            void SetCombinerForActions(ICombinerForActions<TAxes> combinerForActions);
-            void SetProofForFunc(IRawProofForFunc<TAxes> proofForFunc);
-            void SetCombinerForFuncs(ICombinerForFuncs<TAxes> combinerForFuncs);
+            void SetProofForAction(IRawProofForAction<TLabelAxes> proofForAction);
+            void SetCombinerForActions(ICombinerForActions<TLabelAxes> combinerForActions);
+            void SetProofForFunc(IRawProofForFunc<TLabelAxes> proofForFunc);
+            void SetCombinerForFuncs(ICombinerForFuncs<TLabelAxes> combinerForFuncs);
         }
     }
 }

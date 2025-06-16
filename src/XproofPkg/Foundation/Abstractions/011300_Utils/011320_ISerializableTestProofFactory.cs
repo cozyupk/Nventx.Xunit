@@ -26,8 +26,8 @@ namespace Xproof.Abstractions.Utils
     /// <summary>
     /// Factory interface for creating serializable test proofs of a specific type.
     /// </summary>
-    public interface ISerializableTestProofFactory<out TTestProof, out TAxes> : ISerializableTestProofFactory
-        where TTestProof : IInvokableProof<TAxes>
+    public interface ISerializableTestProofFactory<out TTestProof, out TLabelAxes> : ISerializableTestProofFactory
+        where TTestProof : IInvokableProof<TLabelAxes>
     {  
         /// <summary>
         /// Creates an instance of TTarget using the provided parameters.

@@ -13,7 +13,7 @@ using Xunit;
 
 namespace Xproof.SupportingXunit.Test
 {
-    public class AssertProof<TAxes> : BaseProofLibrary.Proofs.Xproof<TAxes>
+    public class AssertProof<TLabelAxes> : BaseProofLibrary.Proofs.Xproof<TLabelAxes>
     {
         public void All<T>(IAsyncEnumerable<T> arg_collection, Action<T> arg_action)
         {

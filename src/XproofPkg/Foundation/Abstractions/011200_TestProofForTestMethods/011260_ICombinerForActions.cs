@@ -2,8 +2,8 @@
 
 namespace Xproof.Abstractions.TestProofForTestMethods
 {
-    public interface ICombinerForActions<in TAxes>
+    public interface ICombinerForActions<in TLabelAxes>
     {
-        ICombinedProvable<TAxes> Combine(params Action[] actions);
+        ICombinedProvable<TLabelAxes> Combine(params Action[] actions);
     }
 }

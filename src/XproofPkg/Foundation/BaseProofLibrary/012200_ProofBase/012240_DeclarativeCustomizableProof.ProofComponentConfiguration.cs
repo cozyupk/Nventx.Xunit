@@ -4,7 +4,7 @@ using Xproof.Abstractions.TestProofForTestMethods;
 
 namespace Xproof.BaseProofLibrary.ProofBase
 {
-    partial class DeclarativeCustomizableProof<TAxes>
+    partial class DeclarativeCustomizableProof<TLabelAxes>
     {
         private class ProofComponentConfiguration : IProofComponentConfiguration
         {
@@ -12,14 +12,14 @@ namespace Xproof.BaseProofLibrary.ProofBase
 
             private object LockObject { get; } = new object();
 
-            private DeclarativeCustomizableProof<TAxes> Proof { get; }
+            private DeclarativeCustomizableProof<TLabelAxes> Proof { get; }
 
-            public ProofComponentConfiguration(DeclarativeCustomizableProof<TAxes> proof)
+            public ProofComponentConfiguration(DeclarativeCustomizableProof<TLabelAxes> proof)
             {
-                Proof = proof ?? throw new ArgumentNullException(nameof(proof), $"{nameof(DeclarativeCustomizableProof<TAxes>)} cannot be null.");
+                Proof = proof ?? throw new ArgumentNullException(nameof(proof), $"{nameof(DeclarativeCustomizableProof<TLabelAxes>)} cannot be null.");
             }
 
-            public void SetProofForAction(IRawProofForAction<TAxes> proofForAction)
+            public void SetProofForAction(IRawProofForAction<TLabelAxes> proofForAction)
             {
                 lock (LockObject)
                 {
@@ -32,7 +32,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
                 }
             }
 
-            public void SetCombinerForActions(ICombinerForActions<TAxes> combinerForActions)
+            public void SetCombinerForActions(ICombinerForActions<TLabelAxes> combinerForActions)
             {
                 lock (LockObject)
                 {
@@ -45,7 +45,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
                 }
             }
 
-            public void SetProofForFunc(IRawProofForFunc<TAxes> proofForFunc)
+            public void SetProofForFunc(IRawProofForFunc<TLabelAxes> proofForFunc)
             {
                 lock (LockObject)
                 {
@@ -58,7 +58,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
                 }
             }
 
-            public void SetCombinerForFuncs(ICombinerForFuncs<TAxes> combinerForFuncs)
+            public void SetCombinerForFuncs(ICombinerForFuncs<TLabelAxes> combinerForFuncs)
             {
                 lock (LockObject)
                 {

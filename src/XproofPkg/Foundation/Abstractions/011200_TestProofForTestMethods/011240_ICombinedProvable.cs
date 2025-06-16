@@ -7,13 +7,13 @@ namespace Xproof.Abstractions.TestProofForTestMethods
     /// <summary>
     /// An interface that defines a provable element that can be probed for failures.
     /// </summary>
-    public interface ICombinedProvable<in TAxes>
+    public interface ICombinedProvable<in TLabelAxes>
     {
         /// <summary>
         /// Probes the provable element for failures, optionally with a label and caller information.
         /// </summary>
         void Probe(
-            TAxes? axes = default,
+            TLabelAxes? label = default,
             [CallerFilePath] string? callerFilePath = null,
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null,
@@ -26,13 +26,13 @@ namespace Xproof.Abstractions.TestProofForTestMethods
     /// An interface that defines a provable element that can be probed for results of type T.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IProvable<out T, in TAxes>
+    public interface IProvable<out T, in TLabelAxes>
     {
         /// <summary>
         /// Probes the provable element for results of type T, optionally with a label and caller information.
         /// </summary>
         IEnumerable<T?> Probe(
-            TAxes? axes = default,
+            TLabelAxes? label = default,
             [CallerFilePath] string? callerFilePath = null,
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null,

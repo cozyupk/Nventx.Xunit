@@ -11,9 +11,9 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
     /// <summary>
     /// A silent message bus that ignores all messages sent to it.
     /// </summary>
-    internal class ProofCoordinatorBus<TAxes> : IMessageBus
+    internal class ProofCoordinatorBus<TLabelAxes> : IMessageBus
     {
-        private IInvokableProof<TAxes> Proof { get; }
+        private IInvokableProof<TLabelAxes> Proof { get; }
         private ITestCase TestCase { get; }
         private CancellationTokenSource Cts { get; }
         private IMessageBus OriginalBus { get; }
@@ -26,7 +26,7 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
         public ProofCoordinatorBus(object? proofCand, ITestCase testCase, IMessageBus originalBus, CancellationTokenSource cts)
         {
             // validate the proof candidate and store it
-            Proof = proofCand as IInvokableProof<TAxes> ?? throw new ArgumentException(
+            Proof = proofCand as IInvokableProof<TLabelAxes> ?? throw new ArgumentException(
                       "The proof candidate must implement IInvokableProof.", nameof(proofCand)
                     );
 

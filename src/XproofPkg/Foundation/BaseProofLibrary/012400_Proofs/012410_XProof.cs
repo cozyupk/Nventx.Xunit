@@ -6,7 +6,7 @@ namespace Xproof.BaseProofLibrary.Proofs
     /// <summary>
     /// A proof implementation that allows for late failure collection during test execution.
     /// </summary>
-    public class Xproof<TAxes> : DeclarativeCustomizableProof<TAxes>
+    public class Xproof<TLabelAxes> : DeclarativeCustomizableProof<TLabelAxes>
     {
         /// <summary>
         /// The default proof used by [ProofFact] when no other is specified.
@@ -20,10 +20,10 @@ namespace Xproof.BaseProofLibrary.Proofs
             // base.InitializeProofComponent(config); 
 
             // Override the proof components with specific implementations
-            config.SetProofForAction(new ProofForAction<TAxes>(this));
-            config.SetCombinerForActions(new CombinerForActions<TAxes>(this));
-            config.SetProofForFunc(new ProofForFunc<TAxes>(this));
-            config.SetCombinerForFuncs(new CombinerForFuncs<TAxes>(this));
+            config.SetProofForAction(new ProofForAction<TLabelAxes>(this));
+            config.SetCombinerForActions(new CombinerForActions<TLabelAxes>(this));
+            config.SetProofForFunc(new ProofForFunc<TLabelAxes>(this));
+            config.SetCombinerForFuncs(new CombinerForFuncs<TLabelAxes>(this));
         }
     }
 

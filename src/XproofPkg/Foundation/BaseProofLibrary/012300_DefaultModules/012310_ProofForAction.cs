@@ -11,24 +11,24 @@ namespace Xproof.BaseProofLibrary.DefaultModules
     /// <summary>
     /// A proof implementation that allows for probing actions for failures, recording any exceptions that occur during execution.
     /// </summary>
-    internal class ProofForAction<TAxes> : IProofForAction<TAxes>, IRawProofForAction<TAxes>
+    internal class ProofForAction<TLabelAxes> : IProofForAction<TLabelAxes>, IRawProofForAction<TLabelAxes>
     {
         /// <summary>
         /// The MethodInfo for the Probe method, used to invoke the probing logic.
         /// </summary>
         static MethodInfo InvokedMethodInfo { get; }
-            = typeof(ProofForAction<TAxes>).GetMethod(nameof(Probe), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+            = typeof(ProofForAction<TLabelAxes>).GetMethod(nameof(Probe), BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
               ?? throw new InvalidOperationException("Method 'Probe' not found in ProofForAction class.");
 
         /// <summary>
         /// The invokable proof that will be used to record probing failures.
         /// </summary>
-        IInvokableProof<TAxes> InvokableProof { get; }
+        IInvokableProof<TLabelAxes> InvokableProof { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProofForAction"/> class with the specified invokable proof.
         /// </summary>
-        public ProofForAction(IInvokableProof<TAxes> invokableProof)
+        public ProofForAction(IInvokableProof<TLabelAxes> invokableProof)
         {
             // Validate and assign the invokable proof
             InvokableProof
@@ -41,7 +41,7 @@ namespace Xproof.BaseProofLibrary.DefaultModules
         /// </summary>
         public void Probe(
             Action act,
-            TAxes? axes = default,
+            TLabelAxes? label = default,
             [CallerFilePath] string? callerFilePath = null,
             [CallerLineNumber] int callerLineNumber = 0,
             [CallerMemberName] string? callerMemberName = null,
@@ -69,14 +69,14 @@ namespace Xproof.BaseProofLibrary.DefaultModules
                 // Note: Parameters are shared across all delegate invocations for this probe.
                 //       If per-delegate parameters are needed, this logic should be refactored accordingly.
                 object?[] parameters = invokedParameters ?? new object?[] {
-                    act, axes
+                    act, label
                 };
                 // Create a probe scope for the current delegate invocation
                 using IProbeScope scope
-                    = new ProbeScope<TAxes>(
+                    = new ProbeScope<TLabelAxes>(
                         InvokableProof, InvokableProof.ProofInvocationKind,
                         invokedMethodInfo ?? InvokedMethodInfo, parameters,
-                        callerFilePath, callerLineNumber, callerMemberName, axes,
+                        callerFilePath, callerLineNumber, callerMemberName, label,
                         combinedPosition, delegatePosition
                       );
                 try

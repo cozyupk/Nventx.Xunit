@@ -4,11 +4,11 @@ using Xproof.Abstractions.TestProofForTestRunner;
 
 namespace Xproof.Abstractions.Sdk
 {
-    public interface IRawProofForAction<in TAxes>
+    public interface IRawProofForAction<in TLabelAxes>
     {
         public abstract void Probe(
             Action act,
-            TAxes? axes,
+            TLabelAxes? label,
             string callerFilePath,
             int callerLineNumber,
             string callerMemberName,

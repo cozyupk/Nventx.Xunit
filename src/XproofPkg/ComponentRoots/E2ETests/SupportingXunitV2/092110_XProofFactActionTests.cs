@@ -95,7 +95,7 @@ namespace Xproof.SupportingXunit.E2ETests
             }
         }
 
-        public class SetUpThrowsExceptionProof : IInvokableProof<string>
+        public class SetUpThrowsExceptionProof : IInvokableProof
         {
             public void Setup(ProofInvocationKind proofInvocationKind)
             {
@@ -104,7 +104,7 @@ namespace Xproof.SupportingXunit.E2ETests
 
             public ProofInvocationKind ProofInvocationKind { get; private set; }
 
-            public void RecordProbeResult(IProbeResult<string> probeResult)
+            public void RecordProbeResult(IProbeResult probeResult)
             {
                 // nothing to do here for this test
             }
@@ -114,13 +114,13 @@ namespace Xproof.SupportingXunit.E2ETests
                 // nothing to do here for this test
             }
 
-            public IEnumerable<IProbeResult<string>> GetResults()
+            public IEnumerable<IProbeResult> GetResults()
             {
                 return []; // just return an empty enumerable for this test
             }
         }
 
-        public class SetUpThrowsExceptionWithDelay50msProof : IInvokableProof<string>
+        public class SetUpThrowsExceptionWithDelay50msProof : IInvokableProof
         {
             public void Setup(ProofInvocationKind proofInvocationKind)
             {
@@ -129,12 +129,12 @@ namespace Xproof.SupportingXunit.E2ETests
             }
             public ProofInvocationKind ProofInvocationKind { get; private set; }
 
-            public IEnumerable<IProbeResult<string>> GetResults()
+            public IEnumerable<IProbeResult> GetResults()
             {
                 return []; // just return an empty enumerable for this test
             }
 
-            public void RecordProbeResult(IProbeResult<string> probeResult)
+            public void RecordProbeResult(IProbeResult probeResult)
             {
                 // nothing to do here for this test
             }
@@ -145,7 +145,7 @@ namespace Xproof.SupportingXunit.E2ETests
             }
         }
 
-        public class ProbeThrowsExceptionProof : IInvokableProof<string>, IProofForAction<string>
+        public class ProbeThrowsExceptionProof : IInvokableProof, IProofForAction<string>
         {
             public void Setup(ProofInvocationKind proofInvocationKind)
             {
@@ -153,12 +153,12 @@ namespace Xproof.SupportingXunit.E2ETests
             }
             public ProofInvocationKind ProofInvocationKind { get; private set; }
 
-            public IEnumerable<IProbeResult<string>> GetResults()
+            public IEnumerable<IProbeResult> GetResults()
             {
                 return []; // just return an empty enumerable for this test
             }
 
-            public void RecordProbeResult(IProbeResult<string> probeResult)
+            public void RecordProbeResult(IProbeResult probeResult)
             {
                 // nothing to do here for this test
             }
@@ -168,13 +168,13 @@ namespace Xproof.SupportingXunit.E2ETests
                 // nothing to do here for this tes
             }
 
-            public void Probe(Action act, string? axes = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0, [CallerMemberName] string? callerMemberName = null, MethodInfo? invokedMethodInfo = null, object?[]? invokedParameters = null, IPositionInArray? combinedPosition = null)
+            public void Probe(Action act, string? label = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0, [CallerMemberName] string? callerMemberName = null, MethodInfo? invokedMethodInfo = null, object?[]? invokedParameters = null, IPositionInArray? combinedPosition = null)
             {
                 throw new Exception("An exception occured for testing purpose.");
             }
         }
 
-        public class ProbeThrowsExceptionWithDelay50msProof : IInvokableProof<string>, IProofForAction<string>
+        public class ProbeThrowsExceptionWithDelay50msProof : IInvokableProof, IProofForAction<string>
         {
             public void Setup(ProofInvocationKind proofInvocationKind)
             {
@@ -182,12 +182,12 @@ namespace Xproof.SupportingXunit.E2ETests
             }
             public ProofInvocationKind ProofInvocationKind { get; private set; }
 
-            public IEnumerable<IProbeResult<string>> GetResults()
+            public IEnumerable<IProbeResult> GetResults()
             {
                 return []; // just return an empty enumerable for this test
             }
 
-            public void RecordProbeResult(IProbeResult<string> probeResult)
+            public void RecordProbeResult(IProbeResult probeResult)
             {
                 // nothing to do here for this test
             }
@@ -197,7 +197,7 @@ namespace Xproof.SupportingXunit.E2ETests
                 // nothing to do here for this tes
             }
 
-            public void Probe(Action act, string? axes = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0, [CallerMemberName] string? callerMemberName = null, MethodInfo? invokedMethodInfo = null, object?[]? invokedParameters = null, IPositionInArray? combinedPosition = null)
+            public void Probe(Action act, string? label = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0, [CallerMemberName] string? callerMemberName = null, MethodInfo? invokedMethodInfo = null, object?[]? invokedParameters = null, IPositionInArray? combinedPosition = null)
             {
                 Utils.Delay(50); // Simulate some delay before throwing the exception
                 throw new Exception("An exception occured for testing purpose.");
