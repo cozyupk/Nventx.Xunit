@@ -12,8 +12,9 @@ namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
     {
         public override ProofInvocationKind ProofInvocationKind => ProofInvocationKind.Parameterized;
 
-        public ProofTheoryAttribute(Type? testProofType = null, Type? serializableTestProofFactoryType = null)
-            : base(testProofType, serializableTestProofFactoryType)
+        public ProofTheoryAttribute(
+            Type? testProofType = null,
+            Type? serializableTestProofFactoryType = null) : base(testProofType, serializableTestProofFactoryType)
         {
             // No additional initialization needed for ProofFactAttribute
         }

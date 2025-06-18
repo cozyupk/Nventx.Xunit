@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography;
 using Xproof.Abstractions.TestProofForTestRunner;
 
 namespace Xproof.BaseProofLibrary.ScopeAndResults
@@ -36,6 +35,14 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
             ProbeScopeRecord = invocationRecord ?? throw new ArgumentNullException(nameof(invocationRecord));
             Elapsed = elapsed;
             Exception = exception;
+        }
+
+        /// <summary>
+        /// Returns a string representation of the probe result, indicating whether it was successful or encountered an exception.
+        /// </summary>
+        public override string ToString()
+        {
+            return $"[{(Exception == null ? "Very True" : "Oops!")}] {ProbeScopeRecord}";
         }
     }
 }

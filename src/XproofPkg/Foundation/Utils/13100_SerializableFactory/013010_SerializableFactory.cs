@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Xproof.Abstractions.Utils;
 
-namespace Xproof.Utils
+namespace Xproof.Utils.SerializableFactory
 {
     /// <summary>
     /// A generic, serializable factory that creates instances of TTarget using constructor injection via INamedArgumentResolver.

@@ -9,7 +9,7 @@ namespace Xproof.SupportingXunit.CollectE2ECoverageForXunitV2
         public static void Main(string[] _)
         {
             ProofTestRuntimeHost proofTestRuntimeHost = new();
-            Assembly asm = typeof(XProofFactActionTests).Assembly;
+            Assembly asm = typeof(DefaultProofFactActionTests).Assembly;
             proofTestRuntimeHost.Execute(asm);
         }
     }

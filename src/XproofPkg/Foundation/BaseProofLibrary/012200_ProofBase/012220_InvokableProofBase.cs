@@ -33,7 +33,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
         /// <summary>
         /// Sets up the test proof environment with the specified proof invocation kind.
         /// </summary>
-        public void Setup(ProofInvocationKind proofInvocationKind)
+        public virtual void Setup(ProofInvocationKind proofInvocationKind)
         {
             lock (SetupLock)
             {
@@ -58,7 +58,7 @@ namespace Xproof.BaseProofLibrary.ProofBase
         }
 
         /// <summary>
-        /// Collects probing failures encountered during the test execution.
+        /// Collects the test proof results after the test execution is complete.
         /// </summary>
         public IEnumerable<IProbeResult<TLabelAxes>> GetResults()
         {
@@ -66,6 +66,17 @@ namespace Xproof.BaseProofLibrary.ProofBase
             return ProbeResult.ToArray();
         }
 
+        /// <summary>
+        /// Collects the test proof results without labels after the test execution is complete.
+        /// </summary>
+        public IEnumerable<IProbeResultBase> GetResultBases()
+        {
+            return GetResults();
+        }
+
+        /// <summary>
+        /// Records a probe result from the test execution, which can be a failure or success.
+        /// </summary>
         public void RecordProbeResult(IProbeResult<TLabelAxes> probeResult)
         {
             // Validate the probe result before adding it to the collection
@@ -78,7 +89,11 @@ namespace Xproof.BaseProofLibrary.ProofBase
             ProbeResult.Enqueue(probeResult);
         }
 
-        public void Commit()
+        /// <summary>
+        /// Commits the test proof results after the test case execution is complete.
+        /// </summary>
+        /// <exception cref="InvalidOperationException"></exception>
+        public virtual void Commit()
         {
             // Ensure that there are probe results to commit
             if (ProbeResult.IsEmpty)

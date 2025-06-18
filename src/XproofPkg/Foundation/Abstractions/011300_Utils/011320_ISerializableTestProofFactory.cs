@@ -5,7 +5,7 @@ namespace Xproof.Abstractions.Utils
     /// <summary>
     /// Factory interface for creating serializable test proofs.
     /// </summary>
-    public interface ISerializableTestProofFactory
+    public interface ISerializableTestProofFactoryBase
     {
         /// <summary>
         /// Injects parameters for object creation via resolver. Can only be called once.
@@ -26,12 +26,13 @@ namespace Xproof.Abstractions.Utils
     /// <summary>
     /// Factory interface for creating serializable test proofs of a specific type.
     /// </summary>
-    public interface ISerializableTestProofFactory<out TTestProof, out TLabelAxes> : ISerializableTestProofFactory
-        where TTestProof : IInvokableProof<TLabelAxes>
-    {  
+    public interface ISerializableTestProofFactory<out TTestProof> : ISerializableTestProofFactoryBase
+        where TTestProof : IInvokableProofBase
+    {
         /// <summary>
         /// Creates an instance of TTarget using the provided parameters.
         /// </summary>
         TTestProof Create();
     }
+
 }

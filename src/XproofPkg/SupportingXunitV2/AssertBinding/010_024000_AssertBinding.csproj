@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>Xproof.SupportingXunit.AssertBinding</RootNameSpace>
+		<AssemblyName>Xproof.SupportingXunitV2.AssertBinding</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Foundation\BaseProofLibrary\010_012000_BaseProofLibrary.csproj" />
+	  <ProjectReference Include="..\SourceGeneratorForAssertBinding\010_023000_SourceGeneratorForAssertBinding.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Analyzer Include="..\SourceGeneratorForAssertBinding\bin\Debug\netstandard2.0\Xproof.SupportingXunitV2.SourceGeneratorForAssertBinding.dll" />
+	</ItemGroup>
+	
+</Project>
+

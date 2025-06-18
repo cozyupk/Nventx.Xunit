@@ -1,13 +1,13 @@
 ﻿using Xproof.Abstractions.TestProofForTestRunner;
 using Xproof.Abstractions.Utils;
 
-namespace Xproof.Utils
+namespace Xproof.Utils.SerializableFactory
 {
     /// <summary>
     /// A factory for creating serializable test proofs that implement the ITestProof interface.
     /// </summary>
-    public class SerializableTestProofFactory<TTestProof, TLabelAxes> : SerializableFactory<TTestProof>, ISerializableTestProofFactory<TTestProof, TLabelAxes>
-        where TTestProof : IInvokableProof<TLabelAxes>
+    public class SerializableTestProofFactory<TTestProof> : SerializableFactory<TTestProof>, ISerializableTestProofFactory<TTestProof>
+        where TTestProof : IInvokableProofBase
     {
     }
 }

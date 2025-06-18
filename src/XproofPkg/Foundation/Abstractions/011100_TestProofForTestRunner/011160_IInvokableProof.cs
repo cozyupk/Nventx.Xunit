@@ -2,10 +2,7 @@
 
 namespace Xproof.Abstractions.TestProofForTestRunner
 {
-    /// <summary>
-    /// Interface for test proof, which is used to set up and collect probing failures.
-    /// </summary>
-    public interface IInvokableProof<TLabelAxes>
+    public interface IInvokableProofBase
     {
         /// <summary>
         /// Sets up the test proof environment.
@@ -18,7 +15,24 @@ namespace Xproof.Abstractions.TestProofForTestRunner
         ProofInvocationKind ProofInvocationKind { get; }
 
         /// <summary>
-        /// Collects probing failures encountered during the test execution.
+        /// Collects the test proof results without labels after the test execution is complete.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<IProbeResultBase> GetResultBases();
+
+        /// <summary>
+        /// Commits the test proof results after the test execution is complete.
+        /// </summary>
+        void Commit();
+    }
+
+    /// <summary>
+    /// Interface for test proof, which is used to set up and collect probing failures.
+    /// </summary>
+    public interface IInvokableProof<TLabelAxes> : IInvokableProofBase
+    {
+        /// <summary>
+        /// Collects the test proof results after the test execution is complete.
         /// </summary>
         /// <returns></returns>
         IEnumerable<IProbeResult<TLabelAxes>> GetResults();
@@ -30,28 +44,13 @@ namespace Xproof.Abstractions.TestProofForTestRunner
         void RecordProbeResult(
             IProbeResult<TLabelAxes> probeResult
         );
-
-        /// <summary>
-        /// Commits the test proof results after the test execution is complete.
-        /// </summary>
-        void Commit();
     }
 
     /// <summary>
     /// Default interface for test proof, which uses string as the label axes type.
     /// </summary>
-    public interface IInvokableProof
+    public interface IInvokableProof : IInvokableProofBase
     {
-        /// <summary>
-        /// Sets up the test proof environment.
-        /// </summary>
-        void Setup(ProofInvocationKind proofInvocationKind);
-
-        /// <summary>
-        /// Gets the kind of proof invocation, indicating whether it is a single case, parameterized, or unknown.
-        /// </summary>
-        ProofInvocationKind ProofInvocationKind { get; }
-
         /// <summary>
         /// Collects probing failures encountered during the test execution.
         /// </summary>
@@ -65,10 +64,5 @@ namespace Xproof.Abstractions.TestProofForTestRunner
         void RecordProbeResult(
             IProbeResult probeResult
         );
-
-        /// <summary>
-        /// Commits the test proof results after the test execution is complete.
-        /// </summary>
-        void Commit();
     }
 }

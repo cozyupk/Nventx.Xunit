@@ -1,5 +1,6 @@
 ﻿using System;
 using Xproof.Abstractions.TestProofForTestRunner;
+using Xproof.Utils.SerializableFactory;
 using Xunit.Sdk;
 
 namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
@@ -12,8 +13,9 @@ namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
     {
         public override ProofInvocationKind ProofInvocationKind => ProofInvocationKind.SingleCase;
 
-        public ProofFactAttribute(Type? testProofType = null, Type? serializableTestProofFactoryType = null)
-            : base(testProofType, serializableTestProofFactoryType)
+        public ProofFactAttribute(
+            Type? testProofType = null,
+            Type? serializableTestProofFactoryType = null) : base(testProofType, serializableTestProofFactoryType)
         {
             // No additional initialization needed for ProofFactAttribute
         }

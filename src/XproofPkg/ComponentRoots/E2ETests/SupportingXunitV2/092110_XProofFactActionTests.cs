@@ -5,13 +5,16 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xproof.Abstractions.TestProofForTestMethods;
 using Xproof.Abstractions.TestProofForTestRunner;
+using Xproof.BaseProofLibrary.ProofBase;
+using Xproof.BaseProofLibrary.Proofs;
+using Xproof.SupportingXunit.AssertBinding;
 using Xproof.SupportingXunit.TypeBasedProofDiscoverer;
 using Xunit;
 
 namespace Xproof.SupportingXunit.E2ETests
 {
     /*
-    public class XPoofTheoryActionTests
+    public class proofoofTheoryActionTests
     {
         [Fact]
         public void SUCCESS_Theory()
@@ -25,42 +28,42 @@ namespace Xproof.SupportingXunit.E2ETests
         }
 
         [ProofFact]
-        public void FAIL_Fact_ThrowException(XProof xp)
+        public void FAIL_Fact_ThrowException(proofroof proof)
         {
-            xp.Probe(() => throw new Exception($"(1) Failing in xProof."));
+            proof.Probe(() => throw new Exception($"(1) Failing in proofroof."));
         }
 
         [ProofFact]
-        public void FAIL_Fact_ThrowExceptionMultiTimes(XProof xp)
+        public void FAIL_Fact_ThrowExceptionMultiTimes(proofroof proof)
         {
-            xp.Probe(() => throw new Exception($"(1) Failing in xProof."));
-            xp.Probe(() => throw new Exception($"(1) Failing in xProof."));
+            proof.Probe(() => throw new Exception($"(1) Failing in proofroof."));
+            proof.Probe(() => throw new Exception($"(1) Failing in proofroof."));
         }
 
         [ProofTheory,
             InlineData(345),
             InlineData(678)]
-        public void SUCCESS_Theory_WithNoProbe(XProof _1, int _2)
+        public void SUCCESS_Theory_WithNoProbe(proofroof _1, int _2)
         {
         }
 
         [ProofTheory,
             InlineData(345)]
-        public void SUCCESS_Theory_DoNothing(XProof xp, int _)
+        public void SUCCESS_Theory_DoNothing(proofroof proof, int _)
         {
-            xp.Probe(() => {
+            proof.Probe(() => {
                 // Do nothing
             });
         }
 
         [ProofTheory,
             InlineData(345)]
-        public void SUCCESS_Theory_DoNothingMultiTimes(XProof xp, int _)
+        public void SUCCESS_Theory_DoNothingMultiTimes(proofroof proof, int _)
         {
-            xp.Probe(() => {
+            proof.Probe(() => {
                 // Do nothing
             });
-            xp.Probe(() => {
+            proof.Probe(() => {
                 // Do nothing
             });
         }
@@ -68,24 +71,24 @@ namespace Xproof.SupportingXunit.E2ETests
         [ProofTheory,
             InlineData(345),
             InlineData(678)]
-        public void FAIL_Theory_ThrowException(XProof xp, int x)
+        public void FAIL_Theory_ThrowException(proofroof proof, int x)
         {
-            xp.Probe(() => throw new Exception($"(1) Failing with value {x} in xProof."));
+            proof.Probe(() => throw new Exception($"(1) Failing with value {x} in proofroof."));
         }
 
         [ProofTheory,
             InlineData(345),
             InlineData(678)]
-        public void FAIL_Theory_ThrowExceptionMultiTimes(XProof xp, int x)
+        public void FAIL_Theory_ThrowExceptionMultiTimes(proofroof proof, int x)
         {
-            xp.Probe(() => throw new Exception($"(1) Failing with value {x} in xProof."));
-            xp.Probe(() => throw new Exception($"(1) Failing with value {x} in xProof."));
+            proof.Probe(() => throw new Exception($"(1) Failing with value {x} in proofroof."));
+            proof.Probe(() => throw new Exception($"(1) Failing with value {x} in proofroof."));
         }
     }
     */
 
 
-    public class XProofFactActionTests
+    public class DefaultProofFactActionTests
     {
         private static class Utils
         {
@@ -95,108 +98,33 @@ namespace Xproof.SupportingXunit.E2ETests
             }
         }
 
-        public class SetUpThrowsExceptionProof : IInvokableProof
+        public class SetUpThrowsExceptionProof : InvokableProofBase<string>
         {
-            public void Setup(ProofInvocationKind proofInvocationKind)
+            public override void Setup(ProofInvocationKind proofInvocationKind)
             {
                 throw new Exception("An exception occured for testing purpose.");
             }
-
-            public ProofInvocationKind ProofInvocationKind { get; private set; }
-
-            public void RecordProbeResult(IProbeResult probeResult)
-            {
-                // nothing to do here for this test
-            }
-
-            public void Commit()
-            {
-                // nothing to do here for this test
-            }
-
-            public IEnumerable<IProbeResult> GetResults()
-            {
-                return []; // just return an empty enumerable for this test
-            }
         }
 
-        public class SetUpThrowsExceptionWithDelay50msProof : IInvokableProof
+        public class SetUpThrowsExceptionWithDelay50msProof : InvokableProofBase<string>
         {
-            public void Setup(ProofInvocationKind proofInvocationKind)
+            public override void Setup(ProofInvocationKind proofInvocationKind)
             {
                 Utils.Delay(50); // Simulate some delay before throwing the exception
                 throw new Exception("An exception occured for testing purpose.");
             }
-            public ProofInvocationKind ProofInvocationKind { get; private set; }
-
-            public IEnumerable<IProbeResult> GetResults()
-            {
-                return []; // just return an empty enumerable for this test
-            }
-
-            public void RecordProbeResult(IProbeResult probeResult)
-            {
-                // nothing to do here for this test
-            }
-
-            public void Commit()
-            {
-                // nothing to do here for this test
-            }
         }
 
-        public class ProbeThrowsExceptionProof : IInvokableProof, IProofForAction<string>
+        public class ProbeThrowsExceptionProof : InvokableProofBase<string>, IProofForAction<string>
         {
-            public void Setup(ProofInvocationKind proofInvocationKind)
-            {
-                ProofInvocationKind = proofInvocationKind;
-            }
-            public ProofInvocationKind ProofInvocationKind { get; private set; }
-
-            public IEnumerable<IProbeResult> GetResults()
-            {
-                return []; // just return an empty enumerable for this test
-            }
-
-            public void RecordProbeResult(IProbeResult probeResult)
-            {
-                // nothing to do here for this test
-            }
-
-            public void Commit()
-            {
-                // nothing to do here for this tes
-            }
-
             public void Probe(Action act, string? label = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0, [CallerMemberName] string? callerMemberName = null, MethodInfo? invokedMethodInfo = null, object?[]? invokedParameters = null, IPositionInArray? combinedPosition = null)
             {
                 throw new Exception("An exception occured for testing purpose.");
             }
         }
 
-        public class ProbeThrowsExceptionWithDelay50msProof : IInvokableProof, IProofForAction<string>
+        public class ProbeThrowsExceptionWithDelay50msProof : InvokableProofBase<string>, IProofForAction<string>
         {
-            public void Setup(ProofInvocationKind proofInvocationKind)
-            {
-                ProofInvocationKind = proofInvocationKind;
-            }
-            public ProofInvocationKind ProofInvocationKind { get; private set; }
-
-            public IEnumerable<IProbeResult> GetResults()
-            {
-                return []; // just return an empty enumerable for this test
-            }
-
-            public void RecordProbeResult(IProbeResult probeResult)
-            {
-                // nothing to do here for this test
-            }
-
-            public void Commit()
-            {
-                // nothing to do here for this tes
-            }
-
             public void Probe(Action act, string? label = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0, [CallerMemberName] string? callerMemberName = null, MethodInfo? invokedMethodInfo = null, object?[]? invokedParameters = null, IPositionInArray? combinedPosition = null)
             {
                 Utils.Delay(50); // Simulate some delay before throwing the exception
@@ -220,14 +148,14 @@ namespace Xproof.SupportingXunit.E2ETests
 
         /*
         [ProofFact]
-        public void FAIL_ProofFact_WithNoProbe(XProof _)
+        public void FAIL_ProofFact_WithNoProbe(proofroof _)
         {
         }
 
         [ProofFact]
-        public void SUCCESS_ProofFact_DoNothing(XProof xp)
+        public void SUCCESS_ProofFact_DoNothing(proofroof proof)
         {
-            xp.Probe(() => {
+            proof.Probe(() => {
                 // Do nothing
                 Delay(100); // Simulate some delay
             });
@@ -237,56 +165,56 @@ namespace Xproof.SupportingXunit.E2ETests
         [ProofFact(typeof(SetUpThrowsExceptionProof))]
         public void FAIL_ProofFact_SetupThrowsException(SetUpThrowsExceptionProof _)
         {
-            // This test is expected to fail because the setup throws an exception
+            // This test is eproofected to fail because the setup throws an exception
             // The exception is caught by the ProofFact attribute and reported as a failure
         }
 
         [ProofFact(typeof(SetUpThrowsExceptionWithDelay50msProof))]
         public void FAIL_ProofFact_SetupThrowsExceptionWithDelay50ms(SetUpThrowsExceptionWithDelay50msProof _)
         {
-            // This test is expected to fail because the setup throws an exception
+            // This test is eproofected to fail because the setup throws an exception
             // The exception is caught by the ProofFact attribute and reported as a failure
         }
 
         [ProofFact(typeof(ProbeThrowsExceptionProof))]
-        public void FAIL_ProofFact_ProbeThrowsException(ProbeThrowsExceptionProof xp)
+        public void FAIL_ProofFact_ProbeThrowsException(ProbeThrowsExceptionProof proof)
         {
-            // This test is expected to fail because the probe throws an exception
+            // This test is eproofected to fail because the probe throws an exception
             // The exception is caught by the ProofFact attribute and reported as a failure
-            xp.Probe(() => { });
+            proof.Probe(() => { });
         }
 
         [ProofFact(typeof(ProbeThrowsExceptionWithDelay50msProof))]
-        public void FAIL_ProofFact_ProbeThrowsExceptionWithDelay50ms(ProbeThrowsExceptionWithDelay50msProof xp)
+        public void FAIL_ProofFact_ProbeThrowsExceptionWithDelay50ms(ProbeThrowsExceptionWithDelay50msProof proof)
         {
-            // This test is expected to fail because the probe throws an exception
+            // This test is eproofected to fail because the probe throws an exception
             // The exception is caught by the ProofFact attribute and reported as a failure
-            xp.Probe(() => { });
+            proof.Probe(() => { });
         }
 
         [ProofFact]
-        public void FAIL_ProofFact_NullProbeAction(BaseProofLibrary.Proofs.Xproof xp)
+        public void FAIL_ProofFact_NullProbeAction(AssertProof proof)
         {
             Action? act = null;
-            xp.Probe(act!);
+            proof.Probe(act!);
         }
 
         [ProofFact]
-        public void SUCCESS_ProofFact_DoNothingMultiTimes(BaseProofLibrary.Proofs.Xproof xp)
+        public void SUCCESS_ProofFact_DoNothingMultiTimes(AssertProof proof)
         {
-            xp.Probe(() =>
+            proof.Probe(() =>
             {
                 // Do nothing
                 Utils.Delay(300); // Simulate some delay
                 // Console.WriteLine("Finished (1)");
             });
-            xp.Probe(() =>
+            proof.Probe(() =>
             {
                 // Do nothing
                 Utils.Delay(200); // Simulate some delay
                 // Console.WriteLine("Finished (2)");
             });
-            xp.Probe(() =>
+            proof.Probe(() =>
             {
                 // Do nothing
                 Utils.Delay(100); // Simulate some delay
@@ -295,37 +223,37 @@ namespace Xproof.SupportingXunit.E2ETests
         }
 
         [ProofFact]
-        public void FAIL_ProofFact_ThrowExceptionInProbeAction(BaseProofLibrary.Proofs.Xproof xp)
+        public void FAIL_ProofFact_ThrowExceptionInProbeAction(AssertProof proof)
         {
-            xp.Probe(() => throw new Exception("Failure for testing purpose"));
+            proof.Probe(() => throw new Exception("Failure for testing purpose"));
         }
 
         [ProofFact]
-        public void FAIL_ProofFact_ThrowExceptionWithDelay50msInProbeAction(BaseProofLibrary.Proofs.Xproof xp)
+        public void FAIL_ProofFact_ThrowExceptionWithDelay50msInProbeAction(AssertProof proof)
         {
-            xp.Probe(() => {
+            proof.Probe(() => {
                 Utils.Delay(50); // Simulate some delay
                 throw new Exception("Failure in B");
             });
         }
 
         [ProofFact]
-        public void FAIL_ProofFact_CombinedDelegates_ThrowExceptionInProbeAction(BaseProofLibrary.Proofs.Xproof xp)
+        public void FAIL_ProofFact_CombinedDelegates_ThrowExceptionInProbeAction(AssertProof proof)
         {
             Action a = () => { }; // Console.WriteLine("A");
             Action b = () => throw new Exception("Failure in B");
-            xp.Probe(a + b);
+            proof.Probe(a + b);
         }
 
         [ProofFact]
-        public void FAIL_ProofFact_ThrowMultipleDifferentExceptionsWithDelaysInProbeAction(BaseProofLibrary.Proofs.Xproof xp)
+        public void FAIL_ProofFact_ThrowMultipleDifferentExceptionsWithDelaysInProbeAction(AssertProof proof)
         {
-            xp.Probe(() =>
+            proof.Probe(() =>
             {
                 Utils.Delay(100); // Simulate some delay
                 throw new InvalidOperationException("Invalid op");
             });
-            xp.Probe(() =>
+            proof.Probe(() =>
             {
                 Utils.Delay(200); // Simulate some delay
                 throw new ArgumentException("Bad arg");
@@ -333,35 +261,49 @@ namespace Xproof.SupportingXunit.E2ETests
         }
 
         [ProofFact]
-        public void FAIL_ProofFact_ThrowMultipleDifferentExceptionsInProbeAction(BaseProofLibrary.Proofs.Xproof xp)
+        public void FAIL_ProofFact_ThrowMultipleDifferentExceptionsInProbeAction(AssertProof proof)
         {
-            xp.Probe(() => throw new InvalidOperationException("Invalid op"));
-            xp.Probe(() => throw new ArgumentException("Bad arg"));
+            proof.Probe(() => throw new InvalidOperationException("Invalid op"));
+            proof.Probe(() => throw new ArgumentException("Bad arg"));
+        }
+
+        [ProofFact]
+        public void Fail_ProofFact_UsingAssert(AssertProof ap)
+        {
+            var message = "Long live the GPT!";
+
+            ap.Null(message);
+            ap.NotNull(message);
+            var dummy = ap.IsType<int>(message); // This will fail because message is a string, not an int
+            ap.NotNull(dummy);
+            var stringMessage = ap.IsType<string>(message);
+            ap.NotNull(dummy);
+            ap.Equal("Long live the GPT!", stringMessage);
         }
 
         /*
         [ProofFact]
-        public void SUCCESS_Fact_CombinedDelegates_NoThrow(XProof xp)
+        public void SUCCESS_Fact_CombinedDelegates_NoThrow(proofroof proof)
         {
             Action a = () => Console.WriteLine("A");
             Action b = () => Console.WriteLine("B");
-            xp.Probe(a + b);
+            proof.Probe(a + b);
         }
 
 
 
         [ProofFact]
-        public void SUCCESS_Fact_ProbeWithLabel(XProof xp)
+        public void SUCCESS_Fact_ProbeWithLabel(proofroof proof)
         {
-            xp.Probe(() => { }, label: "LabeledSuccess");
+            proof.Probe(() => { }, label: "LabeledSuccess");
         }
 
 
 
         [ProofFact]
-        public void SUCCESS_Fact_ProbeWithCallerInfo(XProof xp)
+        public void SUCCESS_Fact_ProbeWithCallerInfo(proofroof proof)
         {
-            xp.Probe(() => Console.WriteLine("Action"), callerMemberName: "TestCaller");
+            proof.Probe(() => Console.WriteLine("Action"), callerMemberName: "TestCaller");
         }
         */
     }

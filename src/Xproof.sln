@@ -32,6 +32,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0040_PkgComponentGroups", "0040_PkgComponentGroups", "{EFC52F96-0535-4166-90D4-CD66204D92E1}"
 	ProjectSection(SolutionItems) = preProject
 		build\0040_PkgComponentGroups\010_012000_ComponentGroup.props = build\0040_PkgComponentGroups\010_012000_ComponentGroup.props
+		build\0040_PkgComponentGroups\010_023000_ComponentGroup.props = build\0040_PkgComponentGroups\010_023000_ComponentGroup.props
 		build\0040_PkgComponentGroups\010_092000_ComponentGroup.props = build\0040_PkgComponentGroups\010_092000_ComponentGroup.props
 		build\0040_PkgComponentGroups\010_093000_ComponentGroup.props = build\0040_PkgComponentGroups\010_093000_ComponentGroup.props
 	EndProjectSection
@@ -61,15 +62,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_013000_Utils", "XproofP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_022000_AdapterForTestRunner", "XproofPkg\SupportingXunitV2\AdapterForTestRunner\010_022000_AdapterForTestRunner.csproj", "{7DDBE9A1-395F-B4D7-86B9-C7063BC0CCA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_023000_TypeBasedProofDiscoverer", "XproofPkg\SupportingXunitV2\TypeBasedProofDiscovery\010_023000_TypeBasedProofDiscoverer.csproj", "{11441A29-C032-757E-2CB6-EFB709FD2F51}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_025000_TypeBasedProofDiscoverer", "XproofPkg\SupportingXunitV2\TypeBasedProofDiscovery\010_025000_TypeBasedProofDiscoverer.csproj", "{11441A29-C032-757E-2CB6-EFB709FD2F51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_024000_SelfHostedTestRuntime", "XproofPkg\SupportingXunitV2\SelfHostedTestRuntime\010_024000_SelfHostedTestRuntime.csproj", "{B4606D46-73F9-D3A1-0A9D-1DE5F1CD6375}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_026000_SelfHostedTestRuntime", "XproofPkg\SupportingXunitV2\SelfHostedTestRuntime\010_026000_SelfHostedTestRuntime.csproj", "{B4606D46-73F9-D3A1-0A9D-1DE5F1CD6375}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_092100_XunitV2", "XproofPkg\ComponentRoots\E2ETests\SupportingXunitV2\010_092100_XunitV2.csproj", "{02CC6C22-D73D-1594-298D-EB5CF169C7EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_093100_CollectE2ECoverageForXunitV2", "XproofPkg\ComponentRoots\Executables\CollectE2ECoverageForXunitV2\010_093100_CollectE2ECoverageForXunitV2.csproj", "{C483FFEC-67D0-1B39-16DF-9361C7BEBE40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_093200_Test", "XproofPkg\ComponentRoots\Executables\Test\010_093200_Test.csproj", "{B8E8D5BC-0F39-2006-D53A-A68C0BF9FD4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_093200_SourceGeneratingExperiment", "XproofPkg\ComponentRoots\Executables\SourceGeneratingExperiment\010_093200_SourceGeneratingExperiment.csproj", "{6A5B9DFA-1D39-5C77-6B93-B574FB8BB339}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_023000_SourceGeneratorForAssertBinding", "XproofPkg\SupportingXunitV2\SourceGeneratorForAssertBinding\010_023000_SourceGeneratorForAssertBinding.csproj", "{39733A80-CD5E-6A42-A82C-3A59A7F6C3F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_024000_AssertBinding", "XproofPkg\SupportingXunitV2\AssertBinding\010_024000_AssertBinding.csproj", "{8B02A427-1058-DB84-3545-7033D06A05EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,10 +114,18 @@ Global
 		{C483FFEC-67D0-1B39-16DF-9361C7BEBE40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C483FFEC-67D0-1B39-16DF-9361C7BEBE40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C483FFEC-67D0-1B39-16DF-9361C7BEBE40}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B8E8D5BC-0F39-2006-D53A-A68C0BF9FD4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B8E8D5BC-0F39-2006-D53A-A68C0BF9FD4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B8E8D5BC-0F39-2006-D53A-A68C0BF9FD4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B8E8D5BC-0F39-2006-D53A-A68C0BF9FD4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A5B9DFA-1D39-5C77-6B93-B574FB8BB339}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A5B9DFA-1D39-5C77-6B93-B574FB8BB339}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A5B9DFA-1D39-5C77-6B93-B574FB8BB339}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A5B9DFA-1D39-5C77-6B93-B574FB8BB339}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39733A80-CD5E-6A42-A82C-3A59A7F6C3F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39733A80-CD5E-6A42-A82C-3A59A7F6C3F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39733A80-CD5E-6A42-A82C-3A59A7F6C3F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39733A80-CD5E-6A42-A82C-3A59A7F6C3F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B02A427-1058-DB84-3545-7033D06A05EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B02A427-1058-DB84-3545-7033D06A05EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B02A427-1058-DB84-3545-7033D06A05EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B02A427-1058-DB84-3545-7033D06A05EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,7 +151,9 @@ Global
 		{B4606D46-73F9-D3A1-0A9D-1DE5F1CD6375} = {162FC9CD-B19D-49C0-B736-9E3582E034E6}
 		{02CC6C22-D73D-1594-298D-EB5CF169C7EE} = {2EE9CBB4-53F9-4BE2-8E3F-7E74E7281F60}
 		{C483FFEC-67D0-1B39-16DF-9361C7BEBE40} = {ECE85F2B-4ACC-4B9F-AEF3-C632687752B4}
-		{B8E8D5BC-0F39-2006-D53A-A68C0BF9FD4F} = {ECE85F2B-4ACC-4B9F-AEF3-C632687752B4}
+		{6A5B9DFA-1D39-5C77-6B93-B574FB8BB339} = {ECE85F2B-4ACC-4B9F-AEF3-C632687752B4}
+		{39733A80-CD5E-6A42-A82C-3A59A7F6C3F5} = {162FC9CD-B19D-49C0-B736-9E3582E034E6}
+		{8B02A427-1058-DB84-3545-7033D06A05EA} = {162FC9CD-B19D-49C0-B736-9E3582E034E6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F01E5B92-8BC7-4A77-A34E-79C72F78E4AE}

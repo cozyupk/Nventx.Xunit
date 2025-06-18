@@ -42,7 +42,7 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
         public string CallerFilePath { get; }
         public int CallerLineNumber { get; }
         public string CallerMemberName { get; }
-        public TLabelAxes? label { get; }
+        public TLabelAxes? Label { get; }
         public IPositionInArray? CombinedPosition { get; }
         public IPositionInArray? DelegatePosition { get; }
 
@@ -68,10 +68,45 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
             CallerFilePath = callerFilePath ?? throw new ArgumentNullException(nameof(callerFilePath));
             CallerLineNumber = callerLineNumber;
             CallerMemberName = callerMemberName ?? throw new ArgumentNullException(nameof(callerMemberName));
-            label = label;
+            Label = label;
             CombinedPosition = combinedPosition;
             DelegatePosition = delegatePosition;
         }
+
+        private static string FormatType(Type t)
+        {
+            if (t.IsGenericType)
+            {
+                var name = t.Name.Split('`')[0];
+                var inner = string.Join(", ", t.GetGenericArguments().Select(FormatType));
+                return $"{name}<{inner}>";
+            }
+
+            // プリミティブ型の短縮表記などお好みで
+            return t == typeof(int) ? "int"
+                 : t == typeof(string) ? "string"
+                 : t == typeof(bool) ? "bool"
+                 : t.Name;
+        }
+
+        /// <summary>
+        /// Formats the method name, including generic type parameters if applicable.
+        /// </summary>
+        private static string FormatMethodNameWithGenerics(MethodInfo method)
+        {
+            if (!method.IsGenericMethod)
+                return method.Name;
+
+            bool isConstructed = !method.ContainsGenericParameters;
+
+            if (!isConstructed)
+                return $"{method.Name}(opened)<{string.Join(", ", method.GetGenericArguments().Select(a => a.Name))}>";
+
+            var genericArgs = method.GetGenericArguments();
+            var genericPart = string.Join(", ", genericArgs.Select(FormatType));
+            return $"{method.Name}<{genericPart}>";
+        }
+
 
         /// <summary>
         /// Returns a string representation of the probe scope record,
@@ -80,29 +115,29 @@ namespace Xproof.BaseProofLibrary.ScopeAndResults
         {
             var sb = new StringBuilder();
 
-            // 1) Headline with location and optional label
+            // 1) Start with the probe method name
+            if (Label != null)
+            {
+                sb.Append($"[${JsonSerializer.Serialize(Label, _jsonOptions)}] ");
+            }
             var fileName = Path.GetFileName(CallerFilePath);
             if (string.IsNullOrEmpty(fileName)) fileName = "?";
 
-            sb.Append($"{fileName}: {CallerLineNumber}: {CallerMemberName}");
-            if (label != null)
-            {
-                sb.Append($" [${JsonSerializer.Serialize(label, _jsonOptions)}]");
-            }
-            sb.Append(Environment.NewLine);
+            // 2) Format the method invocation with file name, line number, and method name
+            sb.AppendLine($"{fileName}: {CallerLineNumber}: {FormatMethodNameWithGenerics(InvokedProbeMethod)}({FormatParameters(InvocationParameters)})");
 
-            // 2) Probe method + parameters + invocation kind
+            // 3) Invocation kind and caller member name
             // TODO: it would be nice to output the class name as well, but that would require more work
-            sb.Append($"{InvokedProbeMethod.Name}({FormatParameters(InvocationParameters)}) / {InvocationKind}");
+            sb.Append($"{CallerMemberName} / {InvocationKind}");
             sb.Append(Environment.NewLine);
 
-            // 3) Positions, if any
+            // 4) Positions, if any
             if (CombinedPosition != null)
                 sb.AppendLine($"Combined Position: {CombinedPosition}");
             if (DelegatePosition != null)
                 sb.AppendLine($"Delegate Position: {DelegatePosition}");
 
-            // 4) Full path at the end for IDE click‑through
+            // 5) Full path at the end for IDE click‑through
             sb.Append($"Full path to caller source, line {CallerLineNumber}: {CallerFilePath}");
 
             return sb.ToString();

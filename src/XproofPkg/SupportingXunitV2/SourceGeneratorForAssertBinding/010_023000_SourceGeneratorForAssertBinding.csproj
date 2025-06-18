@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>Xproof.SupportingXunit.SourceGeneratorForAssertBinding</RootNameSpace>
+		<AssemblyName>Xproof.SupportingXunitV2.SourceGeneratorForAssertBinding</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\..\Foundation\Utils\13200_SupportSourceGenerator\*.cs" Link="Utils\%(Filename)%(Extension)" />
+	</ItemGroup>
+	
+	
+</Project>

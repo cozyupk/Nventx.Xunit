@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Xproof.Abstractions.TestProofForTestRunner;
@@ -8,12 +7,9 @@ using Xunit.Sdk;
 
 namespace Xproof.SupportingXunit.AdapterForTestRunner
 {
-    /// <summary>
-    /// A silent message bus that ignores all messages sent to it.
-    /// </summary>
-    internal class ProofCoordinatorBus<TLabelAxes> : IMessageBus
+    internal class ProofCoordinatorBus : IMessageBus
     {
-        private IInvokableProof<TLabelAxes> Proof { get; }
+        private IInvokableProofBase Proof { get; }
         private ITestCase TestCase { get; }
         private CancellationTokenSource Cts { get; }
         private IMessageBus OriginalBus { get; }
@@ -26,7 +22,7 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
         public ProofCoordinatorBus(object? proofCand, ITestCase testCase, IMessageBus originalBus, CancellationTokenSource cts)
         {
             // validate the proof candidate and store it
-            Proof = proofCand as IInvokableProof<TLabelAxes> ?? throw new ArgumentException(
+            Proof = proofCand as IInvokableProofBase ?? throw new ArgumentException(
                       "The proof candidate must implement IInvokableProof.", nameof(proofCand)
                     );
 
@@ -67,20 +63,22 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
                     try
                     {
                         FinalizeTest(summary);
-                    } finally
+                    }
+                    finally
                     {
                         // Finally, we queue a TestCaseFinished message with the summary
-                        if(!OriginalBus.QueueMessage(new TestCaseFinished(
+                        if (!OriginalBus.QueueMessage(new TestCaseFinished(
                             TestCase, summary.Time, summary.Total, summary.Failed, summary.Skipped
                         )))
                         {
                             Cts.Cancel();
-                        } else
+                        }
+                        else
                         {
                             IsTestCaseFinished = true;
                         }
                     }
-                } 
+                }
 
                 return summary;
             });
@@ -93,14 +91,14 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
                 try
                 {
                     summary.Total = 0;
-                    var results = Proof.GetResults();
+                    var results = Proof.GetResultBases();
                     foreach (var result in results)
                     {
                         ++summary.Total;
+                        Output = result.ToString();
                         if (result.Exception != null)
                         {
                             ++summary.Failed;
-                            Output = $"{result.ProbeScopeRecord}";
                             // TODO: Mesure the time of the failure
                             if (!OriginalBus.QueueMessage(new TestFailed(
                                 CapturedTest, (decimal)result.Elapsed.TotalSeconds, Output, result.Exception
@@ -112,7 +110,6 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
                             IsTestFailed = true;
                             continue;
                         }
-                        Output = $"{result.ProbeScopeRecord}";
                         // If there are no probing failures, we consider the test passed
                         Console.WriteLine($"**** Sending TestPassed for {CapturedTest?.DisplayName}");
                         Console.WriteLine($"**** Summary: {summary.Total}, {summary.Failed}, {summary.Skipped}");
@@ -128,7 +125,7 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
                 {
                     // Finally, we queue a TestFinished message with the captured test and summary
                     InternalQueueMessage(new TestFinished(
-                        CapturedTest , summary.Time, Output
+                        CapturedTest, summary.Time, Output
                     ));
                     IsTestFinished = true;
                 }
@@ -152,7 +149,7 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
             }
             if (message is TestFinished tFinished)
             {
-                CapturedTest  = tFinished.Test;
+                CapturedTest = tFinished.Test;
                 if (IsTestFailed || IsTestSkipped)
                 {
                     // If the message is a TestFinished and we have failed,
@@ -165,7 +162,7 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
             {
                 // If the message is a TestFailed, we mark it as failed
                 Console.WriteLine($"Test Failed: {tFailed.TestMethod}");
-                CapturedTest  = tFailed.Test;
+                CapturedTest = tFailed.Test;
                 IsTestFailed = true;
                 Output = tFailed.Output ?? string.Empty;
                 return OriginalBus.QueueMessage(message);
@@ -173,13 +170,13 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
             if (message is TestSkipped tSkipped)
             {
                 // If the message is a TestSkipped, we mark it as skipped
-                CapturedTest  = tSkipped.Test;
+                CapturedTest = tSkipped.Test;
                 IsTestSkipped = true;
                 return OriginalBus.QueueMessage(message);
             }
             if (message is TestStarting tStarting)
             {
-                CapturedTest  = tStarting.Test;
+                CapturedTest = tStarting.Test;
                 return OriginalBus.QueueMessage(message);
             }
             // otherwise, just proxy the message to the original bus

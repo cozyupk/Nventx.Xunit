@@ -44,7 +44,7 @@ namespace Xproof.Abstractions.TestProofForTestRunner
         /// <summary>
         /// The label associated with the probe, if any.
         /// </summary>
-        TLabelAxes? label { get; }
+        TLabelAxes? Label { get; }
 
         /// <summary>
         /// The position of the probe in a combined sequence, if applicable.

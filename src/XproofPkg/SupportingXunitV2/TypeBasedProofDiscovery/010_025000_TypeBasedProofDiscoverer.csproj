@@ -6,8 +6,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Foundation\BaseProofLibrary\010_012000_BaseProofLibrary.csproj" />
 	  <ProjectReference Include="..\AdapterForTestRunner\010_022000_AdapterForTestRunner.csproj" />
+	  <ProjectReference Include="..\AssertBinding\010_024000_AssertBinding.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -50,10 +50,22 @@ namespace Xproof.BaseProofLibrary.DefaultModules
             IPositionInArray? combinedPosition = null
         )
         {
+            Console.WriteLine($"***** new Action Probe *****: {invokedMethodInfo}");
+
             // Validate the parameters (CallerXXX also must not be null.)
             _ = act ?? throw new ArgumentNullException(nameof(act), "Action cannot be null.");
             _ = callerFilePath ?? throw new ArgumentNullException(nameof(callerFilePath), "Caller file path cannot be null.");
             _ = callerMemberName ?? throw new ArgumentNullException(nameof(callerMemberName), "Caller member name cannot be null.");
+
+            // Validate the invoked method info
+            invokedMethodInfo ??= InvokedMethodInfo;
+            if (invokedMethodInfo.IsGenericMethod && invokedMethodInfo.ContainsGenericParameters)
+            {
+                throw new InvalidOperationException(
+                    $"The invoked method '{invokedMethodInfo}' is a generic method with unbound type parameters. " +
+                    "Use MakeGenericMethod(...) to provide concrete types like int, string, etc. before passing it to the probe."
+                );
+            }
 
             // Get the list of delegates from the action
             var delegates = act.GetInvocationList();

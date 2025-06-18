@@ -10,10 +10,7 @@ using Xunit.Sdk;
 
 namespace Xproof.SupportingXunit.AdapterForTestRunner
 {
-    /// <summary>
-    /// A test invoker for tests that expect a proof to be verified during their execution.
-    /// </summary>
-    internal class ProofTestInvoker<TLabelAxes> : XunitTestInvoker
+    internal class ProofTestInvoker : XunitTestInvoker
     {
         /// <summary>
         /// The test case that contains the proof to be verified.
@@ -63,7 +60,7 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
                 // Any exception thrown during the setup will be caught by the aggregator.
                 Aggregator.Run(() =>
                 {
-                    var proof = TestMethodArguments.First() as IInvokableProof<TLabelAxes>
+                    var proof = TestMethodArguments.First() as IInvokableProofBase
                     ?? throw new InvalidOperationException(
                             $"The first argument of the test method {TestMethod.Name} must be of type IInvokableProof, but it is {TestMethodArguments.First()?.GetType()}."
                        );

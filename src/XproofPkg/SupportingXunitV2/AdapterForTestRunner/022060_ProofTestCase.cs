@@ -13,9 +13,9 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
     /// Represents a test case that expects a proof to be verified during its execution.
     /// </summary>
     [Serializable]
-    public class ProofTestCase<TTestProof, TLabelAxes, TSerializableTestProofFactory> : XunitTestCase, IProofTestCase
-        where TTestProof : IInvokableProof<TLabelAxes>
-        where TSerializableTestProofFactory : ISerializableTestProofFactory<TTestProof, TLabelAxes>, new()
+    public class ProofTestCase<TTestProof, TSerializableTestProofFactory> : XunitTestCase, IProofTestCase
+        where TTestProof : IInvokableProofBase
+        where TSerializableTestProofFactory : ISerializableTestProofFactory<TTestProof>, new()
     {
         /// <summary>
         /// The factory used to create instances of the test proof for this test case.
@@ -91,10 +91,10 @@ namespace Xproof.SupportingXunit.AdapterForTestRunner
                     );
 
                     // Create a new instance of the ExceptionTestCaseRunner with the current test case and parameters
-                    var runner = new ProofTestCaseRunner<TLabelAxes>(
-                          this, DisplayName, messageBus, constructorArguments,
-                          TestMethodArguments, SkipReason, aggregator, cancellationTokenSource
-                        );
+                    var runner = new ProofTestCaseRunner(
+                                        this, DisplayName, messageBus, constructorArguments,
+                                        TestMethodArguments, SkipReason, aggregator, cancellationTokenSource
+                                     );
 
                     // Run the test case asynchronously and return the result
                     return runner.RunAsync();

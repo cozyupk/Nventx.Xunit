@@ -50,10 +50,22 @@ namespace Xproof.BaseProofLibrary.DefaultModules
             IPositionInArray? combinedPosition = null
         )
         {
+            Console.WriteLine($"***** new Func Probe *****: {invokedMethodInfo}");
+
             // Validate the parameters (CallerXXX also must not be null.)
             _ = func ?? throw new ArgumentNullException(nameof(func), $"Function(Func<{typeof(T)}>) cannot be null.");
             _ = callerFilePath ?? throw new ArgumentNullException(nameof(callerFilePath), "Caller file path cannot be null.");
             _ = callerMemberName ?? throw new ArgumentNullException(nameof(callerMemberName), "Caller member name cannot be null.");
+
+            // Validate the invoked method info
+            invokedMethodInfo ??= InvokedMethodInfo;
+            if (invokedMethodInfo.IsGenericMethod && invokedMethodInfo.ContainsGenericParameters)
+            {
+                throw new InvalidOperationException(
+                    $"The invoked method '{invokedMethodInfo}' is a generic method with unbound type parameters. \n" +
+                    "[HINT] Use MakeGenericMethod(...) to provide concrete types like int, string, etc. before passing it to the probe."
+                );
+            }
 
             // Get the list of delegates from the function
             var delegates = func.GetInvocationList();
@@ -80,7 +92,7 @@ namespace Xproof.BaseProofLibrary.DefaultModules
                 using IProbeScope scope
                     = new ProbeScope<TLabelAxes>(
                         InvokableProof, InvokableProof.ProofInvocationKind,
-                        invokedMethodInfo ?? InvokedMethodInfo, parameters,
+                        invokedMethodInfo, parameters,
                         callerFilePath, callerLineNumber, callerMemberName, label,
                         combinedPosition, delegatePosition
                       );

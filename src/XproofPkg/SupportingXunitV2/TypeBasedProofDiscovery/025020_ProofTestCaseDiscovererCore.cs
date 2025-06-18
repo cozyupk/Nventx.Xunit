@@ -4,7 +4,7 @@ using System.Linq;
 using Xproof.Abstractions.TestProofForTestRunner;
 using Xproof.Abstractions.Utils;
 using Xproof.SupportingXunit.AdapterForTestRunner;
-using Xproof.Utils;
+using Xproof.Utils.SerializableFactory;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
@@ -21,63 +21,87 @@ namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
         public IMessageSink? DiagnosticMessageSink { get; set; }
 
         /// <summary>
-        /// A が IInvokableProof&lt;TLabelAxes&gt; を実装している前提で、
-        /// その TLabelAxes の実際の <see cref="Type"/> を返す。
+        /// A が IInvokableProof&lt;TLabelAxes&gt; または（非ジェネリックの）IInvokableProof を
+        /// 実装している前提で、TLabelAxes の実際の <see cref="Type"/> を返す。
+        /// 非ジェネリックのみの場合は <c>null</c> を返す。
         /// </summary>
-        private static Type GetLabelAxesType(Type candidate)
+        /*
+        private static Type? GetLabelAxesType(Type candidate)
         {
             if (candidate is null)
                 throw new ArgumentNullException(nameof(candidate));
 
-            // ① candidate 自身が IInvokableProof<...> そのものか？
-            if (candidate.IsGenericType &&
-                candidate.GetGenericTypeDefinition() == typeof(IInvokableProof<>))
+            var genericDef = typeof(IInvokableProof<>);
+            var nonGenericIface = typeof(IInvokableProof);      // ★ 追加
+
+            // ① IInvokableProof<T> を全部列挙
+            var genericArgs = candidate
+                .GetInterfaces()
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == genericDef)
+                .Select(i => i.GetGenericArguments()[0])
+                .ToArray();
+
+            // ② 見つかった？
+            if (genericArgs.Length > 0)
             {
-                return candidate.GetGenericArguments()[0];
+                // TODO: 複数ある場合の選択戦略をここで決める
+                return genericArgs.First();
             }
 
-            // ② 実装インタフェースをスキャン
-            var iface = candidate
-                .GetInterfaces()                              // <- 継承階層もぜんぶ含む
-                .FirstOrDefault(i =>
-                     i.IsGenericType &&
-                     i.GetGenericTypeDefinition() == typeof(IInvokableProof<>));
-
-            if (iface is null)
+            // ③ 非ジェネリック IInvokableProof を持っているかチェック
+            if (candidate.GetInterfaces().Any(i => i == nonGenericIface))
             {
-                throw new InvalidOperationException(
-                    $"{candidate.FullName} doesn't implement IInvokableProof<>.");
+                // 仕様：非ジェネリックなら null を返す
+                return null;
             }
 
-            // 第一型引数 (= TLabelAxes) を返す
-            return iface.GetGenericArguments()[0];
+            // ④ どちらも無い → 例外
+            var ifaceList = string.Join(", ",
+                candidate.GetInterfaces().Select(t => t.FullName ?? t.Name));
+
+            throw new InvalidOperationException(
+                $"{candidate.FullName} does not implement IInvokableProof interfaces: {ifaceList}");
         }
+        */
 
         /// <summary>
-        /// Creates an instance of a serializable test p
-        /// roof factory based on the provided type and test proof type.
+        /// Creates an instance of a serializable test proof factory based on the given factory type and test proof type.
         /// </summary>
-        private static object CreateSerializableTestProofFactory(Type serializableTestProofFactoryType, Type testProofType)
+        private static object CreateSerializableTestProofFactory(
+            Type? serializableTestProofFactoryType,
+            Type testProofType)
         {
+            // Assume types are pre-validated by the attribute. We resolve only the necessary type closures here.
+
+            /*
+            // Determine the label axes type (null means non-generic IInvokableProof)
+            var labelAxesType = GetLabelAxesType(testProofType);
+
+            // Select default factory type if not specified
+            if (serializableTestProofFactoryType == null)
+            {
+                serializableTestProofFactoryType = labelAxesType == null
+                    ? typeof(SerializableTestProofFactory<>)
+                    : typeof(SerializableTestProofFactory<,>);
+            }
+            */
+
+            serializableTestProofFactoryType ??= typeof(SerializableTestProofFactory<>);
+
+            // If the provided factory type is already closed, just create it directly
             if (!serializableTestProofFactoryType.IsGenericTypeDefinition)
             {
-                // not a generic type definition, so we can create an instance directly
                 return Activator.CreateInstance(serializableTestProofFactoryType)
-                       ?? throw new InvalidOperationException($"Failed to create instance of {serializableTestProofFactoryType}");
-            }
-            var numGenericArgs = serializableTestProofFactoryType.GetGenericArguments().Length;
-            if (numGenericArgs != 2)
-            {
-
-                throw new ArgumentException(nameof(
-                    serializableTestProofFactoryType),
-                    $"{serializableTestProofFactoryType} must have exactly two generic arguments, but found {numGenericArgs}."
-                );
+                    ?? throw new InvalidOperationException(
+                        $"Failed to create an instance of the factory type '{serializableTestProofFactoryType.FullName}'.");
             }
 
-            var closedType = serializableTestProofFactoryType.MakeGenericType(testProofType, GetLabelAxesType(testProofType));
-            return Activator.CreateInstance(closedType)
-                   ?? throw new InvalidOperationException($"Failed to create instance of {closedType}");
+            // If the factory is open generic, close it using appropriate arity
+            Type closedFactoryType = serializableTestProofFactoryType.MakeGenericType(testProofType);
+
+            return Activator.CreateInstance(closedFactoryType)
+                ?? throw new InvalidOperationException(
+                    $"Failed to create an instance of the closed factory type '{closedFactoryType.FullName}'.");
         }
 
         /// <summary>
@@ -103,7 +127,8 @@ namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
                 string methodName = testMethod.Method.Name;
 
                 // Ensure that the test method is not null and has a valid name
-                var proofType = attributeInfo.GetNamedArgument<Type>("TestProofType") ?? typeof(Xproof.BaseProofLibrary.Proofs.Xproof);
+                var proofType = attributeInfo.GetNamedArgument<Type>("TestProofType")
+                                    ?? throw new InvalidOperationException("TestProofType is not specified in the attribute.");
 
                 var keyForProofInvocationKind = "ProofInvocationKind";
                 var proofInvocationKind = attributeInfo.GetNamedArgument<ProofInvocationKind>(keyForProofInvocationKind);
@@ -148,13 +173,14 @@ namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
                 }
 
                 // Create a new instance of the test proof factory that will be used to create test cases
-                var keyForSerializableTestProofFactory = "SerializableTestProofFactoryType";
+                var keyForSerializableTestProofFactory = "SerializableTestProofFactory";
                 var testProofFactory = CreateSerializableTestProofFactory(
                     attributeInfo.GetNamedArgument<Type>(keyForSerializableTestProofFactory),
                     proofType
-                ) as ISerializableTestProofFactory
+                ) as ISerializableTestProofFactoryBase
                         ?? throw new InvalidOperationException(
-                            $"Failed to create an instance of {nameof(ISerializableTestProofFactory)}. Please check that the {keyForSerializableTestProofFactory} is correct and implements ISerializableTestProofFactory."
+                            $"Failed to create an instance of {nameof(ISerializableTestProofFactoryBase)}."
+                            + $"Please check that the {keyForSerializableTestProofFactory} is correct and implements ISerializableTestProofFactory."
                         );
 
                 // Get the method display options from the discovery options
@@ -166,16 +192,13 @@ namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer
                 );
 
                 // Create a new test case for the proof with the provided parameters
-                var testCaseGenericType = typeof(ProofTestCase<,,>);
-
-                // Get the type of the label axes for the proof type
-                var labelAxesType = GetLabelAxesType(proofType);
+                var testCaseGenericType = typeof(ProofTestCase<,>);
 
                 // The proof type is known at runtime
-                Type factoryType = typeof(SerializableTestProofFactory<,>).MakeGenericType(proofType, labelAxesType);
+                Type factoryType = testProofFactory.GetType();
 
                 // Make the test case type generic with the proof type and factory type
-                var closedTestCaseType = testCaseGenericType.MakeGenericType(proofType, labelAxesType, factoryType);
+                var closedTestCaseType = testCaseGenericType.MakeGenericType(proofType, factoryType);
 
                 // Insert null value for the proof into the test method arguments at the front
                 dataRow ??= Array.Empty<object>();

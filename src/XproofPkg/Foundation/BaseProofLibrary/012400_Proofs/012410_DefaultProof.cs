@@ -6,7 +6,7 @@ namespace Xproof.BaseProofLibrary.Proofs
     /// <summary>
     /// A proof implementation that allows for late failure collection during test execution.
     /// </summary>
-    public class Xproof<TLabelAxes> : DeclarativeCustomizableProof<TLabelAxes>
+    public class DefaultProof<TLabelAxes> : DeclarativeCustomizableProof<TLabelAxes>
     {
         /// <summary>
         /// The default proof used by [ProofFact] when no other is specified.
@@ -27,7 +27,7 @@ namespace Xproof.BaseProofLibrary.Proofs
         }
     }
 
-    public class Xproof : Xproof<string>
+    public class DefaultProof : DefaultProof<string>
     {
         // Including this empty class allows the use of Xproof without specifying axes.
     }
