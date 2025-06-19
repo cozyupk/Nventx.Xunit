@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
-namespace Xproof.Utils.SupportSourceGenerator
+namespace Xproof.SupportSourceGenerator
 {
     public class SourceGeneratorBase
     {
@@ -37,7 +37,6 @@ namespace Xproof.Utils.SupportSourceGenerator
         protected internal static string FormatParameterDecl(IParameterSymbol p)
         {
             var paramName = AvoidCollision(p.Name);
-            var allowNull = p.NullableAnnotation == NullableAnnotation.Annotated ? "[AllowNull] " : "";
             var refKind = p.RefKind switch
             {
                 RefKind.Out => "out ",
@@ -45,6 +44,17 @@ namespace Xproof.Utils.SupportSourceGenerator
                 RefKind.In => "in ",
                 _ => string.Empty
             };
+
+            // [AllowNull] をつける条件：
+            // - NullableAnnotation.Annotated (つまり T? や string?)
+            // - かつ [NotNull] 属性がついていない
+            var hasNotNullAttr = p.GetAttributes()
+                .Any(attr => attr.AttributeClass?.ToDisplayString() == "System.Diagnostics.CodeAnalysis.NotNullAttribute");
+
+            var allowNull = p.NullableAnnotation == NullableAnnotation.Annotated && !hasNotNullAttr
+                ? "[AllowNull] "
+                : "";
+
             return $"{allowNull}{refKind}{FormatType(p.Type)} {paramName}";
         }
 

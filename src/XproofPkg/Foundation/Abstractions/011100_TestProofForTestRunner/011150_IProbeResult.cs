@@ -1,23 +1,9 @@
-﻿using System;
-
-namespace Xproof.Abstractions.TestProofForTestRunner
+﻿namespace Xproof.Abstractions.TestProofForTestRunner
 {
     /// <summary>
-    /// Base interface for probe results, which contains common properties like elapsed time and exception.
+    /// An interface for probe results, which uses a generic type for label axes.
     /// </summary>
-    public interface IProbeResultBase
-    {
-        /// <summary>
-        /// The elapsed time for the probe execution.
-        /// </summary>
-        TimeSpan Elapsed { get; }
-
-        /// <summary>
-        /// The exception that occurred during the probe execution, if any.
-        /// </summary>
-        Exception? Exception { get; }
-    }
-
+    /// <typeparam name="TLabelAxes"></typeparam>
     public interface IProbeResult<out TLabelAxes> : IProbeResultBase
     {
         /// <summary>
@@ -36,4 +22,5 @@ namespace Xproof.Abstractions.TestProofForTestRunner
         /// </summary>
         IProbeScopeRecord<string> ProbeScopeRecord { get; }
     }
+
 }

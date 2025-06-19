@@ -6,6 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\Foundation\SerializableFactory\010_015000_SerializableFactory.csproj" />
 	  <ProjectReference Include="..\AdapterForTestRunner\010_022000_AdapterForTestRunner.csproj" />
 	  <ProjectReference Include="..\AssertBinding\010_024000_AssertBinding.csproj" />
 	</ItemGroup>

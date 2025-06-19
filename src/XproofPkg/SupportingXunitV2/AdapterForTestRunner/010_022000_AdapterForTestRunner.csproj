@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Foundation\Utils\010_013000_Utils.csproj" />
+	  <ProjectReference Include="..\..\Foundation\Abstractions\010_011000_Abstractions.csproj" />
 	</ItemGroup>
 
 </Project>

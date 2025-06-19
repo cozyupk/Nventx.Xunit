@@ -10,7 +10,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Foundation\BaseProofLibrary\010_012000_BaseProofLibrary.csproj" />
+	  <ProjectReference Include="..\..\..\Foundation\BaseProofLibrary\010_013000_BaseProofLibrary.csproj" />
 	</ItemGroup>
 
 </Project>

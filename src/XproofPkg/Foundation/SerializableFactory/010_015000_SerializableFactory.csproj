@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNameSpace>Xproof.SerializableFactory</RootNameSpace>
+		<AssemblyName>Xproof.SerializableFactory</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Abstractions\010_011000_Abstractions.csproj" />
+	</ItemGroup>
+
+
+</Project>

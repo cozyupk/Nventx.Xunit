@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Foundation\BaseProofLibrary\010_012000_BaseProofLibrary.csproj" />
+	  <ProjectReference Include="..\..\Foundation\BaseProofLibrary\010_013000_BaseProofLibrary.csproj" />
 	  <ProjectReference Include="..\SourceGeneratorForAssertBinding\010_023000_SourceGeneratorForAssertBinding.csproj" />
 	</ItemGroup>
 

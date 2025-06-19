@@ -31,7 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0030_ComponentGroups", "003
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0040_PkgComponentGroups", "0040_PkgComponentGroups", "{EFC52F96-0535-4166-90D4-CD66204D92E1}"
 	ProjectSection(SolutionItems) = preProject
-		build\0040_PkgComponentGroups\010_012000_ComponentGroup.props = build\0040_PkgComponentGroups\010_012000_ComponentGroup.props
+		build\0040_PkgComponentGroups\010_013000_ComponentGroup.props = build\0040_PkgComponentGroups\010_013000_ComponentGroup.props
+		build\0040_PkgComponentGroups\010_015000_ComponentGroup.props = build\0040_PkgComponentGroups\010_015000_ComponentGroup.props
 		build\0040_PkgComponentGroups\010_023000_ComponentGroup.props = build\0040_PkgComponentGroups\010_023000_ComponentGroup.props
 		build\0040_PkgComponentGroups\010_092000_ComponentGroup.props = build\0040_PkgComponentGroups\010_092000_ComponentGroup.props
 		build\0040_PkgComponentGroups\010_093000_ComponentGroup.props = build\0040_PkgComponentGroups\010_093000_ComponentGroup.props
@@ -56,9 +57,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "010_093000_Executables", "0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_011000_Abstractions", "XproofPkg\Foundation\Abstractions\010_011000_Abstractions.csproj", "{1300848D-E162-DACA-7DB7-6D36BB7E03E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_012000_BaseProofLibrary", "XproofPkg\Foundation\BaseProofLibrary\010_012000_BaseProofLibrary.csproj", "{96844335-A3C9-884B-1175-E190E13252C1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_013000_Utils", "XproofPkg\Foundation\Utils\010_013000_Utils.csproj", "{BFA563FA-A1F1-0F9A-5542-A38F75602AB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_013000_BaseProofLibrary", "XproofPkg\Foundation\BaseProofLibrary\010_013000_BaseProofLibrary.csproj", "{96844335-A3C9-884B-1175-E190E13252C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_022000_AdapterForTestRunner", "XproofPkg\SupportingXunitV2\AdapterForTestRunner\010_022000_AdapterForTestRunner.csproj", "{7DDBE9A1-395F-B4D7-86B9-C7063BC0CCA0}"
 EndProject
@@ -76,6 +75,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_023000_SourceGeneratorF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_024000_AssertBinding", "XproofPkg\SupportingXunitV2\AssertBinding\010_024000_AssertBinding.csproj", "{8B02A427-1058-DB84-3545-7033D06A05EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_015000_SerializableFactory", "XproofPkg\Foundation\SerializableFactory\010_015000_SerializableFactory.csproj", "{D7E11D0D-462D-453D-8BB0-3E2089067CB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_014000_SupportSourceGenerator", "XproofPkg\Foundation\SupportSourceGenerator\010_014000_SupportSourceGenerator.csproj", "{3ADBAEA9-A3BE-BD3F-925D-2CF7C3C386A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "010_012000_ProbeCore", "XproofPkg\Foundation\ProbeCore\010_012000_ProbeCore.csproj", "{1451DA85-4F6A-457A-8BB1-CB356DD9A4CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,10 +95,6 @@ Global
 		{96844335-A3C9-884B-1175-E190E13252C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96844335-A3C9-884B-1175-E190E13252C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96844335-A3C9-884B-1175-E190E13252C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BFA563FA-A1F1-0F9A-5542-A38F75602AB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BFA563FA-A1F1-0F9A-5542-A38F75602AB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BFA563FA-A1F1-0F9A-5542-A38F75602AB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BFA563FA-A1F1-0F9A-5542-A38F75602AB7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7DDBE9A1-395F-B4D7-86B9-C7063BC0CCA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7DDBE9A1-395F-B4D7-86B9-C7063BC0CCA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DDBE9A1-395F-B4D7-86B9-C7063BC0CCA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -126,6 +127,18 @@ Global
 		{8B02A427-1058-DB84-3545-7033D06A05EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B02A427-1058-DB84-3545-7033D06A05EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B02A427-1058-DB84-3545-7033D06A05EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7E11D0D-462D-453D-8BB0-3E2089067CB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7E11D0D-462D-453D-8BB0-3E2089067CB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7E11D0D-462D-453D-8BB0-3E2089067CB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7E11D0D-462D-453D-8BB0-3E2089067CB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ADBAEA9-A3BE-BD3F-925D-2CF7C3C386A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ADBAEA9-A3BE-BD3F-925D-2CF7C3C386A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ADBAEA9-A3BE-BD3F-925D-2CF7C3C386A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ADBAEA9-A3BE-BD3F-925D-2CF7C3C386A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1451DA85-4F6A-457A-8BB1-CB356DD9A4CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1451DA85-4F6A-457A-8BB1-CB356DD9A4CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1451DA85-4F6A-457A-8BB1-CB356DD9A4CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1451DA85-4F6A-457A-8BB1-CB356DD9A4CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -145,7 +158,6 @@ Global
 		{ECE85F2B-4ACC-4B9F-AEF3-C632687752B4} = {2765D4AD-AA7B-4743-B64D-66EEDC0A207B}
 		{1300848D-E162-DACA-7DB7-6D36BB7E03E5} = {F3BB55EA-EF3F-43ED-95D3-6FBA47FE632C}
 		{96844335-A3C9-884B-1175-E190E13252C1} = {F3BB55EA-EF3F-43ED-95D3-6FBA47FE632C}
-		{BFA563FA-A1F1-0F9A-5542-A38F75602AB7} = {F3BB55EA-EF3F-43ED-95D3-6FBA47FE632C}
 		{7DDBE9A1-395F-B4D7-86B9-C7063BC0CCA0} = {162FC9CD-B19D-49C0-B736-9E3582E034E6}
 		{11441A29-C032-757E-2CB6-EFB709FD2F51} = {162FC9CD-B19D-49C0-B736-9E3582E034E6}
 		{B4606D46-73F9-D3A1-0A9D-1DE5F1CD6375} = {162FC9CD-B19D-49C0-B736-9E3582E034E6}
@@ -154,6 +166,9 @@ Global
 		{6A5B9DFA-1D39-5C77-6B93-B574FB8BB339} = {ECE85F2B-4ACC-4B9F-AEF3-C632687752B4}
 		{39733A80-CD5E-6A42-A82C-3A59A7F6C3F5} = {162FC9CD-B19D-49C0-B736-9E3582E034E6}
 		{8B02A427-1058-DB84-3545-7033D06A05EA} = {162FC9CD-B19D-49C0-B736-9E3582E034E6}
+		{D7E11D0D-462D-453D-8BB0-3E2089067CB9} = {F3BB55EA-EF3F-43ED-95D3-6FBA47FE632C}
+		{3ADBAEA9-A3BE-BD3F-925D-2CF7C3C386A7} = {F3BB55EA-EF3F-43ED-95D3-6FBA47FE632C}
+		{1451DA85-4F6A-457A-8BB1-CB356DD9A4CC} = {F3BB55EA-EF3F-43ED-95D3-6FBA47FE632C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F01E5B92-8BC7-4A77-A34E-79C72F78E4AE}

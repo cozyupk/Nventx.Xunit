@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Xproof.Utils.SupportSourceGenerator;
+using Xproof.SupportSourceGenerator;
 
 namespace Xproof.SupportingXunit.SourceGeneratorForAssertBinding
 {

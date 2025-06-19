@@ -6,8 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="..\..\Foundation\Utils\13200_SupportSourceGenerator\*.cs" Link="Utils\%(Filename)%(Extension)" />
+		<Compile Include="..\..\Foundation\SupportSourceGenerator\*.cs" Link="Utils\%(Filename)%(Extension)" />
 	</ItemGroup>
-	
-	
+
 </Project>
