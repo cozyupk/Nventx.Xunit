@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Xproof.SupportSourceGenerator
 {
-    public class SourceGeneratorBase
+    public class AssertProofGeneratorBase
     {
         protected internal virtual void AppendFixedHeader(StringBuilder sb)
         {

@@ -5,4 +5,8 @@
 		<AssemblyName>Xproof.ProbeCore</AssemblyName>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Abstractions\010_011000_Abstractions.csproj" />
+	</ItemGroup>
+
 </Project>

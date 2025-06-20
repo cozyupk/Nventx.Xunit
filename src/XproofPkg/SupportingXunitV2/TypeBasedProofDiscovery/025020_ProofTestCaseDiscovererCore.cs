@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Xproof.Abstractions.TestProofForTestRunner;
 using Xproof.Abstractions.Utils;
+using Xproof.SerializableFactory;
 using Xproof.SupportingXunit.AdapterForTestRunner;
-using Xproof.Utils.SerializableFactory;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 

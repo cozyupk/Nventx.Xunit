@@ -1,6 +1,5 @@
 ﻿using System;
 using Xproof.Abstractions.TestProofForTestRunner;
-using Xproof.Utils.SerializableFactory;
 using Xunit.Sdk;
 
 namespace Xproof.SupportingXunit.TypeBasedProofDiscoverer

@@ -10,7 +10,7 @@ using Xproof.SupportSourceGenerator;
 namespace Xproof.SupportingXunit.SourceGeneratorForAssertBinding
 {
     [Generator]
-    public class AssertProofGenerator : SourceGeneratorBase, IIncrementalGenerator
+    public class AssertProofGenerator : AssertProofGeneratorBase, IIncrementalGenerator
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {

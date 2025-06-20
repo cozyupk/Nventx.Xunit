@@ -1,7 +1,7 @@
 ﻿using Xproof.Abstractions.TestProofForTestRunner;
 using Xproof.Abstractions.Utils;
 
-namespace Xproof.Utils.SerializableFactory
+namespace Xproof.SerializableFactory
 {
     /// <summary>
     /// A factory for creating serializable test proofs that implement the ITestProof interface.
